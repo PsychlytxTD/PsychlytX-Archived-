@@ -17,6 +17,7 @@ library(packrat)
 library(zoo)
 
 ## DC: high-level thoughts
+## - separate UI & server
 ## - maybe too many 'library' dependencies ( I haven't looked at which ones are used where / when)
 ## - double-assignemnt ( <<- ) are dodgy. Maybe better to use reactiveValues() or some other method
 ## - package functions
