@@ -627,7 +627,8 @@ server <- function(input, output, session) {
     ## DC: calculatesion in pacakge
     if(input$Choose_Stat == "T-Value") {
       Calc_T<- input$Calc_T
-      T_Rel <- function( Calc_Sd, Calc_Retest_Sd, Calc_Retest_M, Calc_M, Calc_T, Calc_N, 2 )
+      ## DC: I've made this call the `t_rel` function inside the `psychlytx` package
+      T_Rel <- psychlytx::t_rel( Calc_Sd, Calc_Retest_Sd, Calc_Retest_M, Calc_M, Calc_T, Calc_N, 2)
       paste("Test-retest reliability =", T_Rel)
 
     ## DC: calculatesion in pacakge

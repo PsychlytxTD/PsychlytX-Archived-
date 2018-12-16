@@ -4,11 +4,14 @@
 \alias{t_rel}
 \title{T Rel}
 \usage{
-t_rel(calc_sd, calc_retest_sd, calc_retest_m, calc_m, calc_t, calc_n)
+t_rel(calc_sd, calc_retest_sd, calc_retest_m, calc_m, calc_t, calc_n,
+  digits = 2)
 }
 \arguments{
+\item{calc_sd}{numeric representing the standard deviation}
+
 \item{calc_n}{}
 }
 \description{
-T Rel
+Calculates the something something
 }
