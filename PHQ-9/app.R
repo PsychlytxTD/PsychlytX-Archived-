@@ -497,6 +497,15 @@ ui<- function(request) {
 server <- function(input, output, session) {
 
 
+  ## DC: define reactive values
+  rv <- rreactiveValues()
+  rv$Mean_Val <- NULL
+  rv$Sd_Val <- NULL
+
+  ## then when you want to assign a different avlue to them you just use
+  ## rv$Mean_Val <- 12345
+  ## rv$Sd_Val <- 54321
+
   ## DC: module
   observeEvent(input$Disclaimer, {
     showModal(modalDialog(

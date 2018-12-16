@@ -48,6 +48,12 @@ I have set up a skeleton pacakge with one function, defined in `/R/calcs.R`. Thi
 2. These comments get parsed by roxygen and turned into the help files you see when you use `?`. For example, after building this package you can use `?t_rel`, and the help page will be shown (currently incomplete)
 
 
+---
+
+## Reactive Values
+
+I've also added a brief note of `reactiveValues()` to the PHQ9 `server` function. [Here](https://riptutorial.com/shiny/example/32342/reactivevalues) is a good example of them in use
+
 
 
 
