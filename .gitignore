@@ -39,3 +39,4 @@ rsconnect/
 # packrat stuff
 */packrat/lib*
 */packrat/src/
+.Rproj.user
