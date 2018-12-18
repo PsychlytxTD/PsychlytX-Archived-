@@ -498,7 +498,7 @@ server <- function(input, output, session) {
 
 
   ## DC: define reactive values
-  rv <- rreactiveValues()
+  rv <- reactiveValues()
   rv$Mean_Val <- NULL
   rv$Sd_Val <- NULL
 
@@ -637,7 +637,7 @@ server <- function(input, output, session) {
     if(input$Choose_Stat == "T-Value") {
       Calc_T<- input$Calc_T
       ## DC: I've made this call the `t_rel` function inside the `psychlytx` package
-      T_Rel <- psychlytx::t_rel( Calc_Sd, Calc_Retest_Sd, Calc_Retest_M, Calc_M, Calc_T, Calc_N, 2)
+     T_Rel <- psychlytx::t_rel( Calc_Sd, Calc_Retest_Sd, Calc_Retest_M, Calc_M, Calc_T, Calc_N, 2)
       paste("Test-retest reliability =", T_Rel)
 
     ## DC: calculatesion in pacakge

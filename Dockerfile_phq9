@@ -1,0 +1,44 @@
+# Base image https://hub.docker.com/u/rocker/
+FROM rocker/shiny
+
+## Install extra R packages using requirements.R
+## Specify requirements as R install commands e.g.
+## 
+## install.packages("<myfavouritepacakge>") or
+## devtools::install("SymbolixAU/googleway")
+
+## An example code block if more packages are needed
+## Copy requirements.R to container directory /tmp
+## COPY ./DockerConfig/requirements.R /tmp/requirements.R 
+## install required libs on container
+##RUN Rscript /tmp/requirements.R
+
+# linux packages
+
+RUN apt-get update && apt-get install -y \
+	libssl-dev \
+	libxml2-dev \
+	libv8-3.14-dev
+
+# create an R user
+ENV USER shinypsychlytx
+
+## Copy your working files over
+## The $USER defaults to `rstudio` but you can change this at runtime
+COPY ./PHQ-9_examples/*.R ./PHQ-9_examples/*.Rproj ./PHQ-9_examples/*.Rmd ./PHQ-9_examples/*.xlsx  /srv/shiny-server/PHQ-9/
+COPY ./PHQ-9_examples/packrat/packrat* ./PHQ-9_examples/packrat/init.R /srv/shiny-server/PHQ-9_examples/packrat/
+COPY ./psychlytx /tmp/psychlytx
+
+
+
+## restore packrat folder
+# RUN R -e 'install.packages("packrat" , repos="http://cran.us.r-project.org"); packrat::restore()'
+RUN cd /srv/shiny-server/PHQ-9_examples && \
+  R -e 'install.packages("/tmp/psychlytx", repos=NULL, type="source")' && \
+  R -e 'install.packages("packrat" , repos="http://cran.us.r-project.org"); packrat::restore()'
+
+
+
+
+
+
