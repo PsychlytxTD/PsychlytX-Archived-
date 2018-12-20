@@ -1,0 +1,78 @@
+.navbar { font-family: Arial;
+          font-size: 18px;
+                           }
+                     
+                     
+                     
+                     
+                     
+                           
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+                           
+.navbar-default {
+    background-color: #283747;
+}
+
+.navbar-default .navbar-brand {
+                         color: #d35400;
+                         font-size: 25px;
+}
+
+.navbar-default .navbar-nav > .active > a:focus
+{
+    color: white;
+    background-color: #827717;
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+    color: white;
+    background-color: #827717;
+}
+  
+ .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: white;
+    background-color: #827717;
+} 
+  
+  
+  
+                           
+.navbar-nav li a {
+    line-height: 40px;
+    height: 80px;
+    padding-top: 80;
+    padding-bottom: 100;
+}
+
+ .navbar-brand {
+    float: left;
+    height: 80px;
+   padding-top: 80;
+    padding-bottom: 100;
+    font-size: 20px;
+    line-height: 40px;
+}   
+.well {background-color:#e5e5e5; 
+       color: #000000;
+       border: 2px solid #283747
+                                }
+                                
+hr {
+     border-style: solid;
+     border-color: #827717;
+      border-width: 2px;
+} 
+.btn {
+  padding: 8px 73px;
+}
+  
+.input-group-btn:first-child>.btn, .input-group-btn:first-child>.btn-group {
+    margin-right: -1px;
+    padding: 6px 5px;
+}   
+
+ .progress-bar {background-color: #283747;}
+
+)
