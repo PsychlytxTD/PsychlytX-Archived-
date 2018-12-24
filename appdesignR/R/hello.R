@@ -14,5 +14,5 @@
 #   Test Package:              'Cmd + Shift + T'
 
 hello <- function() {
-  print("Hello, this is an edit of the hello package")
+  print("Hello, this is a new change to see if push and pull are visible in R studio now.")
 }
