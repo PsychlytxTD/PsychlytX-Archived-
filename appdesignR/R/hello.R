@@ -14,5 +14,5 @@
 #   Test Package:              'Cmd + Shift + T'
 
 hello <- function() {
-  print("Hello, worla!")
+  print("Hello, this is an edit of the hello package")
 }
