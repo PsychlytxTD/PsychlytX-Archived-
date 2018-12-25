@@ -10,7 +10,7 @@ Description: This package modularises the code for creating PsychlytX web applic
 License: file LICENSE 
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Imports: 
     dplyr,
     kableExtra,
