@@ -1,14 +1,27 @@
 Package: psychlytx
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
+Title: Creates the .UI and .Server Code for PsychlytX Web Applications
+Version: 0.0.0.9000
+Author: person("Timothy", "Deitz", email = "psychlytx@gmail.com", 
+  role = c("aut", "cre"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: This package modularises the code for creating PsychlytX web applications.
+    Shiny Modules are used to reproduce sections of the .UI and .Server code efficiently.
+License: file LICENSE 
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
+Imports: 
+    dplyr,
+    kableExtra,
+    readxl,
+    DT,
+    shinydashboard,
+    ggrepel,
+    Rcpp,
+    shinyjs,
+    V8,
+    car,
+    zoo
 Suggests: 
     testthat
