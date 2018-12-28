@@ -1,20 +1,26 @@
 library(shiny)
 
-ui <- fluidPage(
-  
-  uiOutput("dynamicWidgets")
-  
-)
 
-server <- function(input, output, session) {
+#Writing module functions
+
+modUI<- function(id) {
+  
+ns<- NS(id)
+
+uiOutput(ns("dynamicWidgets"))
+
+}
+
+
+mod<- function(input, output, session, scaleNames) {
   
   dynamicWidgetReactive<- reactive({  
     
-    scaleNames<- list("depression", "anxiety")
+    ns <- session$ns
     
     Input_List <- lapply(scaleNames[1:2], function(scaleNames) {
       
-      numericInput(paste(scaleNames), paste(scaleNames), 0)
+      numericInput(ns(paste(scaleNames)), paste(scaleNames), 0)
       
     }
     )
@@ -29,6 +35,23 @@ server <- function(input, output, session) {
     
   })
   
+  
+}
+
+
+
+#Start of parent app
+
+ui <- fluidPage(
+  
+  modUI("firstID")
+  
+)
+
+
+server <- function(input, output, session) {
+  
+  callModule(mod, "firstID", list("depression", "anxiety"))
   
 } 
 
