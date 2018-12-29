@@ -1,8 +1,16 @@
 library(shiny)
 
+#Create separate dataframes with mean values for the total scale and subscales 
+#I think the best way to do this is to create a seperate .R script file for each scale and store the
+# dataframes (e.g. for means and sds) within this script
+
 soldier<- c(3,4)
 veteran<- c(5,6)
-dataset<- data.frame(soldier, veteran)
+means_dataset<- data.frame(soldier, veteran)
+
+soldier<- c("John et al 1996", "Harry et al 1997")
+veteran<- c("Tom 1984", "Jim 1984")
+refs_dataset<- data.frame(soldier, veteran)
 
 
 #Writing module functions
@@ -18,7 +26,7 @@ uiOutput(ns("dynamicWidgets"))
 }
 
 
-mod<- function(input, output, session, scaleNames, dataf, pop) {
+mod<- function(input, output, session, scaleNames, dataf, refsDataf, pop) {
   
   
   
@@ -31,15 +39,18 @@ mod<- function(input, output, session, scaleNames, dataf, pop) {
     
     selectedCol<<- dataf[,paste(population)]
     
+    selectedRef<<- refsDataf[,paste(population)]
+    
     Input_List <- lapply(1:length(scaleNames), function(i) {
       
       vals_name<<- paste(selectedCol[i])
       input_name  <- paste(scaleNames[i])
-      lab_name<- paste(scaleNames[i])
-
+      refs_name<- paste(selectedRef[i])
+      
       div(
       column(width = 2,
-      numericInput(ns(input_name), lab_name, value = vals_name)
+      numericInput(ns(input_name), input_name, value = vals_name),
+      paste("Reference:", refs_name)
              )
           )
       
@@ -82,7 +93,7 @@ server <- function(input, output, session) {
   
  pop<- reactive({ input$pop })
   
-  callModule(mod, "firstID", list("depression", "anxiety"), dataset, pop)
+  callModule(mod, "firstID", list("depression", "anxiety"), means_dataset, refs_dataset, pop)
   
 } 
 
