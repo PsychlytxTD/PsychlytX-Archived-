@@ -1,5 +1,9 @@
 library(shiny)
 
+soldier<- c(3,4)
+veteran<- c(5,6)
+dataset<- data.frame(soldier, veteran)
+
 
 #Writing module functions
 
@@ -14,35 +18,32 @@ uiOutput(ns("dynamicWidgets"))
 }
 
 
-mod<- function(input, output, session, scaleNames, popVals) {
+mod<- function(input, output, session, scaleNames, dataf, pop) {
+  
+  
   
   dynamicWidgetReactive<- reactive({ 
  
-    
-    
-    val_list<- lapply(1:length(popVals[[1]]), function(popVals) {
-      
-   4
-      
-    }
-    
-    )
-    
-    
-    
-    
-    
+
     ns <- session$ns
     
-    Input_List <- lapply(scaleNames[1:length(scaleNames)], function(scaleNames) {
+    population<<- pop()
+    
+    selectedCol<<- dataf[,paste(population)]
+    
+    Input_List <- lapply(1:length(scaleNames), function(i) {
       
+      vals_name<<- paste(selectedCol[i])
+      input_name  <- paste(scaleNames[i])
+      lab_name<- paste(scaleNames[i])
+
       div(
       column(width = 2,
-      numericInput(ns(paste(scaleNames)), paste(scaleNames), value = do.call(print, val_list))
-            )
-        )
+      numericInput(ns(input_name), lab_name, value = vals_name)
+             )
+          )
       
-    }
+                                                                                 }
     )
     
     do.call(tagList, Input_List)
@@ -70,6 +71,8 @@ mod<- function(input, output, session, scaleNames, popVals) {
 
 ui <- fluidPage(
   
+  selectInput("pop", "select population", choices = c("soldier", "veteran")),
+  
   modUI("firstID")
   
 )
@@ -77,7 +80,9 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  callModule(mod, "firstID", list("depression", "anxiety"),  list("soldier"=c(1,2), "veteran"=c(3,4)))
+ pop<- reactive({ input$pop })
+  
+  callModule(mod, "firstID", list("depression", "anxiety"), dataset, pop)
   
 } 
 
