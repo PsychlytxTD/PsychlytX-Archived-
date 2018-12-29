@@ -7,27 +7,51 @@ modUI<- function(id) {
   
 ns<- NS(id)
 
+fluidRow(
 uiOutput(ns("dynamicWidgets"))
+        )
 
 }
 
 
-mod<- function(input, output, session, scaleNames) {
+mod<- function(input, output, session, scaleNames, popVals) {
   
-  dynamicWidgetReactive<- reactive({  
+  dynamicWidgetReactive<- reactive({ 
+ 
+    
+    
+    val_list<- lapply(1:length(popVals[[1]]), function(popVals) {
+      
+   4
+      
+    }
+    
+    )
+    
+    
+    
+    
     
     ns <- session$ns
     
-    Input_List <- lapply(scaleNames[1:2], function(scaleNames) {
+    Input_List <- lapply(scaleNames[1:length(scaleNames)], function(scaleNames) {
       
-      numericInput(ns(paste(scaleNames)), paste(scaleNames), 0)
+      div(
+      column(width = 2,
+      numericInput(ns(paste(scaleNames)), paste(scaleNames), value = do.call(print, val_list))
+            )
+        )
       
     }
     )
     
-    do.call(tagList, Input_List) 
+    do.call(tagList, Input_List)
+    
+  
+    
   })
   
+
   
   output$dynamicWidgets<- renderUI({
     
@@ -36,7 +60,9 @@ mod<- function(input, output, session, scaleNames) {
   })
   
   
+  
 }
+
 
 
 
@@ -51,7 +77,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  callModule(mod, "firstID", list("depression", "anxiety"))
+  callModule(mod, "firstID", list("depression", "anxiety"),  list("soldier"=c(1,2), "veteran"=c(3,4)))
   
 } 
 
