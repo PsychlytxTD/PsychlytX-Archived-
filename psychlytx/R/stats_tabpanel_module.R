@@ -27,11 +27,11 @@ stats_tabwidgets_UI<- function(id) {
 #'
 #' @param stats_df A dataframe. Column names indicate possible populations (e.g. veteran). Integers within
 #' each column represent subscale values. Subscale values in columns must match the order in which subscales
-#' are listed in the \item{subscale_names} argument.
+#' are listed in the subscale_names argument.
 #'
 #' @param refs_df A dataframe. Column names indicate possible populations (e.g. veteran). Strings within each
 #' column represent references corresponding to each subscale value. Subscale references in columns must match the order in which subscales
-#' are listed in the \item{subscale_names} argument.
+#' are listed in the subscale_names argument.
 #'
 #' @param pop A reactive value (string) derived from a widget.
 #'
