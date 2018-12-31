@@ -1,105 +1,109 @@
-library(shiny)
-
-#Create separate dataframes with mean values for the total scale and subscales 
-#I think the best way to do this is to create a seperate .R script file for each scale and store the
-# dataframes (e.g. for means and sds) within this script. It may be worthwhile introducing an additional argument
-#into the module function — one that allows us to specify the interation number of the lapply statement (e.g. 3:5). This
-#would allow us to control how many columns (and widgets) we insert per fluid row. Or maybe we need to create mini dataframes
-#with the amount of values that we would like to see in each row. 
-
-soldier<- c(3,4,6,8,5,6,7,8)
-veteran<- c(5,6,9,7,6,7,8,9)
-means_dataset<- data.frame(soldier, veteran)
-
-soldier<- c("John et al 1996", "Harry et al 1997", "Harry et al 1997", "Harry et al 1997", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984")
-veteran<- c("Tom 1984", "Jim 1984", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984")
-refs_dataset<- data.frame(soldier, veteran)
+diagnosis_list<- list("depression", "anxiety", "OCD", "stress")
 
 
-#Writing module functions
-
-modUI<- function(id) {
+analytics_tabpanel_UI<- function(id) {
   
-ns<- NS(id)
-
-fluidRow(
-uiOutput(ns("dynamicWidgets"))
-        )
-
+  ns<- NS(id)
+  
+  uiOutput(ns("analytics_tabwidgets_out"))
+  
 }
 
-
-mod<- function(input, output, session, scaleNames, dataf, refsDataf, pop) {
+analytics_tabpanel<- function(input, output, session, client_type) {
   
-  
-  
-  dynamicWidgetReactive<- reactive({ 
- 
-
+  analytics_tabwidgets_reac<- reactive({
+    
+    req(client_type())
+    
     ns <- session$ns
     
-    population<- pop()
+    client_selection<<- client_type()
     
-    selectedCol<- dataf[,paste(population)]
-    
-    selectedRef<- refsDataf[,paste(population)]
-    
-    Input_List <- lapply(seq_along(scaleNames), function(i) {
-      
-      vals_name<- paste(selectedCol[i])
-      input_name  <- paste(scaleNames[i])
-      refs_name<- paste(selectedRef[i])
-      
-      div(
-      column(width = 2,
-      numericInput(ns(input_name), input_name, value = vals_name),
-      h6(paste("Reference:", refs_name))
+    switch(client_selection, 
+           
+           new = 
+             
+             tagList(
+               h5(tags$em("*Complete or have the client complete this information before administering the first scale.")),
+               br(),
+               h4(tags$strong("Basic Demographics")),
+               br(),
+               textInput(ns("ControlName"), "Patient's Name"),
+               selectInput(ns("Sex"), "Sex", c("", "Male", "Female"), width = '200px'),
+               numericInput(ns("Age"), "Age", value = "", width = '100px'),
+               selectInput(ns("Sexuality"), "Sexual Orientation", c("", "Heterosexual", "Lesbian", "Gay", "Bisexual", "Transgender", "Queer", "Other"), width = '200px'),
+               selectInput(ns("Relationship"), "Relationship Status", c("", "Married/In Relationship", "Single", "Widowed"), width = '250px'),
+               numericInput(ns("Children"), "Number of Dependent Children", value = "", width = '100px'),
+               selectInput(ns("Workforce"), "Primary Workforce Status", c("", "Working", "Studying", "Unemployed", "Retired"), width = '200px'),
+               selectInput(ns("Education"), "Education", c("", "Did Not Complete High School", "Completed High School", "Completed Tertiary Education"), width = '250px'),
+               textInput(ns("Occupation"), "Occupation"),
+               textInput(ns("Suburb"), "Suburb", value = "", width = '300px')
+             ), 
+           
+           old = 
+             
+             tagList( 
+               h5(tags$em("*Enter the information below when you administer a scale for the last time (i.e. discharge assessment)")),
+               h4(tags$strong("Clinical Information")),
+               br(),
+               selectInput(ns("Principal_Diagnosis"), "Presenting Principal Diagnosis", diagnosis_list),
+               selectizeInput(ns("Secondary_Diagnosis"), "Presenting Additional Diagnosis/Diagnoses", diagnosis_list, multiple = TRUE),
+               textInput(ns("Referrer"), "Referrer", value = "", width = '200px'),
+               selectInput(ns("Attendance_Arrangement"), "Attendance Arrangement", c("", "It Varies", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "More Than 1 Month Apart"), width = '250px'),
+               selectInput(ns("Attendance_Quality"), "Quality of Attendance", c("", "Good", "Moderate", "Poor"), width = '200px'),
+               textInput(ns("Therapy"), "Therapeutic Approach", value = "", width = '200px'),
+               selectInput(ns("Fee"), "Fee Arrangement", c("", "No Out-Of-Pocket Expense", "Discount", "Full-Fee"), width = '250px'),
+               numericInput(ns("Duration"), "Number of Sessions Attended", value = "", width = '100px'),
+               selectInput(ns("Dropout"), "Early Dropout", c("", "Yes", "No"), width = '200px')
              )
-          )
-      
-                                                                                 }
+           
     )
     
-    do.call(tagList, Input_List)
     
-  
     
   })
   
-
   
-  output$dynamicWidgets<- renderUI({
+  output$analytics_tabwidgets_out<- renderUI({
     
-    dynamicWidgetReactive()
+    analytics_tabwidgets_reac()
     
   })
-  
   
   
 }
 
 
-
-
-#Start of parent app
 
 ui <- fluidPage(
   
-  selectInput("pop", "select population", choices = c("soldier", "veteran")),
   
-  modUI("firstID")
+  tabPanel("Set Client Profile",
+           fluidPage(
+             br(),
+             titlePanel(span(tagList(icon("bar-chart-o", lib = "font-awesome")), h4(tags$b("Enter client information")))),
+             br(),
+             h4(tags$strong("Step 1.")), h4("Is this a new or existing client? Tick one of the boxes below:"),
+             radioButtons("client_type", "", choices = c("New client, first time completing a scale" = "new", 
+                                                         "Ongoing client, has completed one or more scales" = "old")),
+             sidebarLayout(position = "left",
+                           sidebarPanel(width = 5,
+                                        analytics_tabpanel_UI("analytics_id")
+                                        
+                           ), 
+                           mainPanel(width = 7
+                                     
+                           )
+             )))
   
 )
 
-
 server <- function(input, output, session) {
   
- pop<- reactive({ input$pop })
+  client_type<- reactive({ input$client_type })
   
-  callModule(mod, "firstID", list("depression", "anxiety", "stress", "psychosis", "eating", "sleeping", "talking", "chatting"), means_dataset, refs_dataset, pop)
+  callModule(analytics_tabpanel, "analytics_id", client_type)
   
-} 
+}
 
-
-
-shinyApp(ui = ui, server = server)
+shinyApp(ui, server)
