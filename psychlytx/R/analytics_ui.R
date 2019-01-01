@@ -117,8 +117,8 @@ analytics_widgets<- function(input, output, session, client_status_module) {
                textInput(ns("referrer"), "Referrer", value = "", width = '200px'),
                selectInput(ns("attendance_arrangement"), "Attendance Arrangement", c("", "It Varies", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "More Than 1 Month Apart"), width = '250px'),
                selectInput(ns("attendance_quality"), "Quality of Attendance", c("", "Good", "Moderate", "Poor"), width = '200px'),
-               textInput(ns("Therapy"), "therapeutic Approach", value = "", width = '200px'),
-               selectInput(ns("Fee"), "fee Arrangement", c("", "No Out-Of-Pocket Expense", "Discount", "Full-Fee"), width = '250px'),
+               textInput(ns("Therapy"), "Therapeutic Approach", value = "", width = '200px'),
+               selectInput(ns("Fee"), "Fee Arrangement", c("", "No Out-Of-Pocket Expense", "Discount", "Full-Fee"), width = '250px'),
                numericInput(ns("duration"), "Number of Sessions Attended", value = "", width = '100px'),
                selectInput(ns("dropout"), "Early Dropout", c("", "Yes", "No"), width = '200px')
              )
