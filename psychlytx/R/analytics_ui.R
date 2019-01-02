@@ -74,6 +74,7 @@ analytics_widgets_UI<- function(id) {
 
 analytics_widgets<- function(input, output, session, clientstatus_module) {
 
+
   analytics_widgets_reac<- reactive({
 
     ns <- session$ns
@@ -112,8 +113,8 @@ analytics_widgets<- function(input, output, session, clientstatus_module) {
                h5(tags$em("Please answer the questions below before your client completes the final/follow-up assessment.")),
                h4(tags$strong("Clinical Information")),
                br(),
-               selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", diagnosis_list),
-               selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", diagnosis_list, multiple = TRUE),
+               selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", psychlytx::Diagnosis_List),
+               selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", psychlytx::Diagnosis_List, multiple = TRUE),
                textInput(ns("referrer"), "Referrer", value = "", width = '200px'),
                selectInput(ns("attendance_arrangement"), "Attendance Arrangement", c("", "It Varies", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "More Than 1 Month Apart"), width = '250px'),
                selectInput(ns("attendance_quality"), "Quality of Attendance", c("", "Good", "Moderate", "Poor"), width = '200px'),
