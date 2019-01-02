@@ -4,10 +4,10 @@
 \alias{analytics_widgets}
 \title{Tabpanel widget content for analytics}
 \usage{
-analytics_widgets(input, output, session, client_status_module)
+analytics_widgets(input, output, session, clientstatus_module)
 }
 \arguments{
-\item{client_status_module}{A module object containing the new/existing client status widget and headings.}
+\item{clientstatus_module}{A module object containing the new/existing client status widget and headings.}
 
 \item{id}{String to create a unique namespace.}
 }

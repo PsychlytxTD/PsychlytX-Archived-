@@ -68,11 +68,11 @@ analytics_widgets_UI<- function(id) {
 #'
 #' @param id String to create a unique namespace.
 #'
-#' @param client_status_module A module object containing the new/existing client status widget and headings.
+#' @param clientstatus_module A module object containing the new/existing client status widget and headings.
 #'
 #' @export
 
-analytics_widgets<- function(input, output, session, client_status_module) {
+analytics_widgets<- function(input, output, session, clientstatus_module) {
 
   analytics_widgets_reac<- reactive({
 
@@ -85,7 +85,7 @@ analytics_widgets<- function(input, output, session, client_status_module) {
     #demographic information is provided at the start (with new clients) and clinical information (with existing clients)
     #is provided at the end of treatment (e.g. sessions attended, attendance quality etc.).
 
-    switch(client_status_modulet$client_type,
+    switch(clientstatus_module$client_type,
 
            new =
 
@@ -148,7 +148,7 @@ analytics_widgets<- function(input, output, session, client_status_module) {
 #'
 #' @export
 
-newcustom_widgets_UI<- function(id) {
+analytics_newcustom_widgets_UI<- function(id) {
 
   ns<- NS(id)
 
@@ -175,7 +175,7 @@ newcustom_widgets_UI<- function(id) {
 #'
 #' @export
 
-newcustom_widgets<- function(input, output, session) {
+analytics_newcustom_widgets<- function(input, output, session) {
 
   #Produce new textarea widgets when user clicks 'create' (i.e. create new variables).
   #The number of widget depends on how many variables they want to create.
