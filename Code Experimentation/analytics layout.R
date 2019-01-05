@@ -32,15 +32,18 @@ analytics_widgets_UI<- function(id) {
 
 }
 
-analytics_widgets<- function(input, output, session, client_type_object) {
+analytics_widgets<- function(input, output, session, client_type) {
   
 
   analytics_widgets_reac<- reactive({
     
     ns <- session$ns
     
+    req(client_type())
     
-    switch(client_type_object$client_type,
+    client_selection<- client_type()
+    
+    switch(client_selection, 
            
   new = 
       
@@ -179,9 +182,9 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  client_type_object<- callModule(analytics_clientstatus, "analytics_clientstatus_id")
+  client_type<<- reactive({ input$client_type })
   
-  callModule(analytics_widgets, "analytics_widgets_id", client_type_object)
+  callModule(analytics_widgets, "analytics_widgets_id", client_type)
   callModule(newcustom_widgets, "newcustom_widgets_id")
   
 }

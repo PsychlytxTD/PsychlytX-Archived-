@@ -7,12 +7,12 @@
 #'
 #' @export
 
-stats_tabwidgets_UI<- function(id) {
+stats_widgets_UI<- function(id) {
 
   ns<- NS(id)
 
   fluidRow(
-    uiOutput(ns("stats_tabwidgets_out"))
+    uiOutput(ns("stats_widgets_out"))
   )
 
 }
@@ -37,11 +37,11 @@ stats_tabwidgets_UI<- function(id) {
 #'
 #' @export
 
-stats_tabwidgets<- function(input, output, session, subscale_names, stats_df, refs_df, pop) {
+stats_widgets<- function(input, output, session, subscale_names, stats_df, refs_df, pop) {
 
 
 
-  stats_tabwidgets_reac<- reactive({
+  stats_widgets_reac<- reactive({
 
     #Necessary when rendering UI object with modules.
 
@@ -49,20 +49,20 @@ stats_tabwidgets<- function(input, output, session, subscale_names, stats_df, re
 
     #Store the widget value in an object to avoid throwing an error.
 
-    population<- pop()
+    population<- gsub('([[:punct:]])|\\s+','_', pop())
 
-    selected_pop_vals<- stats_df[,paste(population)]
+    selected_pop_vals<- stats_df[ , population]
 
-    selected_ref_vals<- refs_df[,paste(population)]
+    selected_ref_vals<- refs_df[ , population]
 
     #For each of the subscales, generate a widget for inputing a stat (e.g. mean, sd, reliability or cutoff value) and a
     #reference to sit beneath the widget. Store the output in a reactive expression.
 
     widget_list <- lapply(seq_along(subscale_names), function(i) {
 
-      default_value<- paste(selected_pop_vals[i])
-      id_label  <- paste(subscale_names[i])
-      reference<- paste(selected_ref_vals[i])
+      default_value<- selected_pop_vals[i]
+      id_label  <- subscale_names[i]
+      reference<- selected_ref_vals[i]
 
       div(
         column(width = 2,
@@ -83,9 +83,9 @@ stats_tabwidgets<- function(input, output, session, subscale_names, stats_df, re
 
   #Render the widgets.
 
-  output$stats_tabwidgets_out<- renderUI({
+  output$stats_widgets_out<- renderUI({
 
-    stats_tabwidgets_reac()
+    stats_widgets_reac()
 
   })
 

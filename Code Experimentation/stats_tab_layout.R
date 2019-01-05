@@ -7,13 +7,31 @@ library(shiny)
 #would allow us to control how many columns (and widgets) we insert per fluid row. Or maybe we need to create mini dataframes
 #with the amount of values that we would like to see in each row. 
 
-soldier<- c(3,4,6,8,5,6,7,8)
-veteran<- c(5,6,9,7,6,7,8,9)
-means_dataset<- data.frame(soldier, veteran)
+soldier_person<- c(3,4)
+veteran_actor<- c(5,6)
+means_dataset<- data.frame(soldier_person, veteran_actor)
 
-soldier<- c("John et al 1996", "Harry et al 1997", "Harry et al 1997", "Harry et al 1997", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984")
-veteran<- c("Tom 1984", "Jim 1984", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984", "Tom 1984")
-refs_dataset<- data.frame(soldier, veteran)
+soldier_person<- c("John et al 1996", "Harry et al 1997")
+veteran_actor<- c("Tom 1984", "Jim 1984")
+refs_dataset<- data.frame(soldier_person, veteran_actor)
+
+
+population_widget_UI<- function(id) {
+  
+  ns<- NS(id)
+  
+  selectInput(ns("pop"), "select population", choices = c("soldier person", "veteran actor"))
+  
+}
+
+population_widget<- function(input, output, session) {
+  
+  return(input)
+  
+}
+
+
+
 
 
 #Writing module functions
@@ -38,17 +56,17 @@ mod<- function(input, output, session, scaleNames, dataf, refsDataf, pop) {
     
     ns <- session$ns
     
-    population<- pop()
+    population<- gsub('([[:punct:]])|\\s+','_', pop())
     
-    selectedCol<- dataf[,paste(population)]
+    selectedCol<- dataf[ , population]
     
-    selectedRef<- refsDataf[,paste(population)]
+    selectedRef<- refsDataf[ , population]
     
     Input_List <- lapply(seq_along(scaleNames), function(i) {
       
-      vals_name<- paste(selectedCol[i])
-      input_name  <- paste(scaleNames[i])
-      refs_name<- paste(selectedRef[i])
+      vals_name<- selectedCol[i]
+      input_name  <- scaleNames[i]
+      refs_name<- selectedRef[i]
       
       div(
         column(width = 2,
@@ -85,7 +103,7 @@ mod<- function(input, output, session, scaleNames, dataf, refsDataf, pop) {
 
 ui <- fluidPage(
   
-  selectInput("pop", "select population", choices = c("soldier", "veteran")),
+  selectInput("pop", "select population", choices = c("soldier person", "veteran actor")),
   
   modUI("firstID")
   
@@ -96,7 +114,7 @@ server <- function(input, output, session) {
   
   pop<- reactive({ input$pop })
   
-  callModule(mod, "firstID", list("depression", "anxiety", "stress", "psychosis", "eating", "sleeping", "talking", "chatting"), means_dataset, refs_dataset, pop)
+  callModule(mod, "firstID", list("depression", "anxiety"), means_dataset, refs_dataset, pop)
   
 } 
 
