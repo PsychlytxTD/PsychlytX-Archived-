@@ -56,7 +56,14 @@ analytics_widgets_UI<- function(id) {
 
   ns<- NS(id)
 
+  tagList(
+    sidebarLayout(
+      sidebarPanel(width = 6,
   uiOutput(ns("analytics_widgets_out"))
+      ),
+  mainPanel())
+
+  )
 
 }
 
@@ -154,6 +161,8 @@ analytics_newcustom_widgets_UI<- function(id) {
   ns<- NS(id)
 
   tagList(
+    fluidRow(
+      column(width = 12,
     h4(tags$strong("Create customised variables relevant to data collection in your practice.")),
     br(),
     textInput(ns("newcustom_names"), "Name Your Variables"),
@@ -163,8 +172,9 @@ analytics_newcustom_widgets_UI<- function(id) {
     br(),
     br(),
     uiOutput(ns("newcustom_widgets_out"))
+    )
   )
-
+)
 }
 
 

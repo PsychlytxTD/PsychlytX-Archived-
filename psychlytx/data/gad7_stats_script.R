@@ -14,6 +14,25 @@ gad7_means_df<- data.frame(male_general_population, female_general_population, o
              chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
 
 
+
+
+male_general_population<- 3.12
+female_general_population<- 3.53
+older_adult<- 2.88
+primary_care<- 4.76
+psychiatric<- 5.62
+Generalized_Anxiety_Disorder<- 3.96
+chronic_musculoskeletal_pain<- 2.3
+coronary_heart_disease<- 5.3
+type_1_diabetes<- 4.6
+type_2_diabetes<- 4.9
+stroke<- 4.52
+
+
+gad7_sds_df<- data.frame(male_general_population, female_general_population, older_adult, primary_care, psychiatric, Generalized_Anxiety_Disorder,
+                         chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
+
+
 male_general_population<- "Hinz, Klein, Brähler, Glaesmer et al (2017)"
 female_general_population<- "Hinz, Klein, Brähler, Glaesmer et al (2017)"
 older_adult<- "Wild, Eckl, Herzog, Niehoff et al (2012)"
@@ -28,3 +47,35 @@ stroke<- "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)"
 
 gad7_refs_df<- data.frame(male_general_population, female_general_population, older_adult, primary_care, psychiatric, Generalized_Anxiety_Disorder,
                  chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
+
+
+male_general_population<- .83
+female_general_population<- .83
+older_adult<- .83
+primary_care<- .83
+psychiatric<- .83
+Generalized_Anxiety_Disorder<- .83
+chronic_musculoskeletal_pain<- .83
+coronary_heart_disease<- .83
+type_1_diabetes<- .83
+type_2_diabetes<- .83
+stroke<- .83
+
+gad7_rels_df<- data.frame(male_general_population, female_general_population, older_adult, primary_care, psychiatric, Generalized_Anxiety_Disorder,
+                          chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
+
+
+male_general_population<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+female_general_population<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+older_adult<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+primary_care<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+psychiatric<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+Generalized_Anxiety_Disorder<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+chronic_musculoskeletal_pain<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+coronary_heart_disease<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+type_1_diabetes<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+type_2_diabetes<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+stroke<- "Spitzer, Kroenke, Williams & Löwe (2006)"
+
+gad7_refs_rels_df<- data.frame(male_general_population, female_general_population, older_adult, primary_care, psychiatric, Generalized_Anxiety_Disorder,
+                               chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
