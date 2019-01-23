@@ -1,3 +1,5 @@
+#Define default mean values that vary by population
+
 male_general_population<- 3.01
 female_general_population<- 4.07
 older_adult<- 2
@@ -14,6 +16,7 @@ gad7_means_df<- data.frame(male_general_population, female_general_population, o
              chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
 
 
+#Define default sd values that vary by population
 
 
 male_general_population<- 3.12
@@ -33,6 +36,9 @@ gad7_sds_df<- data.frame(male_general_population, female_general_population, old
                          chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
 
 
+
+#Define references for the means and sds that vary by population
+
 male_general_population<- "Hinz, Klein, Brähler, Glaesmer et al (2017)"
 female_general_population<- "Hinz, Klein, Brähler, Glaesmer et al (2017)"
 older_adult<- "Wild, Eckl, Herzog, Niehoff et al (2012)"
@@ -49,6 +55,9 @@ gad7_refs_df<- data.frame(male_general_population, female_general_population, ol
                  chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
 
 
+#Define default reliability valies that vary by population
+
+
 male_general_population<- .83
 female_general_population<- .83
 older_adult<- .83
@@ -63,6 +72,10 @@ stroke<- .83
 
 gad7_rels_df<- data.frame(male_general_population, female_general_population, older_adult, primary_care, psychiatric, Generalized_Anxiety_Disorder,
                           chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
+
+
+#Define references for the reliability values that vary by population (there will typically be repetition here because reliabilities
+#are rarer than means and sds in research papers)
 
 
 male_general_population<- "Spitzer, Kroenke, Williams & Löwe (2006)"

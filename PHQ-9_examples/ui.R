@@ -25,8 +25,6 @@ library(zoo)
 
 source("Diagnoses.R")
 
-Research_Table<- read_excel("ResearchTable.xlsx")
-
 ui<- function(request) {
   sidebar <- dashboardSidebar(
     ## DC: module

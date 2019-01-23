@@ -31,7 +31,7 @@ ui<- function(request) {
   )
   
   dashboardPage(
-    dashboardHeader(title = span(tagList(tags$a(href = "http://psychlytx.com.au", "PsychlytX", style = "color: white; font-size: 26px; letter-spacing: 7.8px;font-weight: bolder;"), tags$sup("®"), "| Generalized Anxiety Disorder - 7-Item Scale (GAD-7)"), style = "color: white; letter-spacing: 1.8px;"), titleWidth = 820),
+    dashboardHeader(title = span(tagList(tags$a(href = "http://psychlytx.com.au", "PsychlytX", style = "color: white; font-size: 26px; letter-spacing: 7.8px;font-weight: bolder;"), tags$sup("®"), "| Patient Health Questionnaire 9-Item Scale (PHQ-9)"), style = "color: white; letter-spacing: 1.8px;"), titleWidth = 820),
     sidebar,
     dashboardBody(
       
@@ -71,7 +71,7 @@ ui<- function(request) {
                              psychlytx::manual_data_UI("manual_data_id"),
                              psychlytx::gad7_scale_UI("gad7_scale_id"),
                              psychlytx::download_buttons_UI("download_buttons_id")
-       
+                             
                     ),
                     
                     tabPanel(tags$strong("Customise Parameters"),
@@ -106,7 +106,7 @@ ui<- function(request) {
                                                       
                                              ),
                                              tabPanel("User-Defined Cut-Off Scores", width = 12
-                                                
+                                                      
                                                       
                                                       
                                              )
@@ -114,9 +114,9 @@ ui<- function(request) {
                                              
                                              
                                  ))))
-
                     
-                   )
+                    
+                  )
                   
                   
                   
@@ -154,7 +154,7 @@ ui<- function(request) {
 
 
 server <- function(input, output, session) {
-
+  
   clientstatus_module<- callModule(psychlytx::analytics_clientstatus, "analytics_clientstatus_id")
   callModule(psychlytx::analytics_widgets, "analytics_widgets_id", clientstatus_module)
   callModule(psychlytx::analytics_newcustom_widgets, "analytics_newcustom_widgets_id")
@@ -175,8 +175,8 @@ server <- function(input, output, session) {
   callModule(psychlytx::confidence_level, "confidence_widget_id")
   
   callModule(psychlytx::interval_widgets, "interval_widgets_id", list("GAD-7 Total Scale", "other scale"))
-
-  }
+  
+}
 
 
 
