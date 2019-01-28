@@ -31,7 +31,7 @@ ui<- function(request) {
   )
   
   dashboardPage(
-    dashboardHeader(title = span(tagList(tags$a(href = "http://psychlytx.com.au", "PsychlytX", style = "color: white; font-size: 26px; letter-spacing: 7.8px;font-weight: bolder;"), tags$sup("®"), "| Patient Health Questionnaire 9-Item Scale (PHQ-9)"), style = "color: white; letter-spacing: 1.8px;"), titleWidth = 820),
+    dashboardHeader(title = span(tagList(tags$a(href = "http://psychlytx.com.au", "PsychlytX", style = "color: white; font-size: 26px; letter-spacing: 7.8px;font-weight: bolder;"), tags$sup("®"), "| Generalized Anxiety Disorder 7-item scale (GAD-7)"), style = "color: white; letter-spacing: 1.8px;"), titleWidth = 820),
     sidebar,
     dashboardBody(
       
@@ -159,7 +159,7 @@ server <- function(input, output, session) {
   callModule(psychlytx::analytics_widgets, "analytics_widgets_id", clientstatus_module)
   callModule(psychlytx::analytics_newcustom_widgets, "analytics_newcustom_widgets_id")
   
-  pop<<- reactive({ input$pop })
+  pop<- reactive({ input$pop })
   
   callModule(psychlytx::stats_widgets, "mean_widgets_id", list("GAD-7 Total Scale"), psychlytx::gad7_means_df, psychlytx::gad7_refs_df, pop)
   callModule(psychlytx::stats_widgets, "sd_widgets_id", list("GAD-7 Total Scale"), psychlytx::gad7_sds_df, psychlytx::gad7_refs_df, pop)

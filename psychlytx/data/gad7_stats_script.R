@@ -55,7 +55,7 @@ gad7_refs_df<- data.frame(male_general_population, female_general_population, ol
                  chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
 
 
-#Define default reliability valies that vary by population
+#Define default reliability values that vary by population
 
 
 male_general_population<- .83
@@ -92,3 +92,8 @@ stroke<- "Spitzer, Kroenke, Williams & Löwe (2006)"
 
 gad7_refs_rels_df<- data.frame(male_general_population, female_general_population, older_adult, primary_care, psychiatric, Generalized_Anxiety_Disorder,
                                chronic_musculoskeletal_pain, coronary_heart_disease, type_1_diabetes, type_2_diabetes, stroke)
+
+
+
+
+
