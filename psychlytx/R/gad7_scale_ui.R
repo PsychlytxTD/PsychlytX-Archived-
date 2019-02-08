@@ -35,37 +35,41 @@ fluidRow(
 
 fluidRow(
   column(width = 7, h4("Feeling nervous, anxious or on edge")),
-  column(width = 5, radioButtons(ns("Item_1"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, , selected = character(0)))
+  column(width = 5, radioButtons(ns("item_1"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, , selected = character(0)))
 ),
 
 fluidRow(
   column(width = 7, h4("Not being able to stop or control worrying")),
-  column(width = 5, radioButtons(ns("Item_2"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+  column(width = 5, radioButtons(ns("item_2"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
 ),
 
 fluidRow(
   column(width = 7, h4("Worrying too much about different things")),
-  column(width = 5, radioButtons(ns("Item_3"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+  column(width = 5, radioButtons(ns("item_3"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
 ),
 
 fluidRow(
   column(width = 7, h4("Trouble relaxing")),
-  column(width = 5, radioButtons(ns("Item_4"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+  column(width = 5, radioButtons(ns("item_4"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
 ),
 
 fluidRow(
   column(width = 7, h4("Being so restless it is hard to sit still")),
-  column(width = 5, radioButtons(ns("Item_5"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+  column(width = 5, radioButtons(ns("item_5"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
 ),
 
 fluidRow(
   column(width = 7, h4("Becoming easily annoyed or irritable")),
-  column(width = 5, radioButtons(ns("Item_6"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+  column(width = 5, radioButtons(ns("item_6"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
 ),
 
 fluidRow(
   column(width = 7, h4("Feeling afraid as if something awful might happen")),
-  column(width = 5, radioButtons(ns("Item_7"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+  column(width = 5, radioButtons(ns("item_7"), label = NULL, choices = c("0", "1", "2", "3"), inline = TRUE, selected = character(0)))
+),
+
+fluidRow(
+  column(width = 4, dateInput("scale_entry_date", "Date",  format = "dd/mm/yyyy"))
 ),
 
 fluidRow(
@@ -84,6 +88,8 @@ fluidRow(
 #'
 gad7_scale<- function(input, output, session) {
 
- return(input)
+  scale_entry_scores <- reactive({ paste(input$item_1, input$item_2, input$item_3, input$item_4, input$item_5, input$item_6, input$item_7, sep = ",") })
+
+  return(scale_entry_scores)
 
 }

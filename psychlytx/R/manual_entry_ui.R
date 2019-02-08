@@ -13,10 +13,10 @@ manual_data_UI<- function(id) {
 
   tagList(
 
-    checkboxInput("select_manual", "Enter Data Manually"),
+    checkboxInput("manual_entry", "Enter Data Manually"),
 
 
-conditionalPanel(condition = "input.select_manual",
+conditionalPanel(condition = "input.manual_entry",
 
 tagList(
 
@@ -35,23 +35,23 @@ br(),
 fluidRow(
   column(4,
 
-         selectInput("Timepoint", "Select Number of Timepoints for New Data Entry", choices = c("1", "2", "3"))
+         selectInput("timepoint", "Select Number of Timepoints for New Data Entry", choices = c("1", "2", "3"))
 
   ),
 
   column(4,
-         textInput(ns('Text_1'), '1st Data Entry', "0,1,2,etc"),
-         textInput(ns('Text_2'), '2nd Data Entry', "0,1,2,etc"),
-         textInput(ns('Text_3'), '3rd Data Entry', "0,1,2,etc")
+         textInput(ns('text_1'), '1st Data Entry', "0,1,2,etc"),
+         textInput(ns('text_2'), '2nd Data Entry', "0,1,2,etc"),
+         textInput(ns('text_3'), '3rd Data Entry', "0,1,2,etc")
 
   ),
 
 
 
   column(4,
-         dateInput(ns("Date_1"), "Date of 1st Data Entry", format = "dd/mm/yyyy"),
-         dateInput(ns("Date_2"), "Date of 2nd Data Entry", format = "dd/mm/yyyy"),
-         dateInput(ns("Date_3"), "Date of 3rd Data Entry", format = "dd/mm/yyyy")
+         dateInput(ns("date_1"), "Date of 1st Data Entry", format = "dd/mm/yyyy"),
+         dateInput(ns("date_2"), "Date of 2nd Data Entry", format = "dd/mm/yyyy"),
+         dateInput(ns("date_3"), "Date of 3rd Data Entry", format = "dd/mm/yyyy")
   )))
 
 ))
@@ -69,9 +69,13 @@ fluidRow(
 
 
 
-manual_data<- function(input, output, session) {
+manual_data<- function(input, output, session, scale_entry_scores) {
 
-  return(input)
+  observe({
+
+    updateTextInput(session, "text_1", value = scale_entry_scores())
+
+  })
 
 }
 

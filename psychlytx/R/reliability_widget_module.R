@@ -1,6 +1,6 @@
-#' Mean widget module
+#' Reliability widget module
 #'
-#' Generates the widget with correct default values for the mean widget and references.
+#' Generates the widget with correct default values for the reliability widget and references.
 #'
 #' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
@@ -32,16 +32,16 @@
 #'
 #'
 
-generate_mean_widget_UI <- function(id) {
+generate_reliability_widget_UI <- function(id) {
   ns <- NS(id)
 
-  fluidRow(uiOutput(ns("mean_widget_out")))
+  fluidRow(uiOutput(ns("reliability_widget_out")))
 
 }
 
 
 
-generate_mean_widget <-
+generate_reliability_widget <-
   function(input,
            output,
            session,
@@ -59,10 +59,10 @@ generate_mean_widget <-
            cutoff_names,
            cutoff_references,
            cutoff_quantity) {
-    mean_widget_reac <- reactive({
+    reliability_widget_reac <- reactive({
       ns <- session$ns
 
-      mean_widget_list <-
+      reliability_widget_list <-
 
         purrr::pmap(params_list_maker(
           subscale_name = subscale_name,
@@ -78,30 +78,32 @@ generate_mean_widget <-
           cutoff_names = cutoff_names,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
-        )[c(1, 3, 5)],
+        )[c(1, 6, 7)],
 
         function(mean_sd_rel_ids,
-                 means,
-                 mean_sd_references) {
+                 reliabilities,
+                 reliability_references) {
           div(column(
             width = 2,
             numericInput(
               inputId = ns(mean_sd_rel_ids),
               label = h4(tags$strong(panel_name)),
-              value = means
+              value = reliabilities
             ),
-            h6(paste("Reference:", mean_sd_references))
+            h6(paste(
+              "Reference:", reliability_references
+            ))
           ))
 
         })
 
-      do.call(tagList, list(mean_widget_list))
+      do.call(tagList, list(reliability_widget_list))
 
     })
 
 
-    output$mean_widget_out <- renderUI({
-      mean_widget_reac()
+    output$reliability_widget_out <- renderUI({
+      reliability_widget_reac()
 
     })
 

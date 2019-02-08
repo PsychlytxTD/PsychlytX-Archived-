@@ -4,7 +4,7 @@
 \alias{manual_data}
 \title{Manual Entry Widgets}
 \usage{
-manual_data(input, output, session)
+manual_data(input, output, session, scale_entry_scores)
 }
 \description{
 Creates layout and widgets for manual data entry

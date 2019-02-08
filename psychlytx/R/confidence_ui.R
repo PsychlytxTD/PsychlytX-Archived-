@@ -11,7 +11,7 @@ confidence_level_UI <- function(id) {
 
   tagList(fluidRow(column(
     width = 12,
-    offset = 3,
+    offset = 4,
     radioButtons(ns(
       "Confidence"),
       label = h4(

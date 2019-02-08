@@ -1,6 +1,6 @@
-#' Mean widget module
+#' Cutoff widget module
 #'
-#' Generates the widget with correct default values for the mean widget and references.
+#' Generates the widget with correct default values for the reliability widget and references.
 #'
 #' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
@@ -32,16 +32,16 @@
 #'
 #'
 
-generate_mean_widget_UI <- function(id) {
+generate_cutoff_widget_UI <- function(id) {
   ns <- NS(id)
 
-  fluidRow(uiOutput(ns("mean_widget_out")))
+  fluidRow(uiOutput(ns("cutoff_widget_out")))
 
 }
 
 
 
-generate_mean_widget <-
+generate_cutoff_widget <-
   function(input,
            output,
            session,
@@ -59,10 +59,10 @@ generate_mean_widget <-
            cutoff_names,
            cutoff_references,
            cutoff_quantity) {
-    mean_widget_reac <- reactive({
+    cutoff_widget_reac <- reactive({
       ns <- session$ns
 
-      mean_widget_list <-
+      cutoff_widget_list <-
 
         purrr::pmap(params_list_maker(
           subscale_name = subscale_name,
@@ -78,30 +78,38 @@ generate_mean_widget <-
           cutoff_names = cutoff_names,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
-        )[c(1, 3, 5)],
+        )[c(8, 9, 10, 11, 12)],
 
-        function(mean_sd_rel_ids,
-                 means,
-                 mean_sd_references) {
-          div(column(
+        function(cutoff_ids,
+                 cutoff_name_ids,
+                 cutoffs,
+                 cutoff_names,
+                 cutoff_references) {
+          div(
+          column(
             width = 2,
-            numericInput(
-              inputId = ns(mean_sd_rel_ids),
+            textInput(
+              inputId = cutoff_name_ids,
               label = h4(tags$strong(panel_name)),
-              value = means
+              value = cutoff_names
             ),
-            h6(paste("Reference:", mean_sd_references))
+            numericInput(
+              inputId = cutoff_ids,
+              label = "",
+              value = cutoffs
+            ),
+            h6(paste("Reference:", cutoff_references))
           ))
 
         })
 
-      do.call(tagList, list(mean_widget_list))
+      do.call(tagList, list(cutoff_widget_list))
 
     })
 
 
-    output$mean_widget_out <- renderUI({
-      mean_widget_reac()
+    output$cutoff_widget_out <- renderUI({
+      cutoff_widget_reac()
 
     })
 
