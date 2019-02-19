@@ -1,6 +1,6 @@
 
 
-gad7_params<- list(panel_name = "GAD-7 Total Scale",
+gad7_params<- list(panel_name = "GAD-7",
                         subscale_name = "GAD-7",
                         population_quantity = 11,
                         populations = list("male_general_population", "female_general_population", "older_adult", "primary_care", "psychiatric", "Generalized_Anxiety_Disorder",

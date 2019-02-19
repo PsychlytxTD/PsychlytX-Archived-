@@ -1,6 +1,24 @@
-#' Cutoff widget module
+#' Mean widget module
 #'
-#' Generates the widget with correct default values for the reliability widget and references.
+#' Generates the widget with correct default values for the mean widget and references.
+#'
+#' @param id String to create a unique namespace.
+#'
+#' @export
+
+
+generate_mean_widget_UI <- function(id) {
+
+  ns <- NS(id) #Set namespace
+
+  fluidRow(uiOutput(ns("mean_widget_out")))
+
+}
+
+
+#' Mean widget module
+#'
+#' Generates the widget with correct default values for the mean widget and references.
 #'
 #' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
@@ -29,46 +47,29 @@
 #' @param cutoff_quantity A numeric value indicating the number of cutoff scores for the subscale.
 #'
 #' @export
-#'
-#'
-
-generate_cutoff_widget_UI <- function(id) {
-  ns <- NS(id)
-
-  fluidRow(uiOutput(ns("cutoff_widget_out")))
-
-}
 
 
 
-generate_cutoff_widget <-
-  function(input,
-           output,
-           session,
-           panel_name,
-           subscale_name,
-           population_quantity,
-           populations,
-           input_population,
-           sds,
-           means,
-           mean_sd_references,
-           reliabilities,
-           reliability_references,
-           cutoffs,
-           cutoff_names,
-           cutoff_references,
-           cutoff_quantity) {
-    cutoff_widget_reac <- reactive({
-      ns <- session$ns
+generate_mean_widget <-function(input, output, session, panel_name, subscale_name, population_quantity, populations, input_population, sds,means,
+                                mean_sd_references, reliabilities, reliability_references, cutoffs,cutoff_names, cutoff_references, cutoff_quantity) {
 
-      cutoff_widget_list <-
+
+    mean_widget_reac <- reactive({
+
+      ns <- session$ns #Set the namespace
+
+    #Widgets will be stored in this list before being called in do.call()
+
+      mean_widget_list <-
+
+       #Params_list_maker() creates a list of lists, each containing parameters corresponding to a different population
+        #It will return a single list matching the population selected by the user
 
         purrr::pmap(params_list_maker(
           subscale_name = subscale_name,
           population_quantity = population_quantity,
           populations = populations,
-          input_population = input_population(),
+          input_population = input_population(), #input_population() is population (reactive object) selected from the selectInput widget in the parent app
           means = means,
           sds = sds,
           mean_sd_references = mean_sd_references,
@@ -78,38 +79,34 @@ generate_cutoff_widget <-
           cutoff_names = cutoff_names,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
-        )[c(8, 9, 10, 11, 12)],
+        )[c(1, 3, 5, 13)],
 
-        function(cutoff_ids,
-                 cutoff_name_ids,
-                 cutoffs,
-                 cutoff_names,
-                 cutoff_references) {
-          div(
-          column(
-            width = 2,
-            textInput(
-              inputId = cutoff_name_ids,
-              label = h4(tags$strong(panel_name)),
-              value = cutoff_names
-            ),
-            numericInput(
-              inputId = cutoff_ids,
-              label = "",
-              value = cutoffs
-            ),
-            h6(paste("Reference:", cutoff_references))
+       #Set these relevant parameters as function arguments (need to do this or the code won't run)
+
+        function(mean_sd_rel_ids, means, mean_sd_references, mean_sd_rel_reference_ids) {
+
+         #Create a div containing the dynamically generated widgets
+
+          div(column(width = 2,
+
+            numericInput(inputId = ns(mean_sd_rel_ids), label = h4(tags$strong(panel_name)), value = means),
+
+            textInput(inputId = ns(mean_sd_rel_reference_ids), label = "Reference", value = mean_sd_references)
+
           ))
 
         })
 
-      do.call(tagList, list(cutoff_widget_list))
+      do.call(tagList, list(mean_widget_list))
 
     })
 
 
-    output$cutoff_widget_out <- renderUI({
-      cutoff_widget_reac()
+    #Render the widgets
+
+    output$mean_widget_out <- renderUI({
+
+      mean_widget_reac()
 
     })
 

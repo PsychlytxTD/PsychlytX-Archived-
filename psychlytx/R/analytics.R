@@ -137,6 +137,9 @@ analytics_widgets<- function(input, output, session, clientstatus_module) {
 
   })
 
+
+  #Render the andalytics widgets
+
   output$analytics_widgets_out<- renderUI({
 
     analytics_widgets_reac()

@@ -2,6 +2,24 @@
 #'
 #' Generates the widget with correct default values for the sd widget and references.
 #'
+#' @param id String to create a unique namespace.
+#'
+#' @export
+
+
+generate_sd_widget_UI <- function(id) {
+
+  ns <- NS(id) #Set the namespace
+
+  fluidRow(uiOutput(ns("sd_widget_out")))
+
+}
+
+
+#' Sd widget module
+#'
+#' Generates the widget with correct default values for the sd widget and references.
+#'
 #' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
 #' @param subscale_name A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
@@ -29,46 +47,29 @@
 #' @param cutoff_quantity A numeric value indicating the number of cutoff scores for the subscale.
 #'
 #' @export
-#'
-#'
-
-generate_sd_widget_UI <- function(id) {
-  ns <- NS(id)
-
-  fluidRow(uiOutput(ns("sd_widget_out")))
-
-}
 
 
+#Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
-generate_sd_widget <-
-  function(input,
-           output,
-           session,
-           panel_name,
-           subscale_name,
-           population_quantity,
-           populations,
-           input_population,
-           sds,
-           means,
-           mean_sd_references,
-           reliabilities,
-           reliability_references,
-           cutoffs,
-           cutoff_names,
-           cutoff_references,
-           cutoff_quantity) {
+generate_sd_widget <- function(input, output, session, panel_name, subscale_name, population_quantity, populations, input_population, sds,means,
+           mean_sd_references, reliabilities, reliability_references, cutoffs, cutoff_names, cutoff_references, cutoff_quantity) {
+
     sd_widget_reac <- reactive({
-      ns <- session$ns
+
+      ns <- session$ns #Set the namespace
+
+      #Widgets will be stored in this list before being called in do.call()
 
       sd_widget_list <-
+
+        #Params_list_maker() creates a list of lists, each containing parameters corresponding to a different population
+        #It will return a single list matching the population selected by the user
 
         purrr::pmap(params_list_maker(
           subscale_name = subscale_name,
           population_quantity = population_quantity,
           populations = populations,
-          input_population = input_population(),
+          input_population = input_population(), #input_population()is the population (reactive object) selected from the selectInput widget in the parent app
           means = means,
           sds = sds,
           mean_sd_references = mean_sd_references,
@@ -78,16 +79,20 @@ generate_sd_widget <-
           cutoff_names = cutoff_names,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
-        )[c(1, 4, 5)],
+        )[c(1, 4, 5, 13)],
 
-        function(mean_sd_rel_ids,
-                 sds,
-                 mean_sd_references) {
+        #Set these relevant parameters as function arguments (need to do this or the code won't run)
+
+        function(mean_sd_rel_ids, sds, mean_sd_references, mean_sd_rel_reference_ids) {
+
+          #Create a div containing the dynamically generated widgets
+
           div(column(width = 2,
-                     numericInput(
-                       inputId = ns(mean_sd_rel_ids),
-                       label = h4(tags$strong(panel_name)), value = sds),
-                       h6(paste("Reference:", mean_sd_references))
+
+                     numericInput(inputId = ns(mean_sd_rel_ids), label = h4(tags$strong(panel_name)), value = sds),
+
+                     textInput(inputId = ns(mean_sd_rel_reference_ids), label = "Reference", value = mean_sd_references)
+
                      ))
 
         })
@@ -96,8 +101,10 @@ generate_sd_widget <-
 
     })
 
+    #Render the widgets
 
     output$sd_widget_out <- renderUI({
+
       sd_widget_reac()
 
     })

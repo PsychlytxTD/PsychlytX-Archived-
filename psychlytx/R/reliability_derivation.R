@@ -2,6 +2,30 @@
 #'
 #' Generates the widget with correct default values for the reliability widget and references.
 #'
+#' @param id String to create a unique namespace.
+#'
+#' @export
+
+
+#Create a widget for test-retest reliability
+
+generate_reliability_widget_UI <- function(id) {
+
+#Set the namespace
+
+  ns <- NS(id)
+
+#Dynamically-generated widget
+
+  fluidRow(uiOutput(ns("reliability_widget_out")))
+
+}
+
+
+#' Reliability widget module
+#'
+#' Generates the widget with correct default values for the reliability widget and references.
+#'
 #' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
 #' @param subscale_name A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
@@ -27,48 +51,33 @@
 #' @param cutoff_references A list of strings indicating the references for each reliability value by population.
 #'
 #' @param cutoff_quantity A numeric value indicating the number of cutoff scores for the subscale.
-#'
-#' @export
-#'
-#'
 
-generate_reliability_widget_UI <- function(id) {
-  ns <- NS(id)
 
-  fluidRow(uiOutput(ns("reliability_widget_out")))
+#Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
-}
+generate_reliability_widget <- function(input, output, session, panel_name, subscale_name, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities,
+           reliability_references, cutoffs, cutoff_names, cutoff_references, cutoff_quantity) {
 
 
 
-generate_reliability_widget <-
-  function(input,
-           output,
-           session,
-           panel_name,
-           subscale_name,
-           population_quantity,
-           populations,
-           input_population,
-           sds,
-           means,
-           mean_sd_references,
-           reliabilities,
-           reliability_references,
-           cutoffs,
-           cutoff_names,
-           cutoff_references,
-           cutoff_quantity) {
-    reliability_widget_reac <- reactive({
-      ns <- session$ns
+     reliability_widget_reac <- reactive({
 
-      reliability_widget_list <-
+
+
+      ns <- session$ns  #Set the namespace
+
+       #Widgets will be stored in this list before being called in do.call()
+
+       reliability_widget_list <-
+
+        #Params_list_maker() creates a list of lists, each containing parameters corresponding to a different population
+        #It will return a single list matching the population selected by the user
 
         purrr::pmap(params_list_maker(
           subscale_name = subscale_name,
           population_quantity = population_quantity,
           populations = populations,
-          input_population = input_population(),
+          input_population = input_population(), #input_population() is the population reactive object selected from the selectInput widget in the parent app
           means = means,
           sds = sds,
           mean_sd_references = mean_sd_references,
@@ -78,32 +87,36 @@ generate_reliability_widget <-
           cutoff_names = cutoff_names,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
-        )[c(1, 6, 7)],
+        )[c(1, 6, 7, 13)], #Within the list, iterate only over the parameters  relevant to generating the reliability widget
 
-        function(mean_sd_rel_ids,
-                 reliabilities,
-                 reliability_references) {
-          div(column(
-            width = 2,
-            numericInput(
-              inputId = ns(mean_sd_rel_ids),
-              label = h4(tags$strong(panel_name)),
-              value = reliabilities
-            ),
-            h6(paste(
-              "Reference:", reliability_references
-            ))
+       #Set these relevant parameters as function arguments (need to do this or the code won't run)
+
+        function(mean_sd_rel_ids, reliabilities, reliability_references, mean_sd_rel_reference_ids) {
+
+         #Create a div containing the dynamically generated widgets
+
+          div(column(width = 2,
+
+            numericInput(inputId = ns(mean_sd_rel_ids), label = h4(tags$strong(panel_name)), value = reliabilities),
+
+            textInput(inputId = ns(mean_sd_rel_reference_ids),label = "Reference", value = mean_sd_references)
+
           ))
 
         })
+
 
       do.call(tagList, list(reliability_widget_list))
 
     })
 
 
+
+   #Render the widgets
+
     output$reliability_widget_out <- renderUI({
-      reliability_widget_reac()
+
+       reliability_widget_reac()
 
     })
 

@@ -14,7 +14,7 @@ reliability_calc_UI <- function(id) {
 
     checkboxInput(ns("derive_reliability"), tags$strong("Calculate the test-retest reliability value from research statistics"), width = '100%'),
 
-    conditionalPanel(paste0("input['", ns("derive_reliability"), "'] == 1 "),
+    conditionalPanel(paste0("input['", ns("derive_reliability"), "'] == 1 "), #If checkbox is selected, show widgets to drive rest-retest reliability
 
         tagList(
 
@@ -75,8 +75,6 @@ reliability_calc_UI <- function(id) {
 #' Test-Retest Reliability Derivation
 #'
 #' Calculates test-retest reliability from T- or F-statistic
-#'
-#' @param id String to create a unique namespace.
 #'
 #' @export
 
