@@ -35,12 +35,12 @@ br(),
 fluidRow(
 
   column(width = 4,
-         textInput(ns('text_1'), 'Item Scores', "0,1,2,etc")),
+         textInput(ns('manual_score'), 'Item Scores', "0,1,2,etc")),
 
 
 
   column(width = 4,
-         dateInput(ns("date_1"), "Date of Scale Completion", format = "dd/mm/yyyy")
+         dateInput(ns("manual_date"), "Date of Scale Completion", format = "dd/mm/yyyy")
 
   )))
 
@@ -65,11 +65,15 @@ manual_data<- function(input, output, session, scale_entry_scores) {
 
   observe({
 
-    updateTextInput(session, "text_1", value = scale_entry_scores()) #If the online scale was completed, pass these item scores directly into
+    updateTextInput(session, "manual_score", value = scale_entry_scores()) #If the online scale was completed, pass these item scores directly into
                                                                      #the manually-entry field. Thus, item scores always come from one place
                                                                      #when used for subsequent processing.
 
   })
+
+  #Return manually entered items scores and date as seperate objects in a list, for further analyis
+
+  current_data<- reactive({list(item_scores = input$item_scores, manual_date = input$date)})
 
 }
 

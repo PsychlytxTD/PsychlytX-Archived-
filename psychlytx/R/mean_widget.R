@@ -95,7 +95,9 @@ generate_mean_widget <-function(input, output, session, panel_name, subscale_nam
 
           ))
 
-        })
+        }
+
+       )
 
       do.call(tagList, list(mean_widget_list))
 
@@ -109,5 +111,18 @@ generate_mean_widget <-function(input, output, session, panel_name, subscale_nam
       mean_widget_reac()
 
     })
+
+
+    #Make sure the values for the mean widgets are accessible even if tab is not clicked
+
+    outputOptions(output, "mean_widget_out", suspendWhenHidden = FALSE)
+
+    #Need to finish the module with reactive value list containing id of value widget & reference widget - so these can be accessed by another module.
+    #Add req() so the input values aren't NULL initially
+
+    reactive({ list( req(input$mean_sd_rel_value_id), req(input$mean_sd_rel_reference_id) ) })
+
+
+
 
   }
