@@ -4,7 +4,7 @@
 \alias{download}
 \title{Data Submission & Report Generation Widgets}
 \usage{
-download(input, output, session, current_data, mean_output_list_1)
+download(input, output, session, all_input_lists)
 }
 \arguments{
 \item{current_data}{Item scores and date}

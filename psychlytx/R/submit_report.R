@@ -35,7 +35,7 @@ download_UI<- function(id) {
 
 #The 'current_data' list (containing item scores and date) is accessed by being specified as an argument
 
-download<- function(input, output, session, current_data, mean_input_1) {
+download<- function(input, output, session, all_input_lists) {
 
 
   #Store widget values (i.e. numeric value(s) and reference(s))
