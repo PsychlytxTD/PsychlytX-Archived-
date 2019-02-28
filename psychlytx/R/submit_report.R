@@ -37,50 +37,63 @@ download_UI<- function(id) {
 
 download<- function(input, output, session, all_input_lists) {
 
+  #The all_input object is reactive so refer to it using all_input()
 
-  #Store widget values (i.e. numeric value(s) and reference(s))
+  #Create a tibble from the elements of each subscale list
 
-  params_output_1<- reactive({
+  #At some point, need to find a way to automatically include certain variables in this tibble
+  #based on information gained at clinician login: e.g. patient name, patient id, clinician name,
+  #clinician id
 
-    #Make sure date has date class
+  scale_data_table<- reactive({
 
-    date_1<- format(as.Date(current_data()$date), "%d/%m/%Y")
+    scale_data<- all_input() %>% {
 
-    #Collect item scores and store in vector
+    tibble(
+      date = purrr::map_chr(., "date"),
+      score = purrr::map_dbl(., "score"),
+      mean = purrr::map_dbl(., "mean_value"),
+      mean_reference = purrr::map_chr(., "mean_reference"),
+      sd = purrr::map_dbl(., "sd_value"),
+      sd_reference = purrr::map_chr(., "sd_reference"),
+      reliability = purrr::map_dbl(., "reliability"),
+      reliability_reference = purrr::map_chr(., "reliability_reference"),
+      cutoff_labels = purrr::map(., "cutoff_labels"), #Cutoff columns will be list columns, since we used
+      #map(). Needed b/c require multiple vals per cell
+      cutoff_values = purrr::map(., "cutoff_value"),
+      cutoff_references = purrr::map(., "cutoff_values_reference)"),
+      method = purrr::map_chr(., "method")
 
-    item_scores_1<- as.numeric(unlist(strsplit(current_data()$item_scores, ",")))
+    )
 
-    #Calculate the aggregate scale score
+  }
 
-    score_1<- sum(item_scores_1, na.rm = TRUE)
-                                                                     #We want the value (not the reference), so select first element only
-    pts_1<- psychlytx::make_pts(score = score_1, mean = mean_input_1()[[1]], reliability = reliability_input_1()[[1]],
-                                reliable_change_method = method_output_1())
+  })
 
-    se_1<- psychlytx::make_se(sd = sd_input_1()[[1]], reliability = reliability_input_1()[[1]],
-                              reliable_change_method = method_input_1())
+  #After this, we can use mutate() to make columns for pts, se, ci, ci_upper, ci_lower,
+  #then rearrange the order of columns as desired using select()
 
-    ci_1<- psychlytx::make_ci(pts_1, confidence_input_1())
+scale_data %>% dplyr::mutate(
 
-    ci_upper_1<- psychlytx::make_ci_upper(pts = pts_1, ci = ci_1)
+  pts = psychlytx::make_pts(score, mean, reliability, method),
 
-    ci_lower_1<- psychlytx::make_ci_lower(pts = pts_1, ci = ci_1)
+  se = psychlytx::make_se(sd, reliability, method),
 
-    #Each widget input object is a list, so flatten the list after making it
+  ci = psychlytx::make_ci(confidence, se),
 
-    list(date, score, pts_1, se_1, ci_1, ci_upper_1, ci_lower_1, mean_input_1(), sd_input_1(), reliability_input_1(), cutoff_input_1(), confidence_input_1(),
-         method_input_1()) %>% purrr::flatten() %>% purrr::set_names(c("date", "score", "pts", "se", "ci", "ci_upper", "ci_lower",
-                                                                       "mean", "mean_reference", "sd", "sd_reference",
-                                                                       "reliability", "reliability_reference",
-                                                                       "cutoff_labels", "cutoff_values",
-                                                                       "cutoff_values_references", "confidence", "method"))
+  ci_upper = pts + ci,
 
-    })
+  ci_lower = pts - ci
 
-
-
-
+) %>% dplyr::select(date, score, pts, se, ci, ci_upper, ci_lower, everything())
 
 
 }
+
+
+
+
+
+
+
 

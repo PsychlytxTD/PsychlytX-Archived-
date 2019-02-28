@@ -35,12 +35,12 @@ br(),
 fluidRow(
 
   column(width = 4,
-         textInput(ns('manual_score'), 'Item Scores', "0,1,2,etc")),
+         textInput(ns('item_scores'), 'Item Scores', "0,1,2,etc")),
 
 
 
   column(width = 4,
-         dateInput(ns("manual_date"), "Date of Scale Completion", format = "dd/mm/yyyy")
+         dateInput(ns("date"), "Date of Scale Completion", format = "dd/mm/yyyy")
 
   )))
 
@@ -73,7 +73,16 @@ manual_data<- function(input, output, session, scale_entry_scores) {
 
   #Return manually entered items scores and date as seperate objects in a list, for further analyis
 
-  current_data<- reactive({list(item_scores = input$item_scores, manual_date = input$date)})
+  current_data<- reactive({
+
+    date<- format(as.Date(input$date), "%d/%m/%Y") #Make sure date has date class
+
+    item_scores<- as.numeric(unlist(strsplit(input$item_scores, ",")))   #Collect item scores and store in vector
+
+    list(date = input$date, item_scores = input$item_scores)
+
+
+    })
 
 }
 

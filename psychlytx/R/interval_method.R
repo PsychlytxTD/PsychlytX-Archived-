@@ -14,7 +14,7 @@ interval_widgets_UI<- function(id) {
 
   br(),
 
-  checkboxGroupInput(ns("reliable_change_method"), "Select Reliable Change Method", choices = c("Nunnally & Bernstein (1994)", "Jacobson & Truax (1991)", "Speer (1992)",
+  checkboxGroupInput(ns("reliable_change_method"), "Select Reliable Change Method", choices = c("Nunnally & Bernstein (1994)", "Jacobson & Truax (1991)",
                                                                                                 "Custom Confidence Intervals")),
 
   uiOutput(ns("interval_widgets_out"))
