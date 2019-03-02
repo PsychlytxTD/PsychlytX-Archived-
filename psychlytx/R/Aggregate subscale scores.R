@@ -2,6 +2,25 @@
 #'
 #' Calculates the total score of each subscale
 #'
+#' @param id String to create the namespace
+#'
+#' @export
+
+calculate_subscale_UI<- function(id) {
+
+  ns <- NS(id) #Set namespace
+  return(NULL)
+
+}
+
+
+
+
+
+#' Aggregate subscale scores
+#'
+#' Calculates the total score of each subscale
+#'
 #' @param item_scores A numeric vector of item scores for the entire scale
 #'
 #' @param item_index A list of numeric vectors representing the item indices for each subscale
@@ -13,10 +32,13 @@
 #' @export
 
 
-calculate_subscale<- function(item_scores, item_index, aggregation_method) {
+calculate_subscale<- function(input, output, session, manual_entry, item_index, aggregation_method) {
 
-subscale_scores<- purrr::map(.x = item_index, ~ do.call(aggregation_method, list(item_scores[.x], na.rm = TRUE)))
+  reactive({
 
-return(subscale_scores)
+     purrr::map(.x = item_index, ~ do.call(aggregation_method, list(manual_entry()$item_scores[.x], na.rm = TRUE)))
+
+  })
+
 
 }

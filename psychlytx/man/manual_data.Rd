@@ -4,7 +4,7 @@
 \alias{manual_data}
 \title{Manual Entry Widgets}
 \usage{
-manual_data(input, output, session, scale_entry_scores)
+manual_data(input, output, session, scale_entry)
 }
 \arguments{
 \item{scale_entry_scores}{The item scores passed from the online scale (if completed).}

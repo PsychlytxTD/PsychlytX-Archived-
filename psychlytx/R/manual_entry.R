@@ -35,14 +35,26 @@ br(),
 fluidRow(
 
   column(width = 4,
+
          textInput(ns('item_scores'), 'Item Scores', "0,1,2,etc")),
 
 
 
   column(width = 4,
+
          dateInput(ns("date"), "Date of Scale Completion", format = "dd/mm/yyyy")
 
-  )))
+  )),
+
+fluidRow(
+
+  column(width = 4,
+
+actionButton(ns("submit_scores"), "Submit")
+
+  ))
+
+)
 
 ))
 
@@ -61,11 +73,11 @@ fluidRow(
 
 #The scale_entry_scores object refers to the item scores from the online scale (if completed)
 
-manual_data<- function(input, output, session, scale_entry_scores) {
+manual_data<- function(input, output, session, scale_entry) {
 
   observe({
 
-    updateTextInput(session, "manual_score", value = scale_entry_scores()) #If the online scale was completed, pass these item scores directly into
+    updateTextInput(session, "item_scores", value = scale_entry()) #If the online scale was completed, pass these item scores directly into
                                                                      #the manually-entry field. Thus, item scores always come from one place
                                                                      #when used for subsequent processing.
 
@@ -73,16 +85,15 @@ manual_data<- function(input, output, session, scale_entry_scores) {
 
   #Return manually entered items scores and date as seperate objects in a list, for further analyis
 
-  current_data<- reactive({
-
-    date<- format(as.Date(input$date), "%d/%m/%Y") #Make sure date has date class
-
-    item_scores<- as.numeric(unlist(strsplit(input$item_scores, ",")))   #Collect item scores and store in vector
-
-    list(date = input$date, item_scores = input$item_scores)
 
 
-    })
+    date<- reactive({ input$date })
+
+    item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
+
+     eventReactive(input$submit_scores, { list( date = date(), item_scores = item_scores() ) })
+
+
 
 }
 

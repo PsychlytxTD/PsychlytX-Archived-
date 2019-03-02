@@ -4,14 +4,15 @@
 \alias{calculate_subscale}
 \title{Aggregate subscale scores}
 \usage{
-calculate_subscale(item_scores, item_index, aggregation_method)
+calculate_subscale(input, output, session, manual_entry, item_index,
+  aggregation_method)
 }
 \arguments{
-\item{item_scores}{A numeric vector of item scores for the entire scale}
-
 \item{item_index}{A list of numeric vectors representing the item indices for each subscale}
 
 \item{aggregation_method}{A string value indicating the function that should be used to calculate aggregate scores.}
+
+\item{item_scores}{A numeric vector of item scores for the entire scale}
 }
 \description{
 Calculates the total score of each subscale

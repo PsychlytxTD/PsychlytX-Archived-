@@ -78,6 +78,10 @@ interval_widgets<- function(input, output, session, subscale_names) { #In the pa
 
   })
 
+  outputOptions(output, "interval_widgets_out", suspendWhenHidden = FALSE)
+
+  reactive({ list( req(input$reliable_change_method) ) })
+
 
 
 }

@@ -103,11 +103,13 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
 
           ))
 
+
         })
 
       #Call the the subscale name (to appear as heading) and call the div containing the widgets
 
       do.call(tagList, list(subscale_title, cutoff_widget_list))
+
 
     })
 
@@ -119,5 +121,36 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
       cutoff_widget_reac()
 
     })
+
+    #Make sure the values for the mean widgets are accessible even if tab is not clicked
+
+    outputOptions(output, "cutoff_widget_out", suspendWhenHidden = FALSE)
+
+
+    #Need to finish the module with reactive value list containing id of value widget & reference widget - so these can be accessed by another module.
+
+    reactive({    #use the param_list_maker() function to access all the needed cutoff widget ids (regardless)
+                  #of how many there are
+
+      params_list_maker(
+      subscale_name = subscale_name,
+      population_quantity = population_quantity,
+      populations = populations,
+      input_population = input_population(),
+      means = means,
+      sds = sds,
+      mean_sd_references = mean_sd_references,
+      reliabilities = reliabilities,
+      reliability_references = reliability_references,
+      cutoffs = cutoffs,
+      cutoff_names = cutoff_names,
+      cutoff_references = cutoff_references,
+      cutoff_quantity = cutoff_quantity
+    )[c("cutoff_ids", "cutoff_name_ids", "cutoff_reference_ids")]
+
+
+    })
+
+
 
   }

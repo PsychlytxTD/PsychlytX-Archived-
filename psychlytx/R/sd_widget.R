@@ -109,4 +109,14 @@ generate_sd_widget <- function(input, output, session, panel_name, subscale_name
 
     })
 
+    #Make sure the values for the sd widgets are accessible even if tab is not clicked
+
+    outputOptions(output, "sd_widget_out", suspendWhenHidden = FALSE)
+
+    #Need to finish the module with reactive value list containing id of value widget & reference widget - so these can be accessed by another module.
+    #Add req() so the input values aren't NULL initially
+
+    reactive({ list( req(input$mean_sd_rel_value_id), req(input$mean_sd_rel_reference_id) ) })
+
+
   }
