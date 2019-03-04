@@ -12,13 +12,6 @@ ns<- NS(id)
 
 tagList(
 
-  checkboxInput("select_scale", "Complete GAD-7 online"),
-
-
-  conditionalPanel(condition = "input.select_scale",
-
-tagList(
-
 fluidRow(
   column(width = 12, offset = 5, h3(tags$strong("GAD-7 ")))
 ),
@@ -69,14 +62,12 @@ fluidRow(
 ),
 
 fluidRow(
-  column(width = 4, dateInput("scale_entry_date", "Date",  format = "dd/mm/yyyy"))
+  column(width = 12, h5("Scale Source: Spitzer, R. L., Kroenke, K., Williams, J. B., & Lowe, B. (2006). A brief measure for assessing Generalized Anxiety Disorder: the GAD-7. Archives of Internal Medicine, 166(10), 1092–1097."))
 ),
 
-fluidRow(
-  column(width = 12, h5("Scale Source: Spitzer, R. L., Kroenke, K., Williams, J. B., & Lowe, B. (2006). A brief measure for assessing Generalized Anxiety Disorder: the GAD-7. Archives of Internal Medicine, 166(10), 1092–1097."))
-)
+hr()
 
-)))
+)
 
 }
 

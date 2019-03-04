@@ -7,9 +7,7 @@
 download(input, output, session, all_input)
 }
 \arguments{
-\item{current_data}{Item scores and date}
-
-\item{mean_output_list_1}{Mean widgets output}
+\item{all_input}{A list of sublists containing widget input (one sublist per subscale)}
 }
 \description{
 Creates a submit action button and a report download button to submit data to a database and download a pdf report.

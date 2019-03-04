@@ -11,27 +11,20 @@ manual_data_UI<- function(id) {
 
   ns<- NS(id) #Set the namespace
 
-  tagList(
-
-    checkboxInput("manual_entry", "Enter Data Manually"), #Need to check box for manual entry drop-down fields
-
-
-conditionalPanel(condition = "input.manual_entry",
-
 tagList(
 
 fluidRow(
   column(width = 12,
          titlePanel(span(tagList(icon("edit", lib = "font-awesome")), h4(tags$b("Enter Item Scores")),
                          tags$ul(
-                           tags$li(helpText(h5(tags$em(tags$b("Use commas to separate scores. Enter scores in order, from the first to the last item of the total scale.", style = "color:black")))))
+                           tags$li(helpText(h5(tags$em(tags$b("Item scores appear here when completing the online scale. Alternatively,
+                                                              enter item scores manually, from the first to the last item of the total scale.
+                                                              Separate item scores with commas (e.g. 1,2,3)", style = "color:black")))))
                          )
          ))
   )
 ),
-br(),
-br(),
-br(),
+
 fluidRow(
 
   column(width = 4,
@@ -42,7 +35,7 @@ fluidRow(
 
   column(width = 4,
 
-         dateInput(ns("date"), "Date of Scale Completion", format = "dd/mm/yyyy")
+         dateInput(ns("date"), "Date", format = "dd/mm/yyyy")
 
   )),
 
@@ -56,7 +49,7 @@ actionButton(ns("submit_scores"), "Submit")
 
 )
 
-))
+
 
 }
 

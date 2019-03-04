@@ -19,10 +19,7 @@ make_se<- function(sd, reliability, reliable_change_method) {
 
                "Nunnally & Bernstein (1994)" = round( sd * sqrt(1 - reliability ^ 2), digits = 2 ),
 
-               "Jacobson & Truax (1991)" = round( sqrt((2 * (sd ^ 2)) * (1 - reliability)), digits = 2),
-
-               "Custom Confidence Intervals" = NA_real_
-
+               "Jacobson & Truax (1991)" = round( sqrt((2 * (sd ^ 2)) * (1 - reliability)), digits = 2)
 
   )
 
