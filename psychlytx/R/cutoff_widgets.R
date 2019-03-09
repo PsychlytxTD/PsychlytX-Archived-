@@ -99,7 +99,9 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
 
             numericInput(inputId = cutoff_ids, label = "", value = cutoffs),
 
-            textInput(inputId = ns(cutoff_reference_ids), label = "Reference", value = cutoff_references)
+            textInput(inputId = ns(cutoff_reference_ids), label = "Reference", value = cutoff_references),
+
+            hr()
 
           ))
 

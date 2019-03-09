@@ -91,7 +91,9 @@ generate_sd_widget <- function(input, output, session, panel_name, subscale_name
 
                      numericInput(inputId = ns(mean_sd_rel_ids), label = h4(tags$strong(panel_name)), value = sds),
 
-                     textInput(inputId = ns(mean_sd_rel_reference_ids), label = "Reference", value = mean_sd_references)
+                     textInput(inputId = ns(mean_sd_rel_reference_ids), label = "Reference", value = mean_sd_references),
+
+                     hr()
 
                      ))
 

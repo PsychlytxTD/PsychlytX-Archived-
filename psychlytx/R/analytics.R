@@ -135,7 +135,7 @@ analytics_widgets<- function(input, output, session, clientstatus_module) {
                    selectInput(ns("attendance_arrangement"), "Schedule of Attendance", c("", "Varied", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "Greater Than 1 Month Apart")),
                    numericInput(ns("dna"), "Number of Non-Attendances (DNAs)", value = ""),
                    numericInput(ns("duration"), "Number of Sessions Attended", value = ""),
-                   selectInput(ns("dropout"), "Premature Dropout", c("", "Yes", "No")),
+                   radioButtons(ns("dropout"), "Premature Dropout", choices = c("", "Yes", "No")),
                    selectInput(ns("therapy"), "Therapeutic Approach Used", psychlytx::therapies_list),
                    selectInput(ns("funder"), "Funding Source", choices = c("", "Entirely Self-Funded", "Medicare", "Private Health Fund",
                                                                            "WorkCover", "Transport Accident Commission (TAC)",
