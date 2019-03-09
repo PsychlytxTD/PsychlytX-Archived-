@@ -17,9 +17,8 @@ fluidRow(
   column(width = 12,
          titlePanel(span(tagList(icon("edit", lib = "font-awesome")), h4(tags$b("Enter Item Scores")),
                          tags$ul(
-                           tags$li(helpText(h5(tags$em(tags$b("Item scores appear here when completing the online scale. Alternatively,
-                                                              enter item scores manually, from the first to the last item of the total scale.
-                                                              Separate item scores with commas (e.g. 1,2,3)", style = "color:black")))))
+                           tags$li(helpText(h5(tags$em(tags$b("Item scores appear below when you complete the scale.", style = "color:black"))))),
+                           tags$li(helpText(h5(tags$em(tags$b("You can also skip the scale and input the item scores directly, separated by commas (e.g. 1,2,3).", style = "color:black")))))
                          )
          ))
   )
@@ -43,7 +42,7 @@ fluidRow(
 
   column(width = 4,
 
-actionButton(ns("submit_scores"), "Submit")
+actionButton(ns("submit_scores"), "Submit Results")
 
   ))
 

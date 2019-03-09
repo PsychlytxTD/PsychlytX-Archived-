@@ -13,12 +13,8 @@ analytics_clientstatus_UI<- function(id) {
   #Generate the widget (and headings) that indicate whether client is new or existing.
 
   tagList(
-    br(),
-    titlePanel(span(tagList(icon("bar-chart-o", lib = "font-awesome")), h4(tags$b("Enter client information")))),
-    br(),
-    h4(tags$strong("Step 1.")), h4("Is this a new or existing client? Select an option below:"),
-    radioButtons(ns("client_type"), "", choices = c("New client (first time completing a scale)." = "new",
-                                                    "Ongoing client (has already completed one or more scales)." = "old"))
+    radioButtons(ns("client_type"), "", choices = c("Register New Client" = "new",
+                                                    "Select Existing Client" = "old"))
 
   )
 
@@ -58,8 +54,11 @@ analytics_widgets_UI<- function(id) {
 
   tagList(
     sidebarLayout(
-      sidebarPanel(width = 6,
-  uiOutput(ns("analytics_widgets_out"))
+      sidebarPanel(width = 12,
+  uiOutput(ns("analytics_widgets_out")),
+
+  useShinyjs(),
+  radioButtons(ns("show_post_analytics"), "Are you administering a scale to this client for the last time?", choices = c("No", "Yes"))
       ),
   mainPanel())
 
@@ -98,38 +97,59 @@ analytics_widgets<- function(input, output, session, clientstatus_module) {
            new =
 
              tagList(
-               h5(tags$em("Before scale completion, please answer the questions below:")),
+               shinyjs::hide("show_post_analytics"),
+               h3(tags$strong("Pre-Treatment Questions")),
                br(),
-               h4(tags$strong("Demographics")),
-               br(),
-               textInput(ns("control_name"), "Name"),
-               selectInput(ns("sex"), "Sex", c("", "Male", "Female"), width = '200px'),
-               numericInput(ns("age"), "Age", value = "", width = '100px'),
-               selectInput(ns("sexuality"), "Sexual Orientation", c("", "Heterosexual", "Lesbian", "Gay", "Bisexual", "Transgender", "Queer", "Other"), width = '200px'),
-               selectInput(ns("relationship"), "Relationship Status", c("", "Married/In Relationship", "Single", "Widowed"), width = '250px'),
-               numericInput(ns("children"), "Number of Dependent Children", value = "", width = '100px'),
-               selectInput(ns("workforce"), "Primary Workforce Status", c("", "Working", "Studying", "Unemployed", "Retired"), width = '200px'),
-               selectInput(ns("education"), "Education", c("", "Did Not Complete High School", "Completed High School", "Completed Tertiary Education"), width = '250px'),
-               textInput(ns("occupation"), "Occupation"),
-               textInput(ns("suburb"), "Suburb", value = "", width = '300px')
+               textInput(ns("control_name"), "First Name"),
+               textInput(ns("control_name"), "Last Name"),
+               selectInput(ns("sex"), "Sex", c("", "Male", "Female", "Other")),
+               dateInput(ns("dob"), "Date of Birth", value = ""),
+               textInput(ns("suburb"), "Postcode", value = ""),
+               selectInput(ns("marital_status"), "Marital Status", c("", "Never Married", "Currently Married", "Separated", "Divorced", "Widowed", "Cohabiting")),
+               selectInput(ns("sexuality"), "Sexual Orientation", c("", "Heterosexual", "Lesbian", "Gay", "Bisexual", "Transgender", "Queer", "Other")),
+               selectInput(ns("ethnicity"), "Ethnicity", c("", "Caucasian", "Latino/Hispanic", "Middle Eastern", "African", "Caribbean", "South Asian",
+                                                           "East Asian", "Mixed", "Other")),
+               radioButtons(ns("indigenous"), "Identifies as Being of Aboriginal or Torres Strait Islander Descent", choices = c("No", "Yes")),
+               numericInput(ns("children"), "Number of Dependent Children", value = ""),
+               selectInput(ns("workforce"), "Primary Workforce Status", c("", "Working Full-Time", "Working Part-Time", "Working Casual Hours", "Studying", "Unemployed", "Retired")),
+               selectInput(ns("education"), "Highest Education Level", c("", "No education", "Primary Education", "Secondary Education", "Post-Secondary/Tertiary Education",
+                                                           "Bachelor or Equivalent", "Master or Equivalent", "Doctoral or Equivalent"))
              ),
 
            old =
 
              tagList(
-               h5(tags$em("Please answer the questions below before your client completes the final/follow-up assessment.")),
-               h4(tags$strong("Clinical Information")),
-               br(),
-               selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", psychlytx::diagnosis_list),
-               selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", psychlytx::diagnosis_list, multiple = TRUE),
-               textInput(ns("referrer"), "Referrer", value = "", width = '200px'),
-               selectInput(ns("attendance_arrangement"), "Attendance Arrangement", c("", "It Varies", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "More Than 1 Month Apart"), width = '250px'),
-               selectInput(ns("attendance_quality"), "Quality of Attendance", c("", "Good", "Moderate", "Poor"), width = '200px'),
-               textInput(ns("Therapy"), "Therapeutic Approach", value = "", width = '200px'),
-               selectInput(ns("Fee"), "Fee Arrangement", c("", "No Out-Of-Pocket Expense", "Discount", "Full-Fee"), width = '250px'),
-               numericInput(ns("duration"), "Number of Sessions Attended", value = "", width = '100px'),
-               selectInput(ns("dropout"), "Early Dropout", c("", "Yes", "No"), width = '200px')
+
+               selectInput(ns("existing_client"), "Select Your Client", choices = c("")),
+
+               shinyjs::show("show_post_analytics"),
+
+               if(input$show_post_analytics == "Yes") {
+
+                 tagList(
+                   h3(tags$strong("Post-Treatment Questions")),
+                   br(),
+                   selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", psychlytx::diagnosis_list),
+                   selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", psychlytx::diagnosis_list, multiple = TRUE),
+                   textInput(ns("referrer"), "Referrer", value = ""),
+                   selectInput(ns("attendance_arrangement"), "Schedule of Attendance", c("", "Varied", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "Greater Than 1 Month Apart")),
+                   numericInput(ns("dna"), "Number of Non-Attendances (DNAs)", value = ""),
+                   numericInput(ns("duration"), "Number of Sessions Attended", value = ""),
+                   selectInput(ns("dropout"), "Premature Dropout", c("", "Yes", "No")),
+                   selectInput(ns("therapy"), "Therapeutic Approach Used", psychlytx::therapies_list),
+                   selectInput(ns("funder"), "Funding Source", choices = c("", "Entirely Self-Funded", "Medicare", "Private Health Fund",
+                                                                           "WorkCover", "Transport Accident Commission (TAC)",
+                                                                           "Department of Veterans Affairs (DVA)",
+                                                                           "Victims of Crime Assistance Tribunal (VOCAT)",
+                                                                           "Other")),
+                   numericInput(ns("out_of_pocket"), "Out-Of-Pocket Expense", value = "")
+
              )
+
+               }
+
+             )
+
 
     )
 

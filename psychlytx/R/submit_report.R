@@ -14,7 +14,7 @@ download_UI<- function(id) {
 
     br(),
 
-    titlePanel(span(tagList(icon("file-pdf-o", lib = "font-awesome")), h4(tags$b("Download a Pdf Report of Results for this Patient")))),
+    titlePanel(span(tagList(icon("file-pdf-o", lib = "font-awesome")), h4(tags$b("Download Clinical Report")))),
     downloadButton(ns('download_button'), 'Download Report')
 
   )
