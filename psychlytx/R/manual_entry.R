@@ -40,11 +40,15 @@ fluidRow(
 
 fluidRow(
 
-  column(width = 4,
+  column(width = 2, offset = 9,
 
-actionButton(ns("submit_scores"), "Submit Results")
+actionButton(ns("submit_scores"), "Submit Scale Responses", class = "submit_data"),
 
-  ))
+tags$head(tags$style(".submit_data{color:#d35400;}"))
+
+  )),
+
+hr()
 
 )
 

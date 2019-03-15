@@ -59,7 +59,7 @@ analytics_pretherapy<- function(input, output, session) {
 
   #Need to return input to make input parameters available
 
-  observeEvent(input$submit_analytics_pretherapy, {
+  eventReactive(input$submit_analytics_pretherapy, {
 
     client_id<- uuid::UUIDgenerate() #Generate unique client ID
 
@@ -72,7 +72,7 @@ analytics_pretherapy<- function(input, output, session) {
                                        "postcode", "marital_status", "sexuality", "ethnicity", "indigenous", "children", "workforce", "education"))
 
 
-    print(
+
 
     pretherapy_analytics_df<- list( pretherapy_analytics_items ) %>% {
 
@@ -95,11 +95,8 @@ analytics_pretherapy<- function(input, output, session) {
 
     )
 
+
     }
-
-
-    #Here is where we send the pre-therapy analytics dataframe to the db
-)
 
   })
 
@@ -179,15 +176,14 @@ analytics_posttherapy<- function(input, output, session) {
 
   #Need to return input to make input parameters available
 
-  observeEvent(input$submit_analytics_posttherapy, {
+  eventReactive(input$submit_analytics_posttherapy, {
 
     posttherapy_analytics_items<- list( req(input$principal_diagnosis), req(input$secondary_diagnosis), req(input$referrer), req(input$attendance_schedule), req(input$dna),
           req(input$duration), req(input$dropout), req(input$therapy), req(input$funder), req(input$out_of_pocket) ) %>% purrr::set_names(c("principal_diagnosis",
           "secondary_diagnosis", "referrer", "attendance_schedule", "non_attendances", "duration", "dropout", "therapy", "funder", "out_of_pocket"))
 
-print(
 
-    posttherapy_analytics_df<- list( posttherapy_analytics_items ) %>% {
+    list( posttherapy_analytics_items ) %>% {
 
       tibble::tibble(
 
@@ -206,9 +202,6 @@ print(
 
     }
 
-    #Here is where we send the post-treatment analytics dataframe to the db
-
-)
 
     })
 

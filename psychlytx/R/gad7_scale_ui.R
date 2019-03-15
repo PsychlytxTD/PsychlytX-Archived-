@@ -12,11 +12,11 @@ ns<- NS(id)
 
 tagList(
 
+hr(),
+
 fluidRow(
   column(width = 12, offset = 5, h3(tags$strong("GAD-7 ")))
 ),
-
-hr(),
 
 fluidRow(
   column(width = 6, h4(tags$strong("Over the past 2 weeks, how often have you been bothered by the following problems?"))),
