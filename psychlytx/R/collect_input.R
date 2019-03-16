@@ -40,8 +40,8 @@ collect_input_UI<-  function(id) {
 
 
 
-collect_input<- function(input, output, session, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, cutoff_input, confidence, method, subscale_number) {
+collect_input<- function(input, output, session, panel_name, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, cutoff_input, confidence, method, subscale_number) {
 
-reactive({ list( manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), cutoff_input(), confidence(), method() ) })
+reactive({ list( panel_name, manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), cutoff_input(), confidence(), method() ) })
 
 }

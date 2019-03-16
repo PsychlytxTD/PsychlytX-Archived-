@@ -26,10 +26,10 @@ combine_all_input_UI<- function(id) {
 
 combine_all_input<- function(input, output, session, input_list) {
 
-  reactive({
+  observe({
 
 
-    all_input<- input_list() %>% purrr::map( ~ purrr::flatten(.x) %>% purrr::set_names(c("date", "score", "mean_value",
+    all_input<- input_list() %>% purrr::map( ~ purrr::flatten(.x) %>% purrr::set_names(c("scale_name", "date", "score", "mean_value",
           "mean_reference","sd_value", "sd_reference", "reliability_value", "reliability_reference", "cutoff_label",
            "cutoff_value", "cutoff_reference", "confidence", "method")) )
 
@@ -37,6 +37,7 @@ combine_all_input<- function(input, output, session, input_list) {
     scale_data<- all_input %>% {
 
       tibble::tibble(
+        scale = purrr::map_chr(., "scale_name"),
         date = format(lubridate::as_date(purrr::map_dbl(., "date")), "%d/%m/%Y"), #Convert to date class
         score = purrr::map_dbl(., "score"),
         mean = purrr::map_dbl(., "mean_value"),
@@ -79,7 +80,7 @@ combine_all_input<- function(input, output, session, input_list) {
       ci_lower = pts - ci
 
 
-    ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::select(date, score, pts, se, ci, ci_upper, ci_lower, everything())
+    ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::select(scale, date, score, pts, se, ci, ci_upper, ci_lower, everything())
 
 
 
@@ -87,12 +88,12 @@ combine_all_input<- function(input, output, session, input_list) {
 
 
 
-      #Create a separate dataframe with cutoff score data - which is in a longer format.
+      #Create a separate dataframe with cutoff score data - because it is in a longer format.
 
 
       # Select the cutoff score data from scale_data, unnest it and arrange it in ascending order by value to facilitate easy graphing later.
 
-      cutoff_data<- scale_data %>% select(cutoff_values, cutoff_labels, cutoff_references) %>% tidyr::unnest() %>% dplyr::arrange(cutoff_values)
+      cutoff_data<- scale_data %>% select(scale, date, cutoff_values, cutoff_labels, cutoff_references) %>% tidyr::unnest() %>% dplyr::arrange(cutoff_values)
 
 
       #Add column names to allow spreading (we will spread() into these column names)
@@ -108,20 +109,27 @@ combine_all_input<- function(input, output, session, input_list) {
                                        "cutoff_reference_3", "cutoff_reference_4",
                                        "cutoff_reference_5")
 
+
        #Spread seperately to add columns for cutoff labels, cutoff values and cutoff references
 
-       df_cutoff_label<- cutoff_data %>% dplyr::select(cutoff_label_colnames, cutoff_labels) %>% tidyr::spread(cutoff_label_colnames, cutoff_labels)
+       df_cutoff_label<- cutoff_data %>% dplyr::select(scale, date, cutoff_label_colnames, cutoff_labels) %>% tidyr::spread(cutoff_label_colnames, cutoff_labels)
 
-       df_cutoff_value<- cutoff_data %>% dplyr::select(cutoff_value_colnames, cutoff_values) %>% tidyr::spread(cutoff_value_colnames, cutoff_values)
+       df_cutoff_value<- cutoff_data %>% dplyr::select(scale, date, cutoff_value_colnames, cutoff_values) %>% tidyr::spread(cutoff_value_colnames, cutoff_values)
 
-       df_cutoff_reference<- cutoff_data %>% dplyr::select(cutoff_reference_colnames, cutoff_references) %>% tidyr::spread(cutoff_reference_colnames, cutoff_references)
+       df_cutoff_reference<- cutoff_data %>% dplyr::select(scale, date, cutoff_reference_colnames, cutoff_references) %>% tidyr::spread(cutoff_reference_colnames, cutoff_references)
+
 
        #Combine the separate wide dataframes for cutoff labels, cutoff values and cutoff references to form the final cutoff data df that will be sent to the db.
 
        cutoff_data<- dplyr::bind_cols(df_cutoff_label, df_cutoff_value, df_cutoff_reference)
 
 
-       return(list(scale_data, cutoff_data))
+       #Remove the cutoff data from scale_data before writing to db
+
+       scale_data<- scale_data %>% dplyr::select(-c(cutoff_labels, cutoff_values, cutoff_references))
+
+
+       print(cutoff_data)
 
 
     })

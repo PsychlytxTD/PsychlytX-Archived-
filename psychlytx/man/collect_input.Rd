@@ -4,9 +4,9 @@
 \alias{collect_input}
 \title{Collect subscale input}
 \usage{
-collect_input(input, output, session, manual_entry, aggregate_scores,
-  mean_input, sd_input, reliability_input, cutoff_input, confidence,
-  method, subscale_number)
+collect_input(input, output, session, panel_name, manual_entry,
+  aggregate_scores, mean_input, sd_input, reliability_input, cutoff_input,
+  confidence, method, subscale_number)
 }
 \arguments{
 \item{manual_entry}{A list containing the date and original item scores.}
