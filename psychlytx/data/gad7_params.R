@@ -43,4 +43,7 @@ gad7_params<- list(panel_name = "GAD-7",
                                                    "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)" , "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)"),
                                                  c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
                                                    "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)" , "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)")),
-                        cutoff_quantity = 5)
+                        cutoff_quantity = 5,
+                        items = 1:7,
+                        max_score = 21,
+                        min_score = 0)

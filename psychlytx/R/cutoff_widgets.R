@@ -95,9 +95,9 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
           div(
           column(width = 2,
 
-            textInput(inputId = ns(cutoff_name_ids), label = "", value = cutoff_names),
+            textInput(inputId = ns(cutoff_name_ids), label = "Description", value = cutoff_names),
 
-            numericInput(inputId = ns(cutoff_ids), label = "", value = cutoffs),
+            numericInput(inputId = ns(cutoff_ids), label = "Value", value = cutoffs),
 
             textInput(inputId = ns(cutoff_reference_ids), label = "Reference", value = cutoff_references),
 
@@ -134,18 +134,10 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
     reactive({    #use the param_list_maker() function to access all the needed cutoff widget ids (regardless)
                   #of how many there are
 
-      list(
-
-            c(req(input$cutoff_name_id_1), req(input$cutoff_name_id_2), req(input$cutoff_name_id_3), req(input$cutoff_name_id_4),
-                                req(input$cutoff_name_id_5)),
-
-           c(req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4),
-                                req(input$cutoff_value_id_5)),
-
-           c(req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2), req(input$cutoff_reference_id_3),
-                                    req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5))
-           )
-
+      list( req(input$cutoff_name_id_1), req(input$cutoff_name_id_2), req(input$cutoff_name_id_3), req(input$cutoff_name_id_4), req(input$cutoff_name_id_5),
+           req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4), req(input$cutoff_value_id_5),
+           req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2), req(input$cutoff_reference_id_3),
+          req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5) )
 
     })
 

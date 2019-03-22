@@ -66,6 +66,13 @@ generate_reliability_widget <- function(input, output, session, panel_name, subs
 
       ns <- session$ns  #Set the namespace
 
+
+      subscale_title<- div(fluidRow(column(width = 2, offset = 5,
+
+                                           h4(tags$strong(subscale_name)) #The name of the subscale should appear centred, above the widgets
+
+      )))
+
        #Widgets will be stored in this list before being called in do.call()
 
        reliability_widget_list <-
@@ -97,7 +104,7 @@ generate_reliability_widget <- function(input, output, session, panel_name, subs
 
           div(column(width = 2,
 
-            numericInput(inputId = ns(mean_sd_rel_ids), label = h4(tags$strong(panel_name)), value = reliabilities),
+            numericInput(inputId = ns(mean_sd_rel_ids), label = tags$strong("Test-Retest Reliability"), value = reliabilities),
 
             textInput(inputId = ns(mean_sd_rel_reference_ids),label = "Reference", value = mean_sd_references),
 
@@ -108,7 +115,7 @@ generate_reliability_widget <- function(input, output, session, panel_name, subs
         })
 
 
-      do.call(tagList, list(reliability_widget_list))
+      do.call(tagList, list(subscale_title, reliability_widget_list))
 
     })
 
