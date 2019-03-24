@@ -17,8 +17,8 @@ fluidRow(
   column(width = 12,
          titlePanel(span(tagList(icon("edit", lib = "font-awesome")), h4(tags$b("Enter Item Scores")),
                          tags$ul(
-                           tags$li(helpText(h5(tags$em(tags$b("Item scores appear below when you complete the scale.", style = "color:black"))))),
-                           tags$li(helpText(h5(tags$em(tags$b("You can also skip the scale and input the item scores directly, separated by commas (e.g. 1,2,3).", style = "color:black")))))
+                           tags$li(helpText(h5(tags$em(tags$b("Item scores appear when you complete the scale above.", style = "color:black"))))),
+                           tags$li(helpText(h5(tags$em(tags$b("You can also input the item scores directly below, separated by commas (e.g. 1,2,3).", style = "color:black")))))
                          )
          ))
   )
@@ -46,11 +46,7 @@ actionButton(ns("submit_scores"), "Submit Scale Responses", class = "submit_data
 
 tags$head(tags$style(".submit_data{color:#d35400;}"))
 
-  )),
-
-hr()
-
-)
+  )))
 
 
 

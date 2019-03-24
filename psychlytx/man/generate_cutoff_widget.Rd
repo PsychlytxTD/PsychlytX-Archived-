@@ -7,7 +7,8 @@
 generate_cutoff_widget(input, output, session, panel_name, subscale_name,
   population_quantity, populations, input_population, sds, means,
   mean_sd_references, reliabilities, reliability_references, cutoffs,
-  cutoff_names, cutoff_references, cutoff_quantity)
+  cutoff_names, cutoff_references, cutoff_quantity, items, max_score,
+  min_score)
 }
 \arguments{
 \item{panel_name}{string (white space allowed) indicating the name of the subscale, to be used as a panel title.}

@@ -12,8 +12,6 @@ ns<- NS(id)
 
 tagList(
 
-hr(),
-
 fluidRow(
   column(width = 12, offset = 5, h3(tags$strong("GAD-7 ")))
 ),
@@ -63,11 +61,7 @@ fluidRow(
 
 fluidRow(
   column(width = 12, h5("Scale Source: Spitzer, R. L., Kroenke, K., Williams, J. B., & Lowe, B. (2006). A brief measure for assessing Generalized Anxiety Disorder: the GAD-7. Archives of Internal Medicine, 166(10), 1092–1097."))
-),
-
-hr()
-
-)
+))
 
 }
 

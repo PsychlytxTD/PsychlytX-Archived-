@@ -51,7 +51,7 @@ generate_mean_widget_UI <- function(id) {
 
 
 generate_mean_widget <-function(input, output, session, panel_name, subscale_name, population_quantity, populations, input_population, sds,means,
-                                mean_sd_references, reliabilities, reliability_references, cutoffs,cutoff_names, cutoff_references, cutoff_quantity) {
+                                mean_sd_references, reliabilities, reliability_references, cutoffs,cutoff_names, cutoff_references, cutoff_quantity, items, max_score, min_score) {
 
 
     mean_widget_reac <- reactive({

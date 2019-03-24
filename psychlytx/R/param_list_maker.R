@@ -32,7 +32,7 @@
 #The paramaters from the subscale list (some of which are themselves lists) are passed as arguments.
 
 params_list_maker<- function(subscale_name, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities, reliability_references,
-                             cutoffs, cutoff_names, cutoff_references, cutoff_quantity) {
+                             cutoffs, cutoff_names, cutoff_references, cutoff_quantity, items, max_score, min_score) {
 
 #Loop over each list stored in the subscale list
 

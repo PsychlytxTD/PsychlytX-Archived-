@@ -7,7 +7,7 @@
 params_list_maker(subscale_name, population_quantity, populations,
   input_population, sds, means, mean_sd_references, reliabilities,
   reliability_references, cutoffs, cutoff_names, cutoff_references,
-  cutoff_quantity)
+  cutoff_quantity, items, max_score, min_score)
 }
 \arguments{
 \item{subscale_name}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
