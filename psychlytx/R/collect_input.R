@@ -37,11 +37,13 @@ collect_input_UI<-  function(id) {
 #' @param confidence A numeric value indicating the level of confidence selected for intervals (widget input)
 #'
 #' @param method A string value indicating the reliable change method selected (widget value)
+#'
+#' @param input_population A string value indicating the reference population selected by the user
 
 
 
-collect_input<- function(input, output, session, panel_name, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, confidence, method, cutoff_input, subscale_number) {
+collect_input<- function(input, output, session, panel_name, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, confidence, method, input_population, cutoff_input, subscale_number) {
 
-reactive({ list( panel_name, manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), confidence(), method(), cutoff_input() ) })
+reactive({ list( panel_name, manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), confidence(), method(), input_population(), cutoff_input() ) })
 
 }

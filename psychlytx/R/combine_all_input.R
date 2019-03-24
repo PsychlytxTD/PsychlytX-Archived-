@@ -30,9 +30,10 @@ combine_all_input<- function(input, output, session, input_list) {
                         #Once we have the inputs from all widgets, flatten each sublist so we end up with one list of sublists
 
     all_input<- input_list() %>% purrr::map( ~ purrr::flatten(.x) %>% purrr::set_names(c("scale_name", "date", "score", "mean_value",
-          "mean_reference","sd_value", "sd_reference", "reliability_value", "reliability_reference", "confidence", "method", "cutoff_label_1", "cutoff_label_2", "cutoff_label_3", "cutoff_label_4",
-          "cutoff_label_5", "cutoff_value_1", "cutoff_value_2", "cutoff_value_3", "cutoff_value_4", "cutoff_value_5", "cutoff_reference_1", "cutoff_reference_2",
-          "cutoff_reference_3", "cutoff_reference_4", "cutoff_reference_5")))
+          "mean_reference","sd_value", "sd_reference", "reliability_value", "reliability_reference", "confidence", "method", "population",
+          "cutoff_label_1", "cutoff_label_2", "cutoff_label_3", "cutoff_label_4", "cutoff_label_5",
+          "cutoff_value_1", "cutoff_value_2", "cutoff_value_3", "cutoff_value_4", "cutoff_value_5",
+          "cutoff_reference_1", "cutoff_reference_2","cutoff_reference_3", "cutoff_reference_4", "cutoff_reference_5")))
 
 
     scale_data<- all_input %>% {
@@ -50,6 +51,7 @@ combine_all_input<- function(input, output, session, input_list) {
         reliability_reference = purrr::map_chr(., "reliability_reference"),
         confidence = purrr::map_dbl(., "confidence"),
         method = purrr::map_chr(., "method"),
+        population = purrr::map_chr(., "population"),
         cutoff_label_1 = purrr::map_chr(., "cutoff_label_1"),
         cutoff_label_2 = purrr::map_chr(., "cutoff_label_2"),
         cutoff_label_3 = purrr::map_chr(., "cutoff_label_3"),

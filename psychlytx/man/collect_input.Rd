@@ -6,7 +6,7 @@
 \usage{
 collect_input(input, output, session, panel_name, manual_entry,
   aggregate_scores, mean_input, sd_input, reliability_input, confidence,
-  method, cutoff_input, subscale_number)
+  method, input_population, cutoff_input, subscale_number)
 }
 \arguments{
 \item{manual_entry}{A list containing the date and original item scores.}
@@ -22,6 +22,8 @@ collect_input(input, output, session, panel_name, manual_entry,
 \item{confidence}{A numeric value indicating the level of confidence selected for intervals (widget input)}
 
 \item{method}{A string value indicating the reliable change method selected (widget value)}
+
+\item{input_population}{A string value indicating the reference population selected by the user}
 
 \item{cutoff_input}{A list containing the cutoff values, labels and references (widget inputs)}
 
