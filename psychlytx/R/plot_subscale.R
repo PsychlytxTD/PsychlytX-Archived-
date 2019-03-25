@@ -4,18 +4,18 @@
 #'
 #' @param subscale_df A dataframe containing only data for a particular subscale
 #'
-#' @param params_list A list of subscale parameters
+#' @param subscale_infoA list of subscale parameters
 #'
 #' @export
 #'
-#' @examples plot_subscale(subscale_df = subscale_df, params_list = psychlytx::gad7_params)
+#' @examples plot_subscale(subscale_df = subscale_df, subscale_info= psychlytx::gad7_params)
 
 
 
 
 
 
-plot_subscale <- function( subscale_df, params_list ) {
+plot_subscale <- function( subscale_df, subscale_info) {
 
   #Convert date variable to date class
 

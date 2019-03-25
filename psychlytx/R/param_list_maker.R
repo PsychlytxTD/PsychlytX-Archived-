@@ -31,8 +31,8 @@
 
 #The paramaters from the subscale list (some of which are themselves lists) are passed as arguments.
 
-params_list_maker<- function(subscale_name, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities, reliability_references,
-                             cutoffs, cutoff_names, cutoff_references, cutoff_quantity, items, max_score, min_score) {
+params_list_maker<- function(title, measure, subscale, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities, reliability_references,
+                             cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score) {
 
 #Loop over each list stored in the subscale list
 
@@ -45,10 +45,10 @@ params_list_maker<- function(subscale_name, population_quantity, populations, in
     mean_sd_references = mean_sd_references,
     reliabilities = reliabilities,
     reliability_references = reliability_references,
-    cutoff_ids = list(paste("cutoff_value_id", "_", 1:cutoff_quantity, sep = "")), #Generate ids for the cutoff value widgets: 'cutoff_value_id_1' etc.
-    cutoff_name_ids = list(paste("cutoff_name_id", "_", 1:cutoff_quantity, sep = "")), #Generate ids for the widgets containing cutoff names/labels: 'cutoff_name_id_1' etc.
-    cutoffs = cutoffs,
-    cutoff_names = cutoff_names,
+    cutoff_value_ids = list(paste("cutoff_value_id", "_", 1:cutoff_quantity, sep = "")), #Generate ids for the cutoff value widgets: 'cutoff_value_id_1' etc.
+    cutoff_label_ids = list(paste("cutoff_label_id", "_", 1:cutoff_quantity, sep = "")), #Generate ids for the widgets containing cutoff names/labels: 'cutoff_name_id_1' etc.
+    cutoff_values = cutoff_values,
+    cutoff_labels = cutoff_labels,
     cutoff_references = cutoff_references,
     mean_sd_rel_reference_ids<- list("mean_sd_rel_reference_id"), #Generate ids for the widgets containing mean, sd and reliability references
     cutoff_reference_ids = list(paste("cutoff_reference_id", "_", 1:cutoff_quantity, sep = "")) #Generate id for the widgets cutaining cutoff reference strings:
@@ -56,15 +56,15 @@ params_list_maker<- function(subscale_name, population_quantity, populations, in
 
   #Pass the lists used by pmap() as function arguments
 
-  function(mean_sd_rel_ids, populations, means, sds, mean_sd_references, reliabilities, reliability_references, cutoffs, cutoff_names, cutoff_references, cutoff_ids, cutoff_name_ids,
-           mean_sd_rel_reference_ids, cutoff_reference_ids) {
+  function(mean_sd_rel_ids, populations, means, sds, mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references,
+           cutoff_value_ids, cutoff_label_ids, mean_sd_rel_reference_ids, cutoff_reference_ids) {
 
 
 #Create a list of paramaters for each unique population
 
     list(mean_sd_rel_ids = mean_sd_rel_ids, populations = populations, means = means, sds = sds, mean_sd_references = mean_sd_references,
-         reliabilities = reliabilities, reliability_references = reliability_references, cutoff_ids = cutoff_ids,
-         cutoff_name_ids = cutoff_name_ids, cutoffs = cutoffs, cutoff_names = cutoff_names, cutoff_references = cutoff_references,
+         reliabilities = reliabilities, reliability_references = reliability_references, cutoff_value_ids = cutoff_value_ids,
+         cutoff_label_ids = cutoff_label_ids, cutoff_values = cutoff_values, cutoff_labels = cutoff_labels, cutoff_references = cutoff_references,
          mean_sd_rel_reference_ids = mean_sd_rel_reference_ids, cutoff_reference_ids = cutoff_reference_ids)
 
   }

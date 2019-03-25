@@ -4,14 +4,12 @@
 \alias{params_list_maker}
 \title{List generator for population paramaters for a subscale}
 \usage{
-params_list_maker(subscale_name, population_quantity, populations,
-  input_population, sds, means, mean_sd_references, reliabilities,
-  reliability_references, cutoffs, cutoff_names, cutoff_references,
-  cutoff_quantity, items, max_score, min_score)
+params_list_maker(title, measure, subscale, population_quantity,
+  populations, input_population, sds, means, mean_sd_references,
+  reliabilities, reliability_references, cutoff_values, cutoff_labels,
+  cutoff_references, cutoff_quantity, items, max_score, min_score)
 }
 \arguments{
-\item{subscale_name}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
-
 \item{population_quantity}{A numeric value of possible populations from which the user can select.}
 
 \item{populations}{A list of strings (underscores should replace white space) indicating the possible range of populations.}
@@ -26,13 +24,15 @@ params_list_maker(subscale_name, population_quantity, populations,
 
 \item{reliability_references}{A list of strings indicating the references for each reliability value by population.}
 
-\item{cutoffs}{A list of concatenated numeric values representing the cutoff values on this subscale for each population.}
-
-\item{cutoff_names}{A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.}
-
 \item{cutoff_references}{A list of strings indicating the references for each reliability value by population.}
 
 \item{cutoff_quantity}{A numeric value indicating the number of cutoff scores for the subscale.}
+
+\item{subscale_name}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
+
+\item{cutoffs}{A list of concatenated numeric values representing the cutoff values on this subscale for each population.}
+
+\item{cutoff_names}{A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.}
 }
 \description{
 Outputs the correct list of parameters for the population selected by the user (parameters are then available for default values.

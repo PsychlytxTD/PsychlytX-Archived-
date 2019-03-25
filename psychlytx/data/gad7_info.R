@@ -1,5 +1,3 @@
-
-
 gad7_info<- list(  title = "GAD-7", #Title can contain white space. For insertion into widget headings, plot titles etc.
                    measure = "GAD-7", #The overal measure (which may contain subscales)
                    subscale = "GAD-7", #The specific subscale of the measure.
@@ -18,9 +16,9 @@ gad7_info<- list(  title = "GAD-7", #Title can contain white space. For insertio
                                                  "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
                                                  "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)"),
                    cutoff_values = list(c(5, 10, 15, 3.01, 3.01 + 3.12), c(5, 10, 15, 4.07, 4.07 + 3.53), c(5, 10, 15, 2, 2 + 2.88), c(5, 10, 15, 4.75, 4.75 + 4.76),
-                                  c(5, 10, 15, 10.86, 10.86 + 5.62), c(5, 10, 15, 12.59, 12.59 + 3.96), c(5, 10, 15, 2.6, 2.6 + 2.3),
-                                  c(5, 10, 15, 11.9, 11.9 + 5.3), c(5, 10, 15, 4.7, 4.7 + 4.6), c(5, 10, 15, 4.5, 4.5 + 4.9),
-                                  c(5, 10, 15, 3.87, 3.87 + 4.52)),
+                                        c(5, 10, 15, 10.86, 10.86 + 5.62), c(5, 10, 15, 12.59, 12.59 + 3.96), c(5, 10, 15, 2.6, 2.6 + 2.3),
+                                        c(5, 10, 15, 11.9, 11.9 + 5.3), c(5, 10, 15, 4.7, 4.7 + 4.6), c(5, 10, 15, 4.5, 4.5 + 4.9),
+                                        c(5, 10, 15, 3.87, 3.87 + 4.52)),
                    cutoff_labels = list(rep(c("Mild", "Moderate", "Severe", "Mean", "Mean + 1 Sd"), 11, length.out = 5)),
                    cutoff_references = list(c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
                                               "Hinz, Klein, Brähler, Glaesmer et al (2017)", "Hinz, Klein, Brähler, Glaesmer et al (2017)"),

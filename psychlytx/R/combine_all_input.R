@@ -29,8 +29,8 @@ combine_all_input<- function(input, output, session, input_list) {
   reactive({
                         #Once we have the inputs from all widgets, flatten each sublist so we end up with one list of sublists
 
-    all_input<- input_list() %>% purrr::map( ~ purrr::flatten(.x) %>% purrr::set_names(c("scale_name", "date", "score", "mean_value",
-          "mean_reference","sd_value", "sd_reference", "reliability_value", "reliability_reference", "confidence", "method", "population",
+    all_input<- input_list() %>% purrr::map( ~ purrr::flatten(.x) %>% purrr::set_names(c("measure", "subscale", "date", "score", "mean",
+          "mean_reference","sd", "sd_reference", "reliability", "reliability_reference", "confidence", "method", "population",
           "cutoff_label_1", "cutoff_label_2", "cutoff_label_3", "cutoff_label_4", "cutoff_label_5",
           "cutoff_value_1", "cutoff_value_2", "cutoff_value_3", "cutoff_value_4", "cutoff_value_5",
           "cutoff_reference_1", "cutoff_reference_2","cutoff_reference_3", "cutoff_reference_4", "cutoff_reference_5")))
@@ -40,14 +40,15 @@ combine_all_input<- function(input, output, session, input_list) {
 
       tibble::tibble(   #Create a dataframe with the values of each sublist filling a row
 
-        scale = purrr::map_chr(., "scale_name"),
+        measure = purrr::map_chr(., "measure"),
+        subscale = purrr::map_chr(., "subscale"),
         date = format(lubridate::as_date(purrr::map_dbl(., "date")), "%d/%m/%Y"), #Convert to date class
         score = purrr::map_dbl(., "score"),
-        mean = purrr::map_dbl(., "mean_value"),
+        mean = purrr::map_dbl(., "mean"),
         mean_reference = purrr::map_chr(., "mean_reference"),
-        sd = purrr::map_dbl(., "sd_value"),
+        sd = purrr::map_dbl(., "sd"),
         sd_reference = purrr::map_chr(., "sd_reference"),
-        reliability = purrr::map_dbl(., "reliability_value"),
+        reliability = purrr::map_dbl(., "reliability"),
         reliability_reference = purrr::map_chr(., "reliability_reference"),
         confidence = purrr::map_dbl(., "confidence"),
         method = purrr::map_chr(., "method"),
@@ -97,7 +98,7 @@ combine_all_input<- function(input, output, session, input_list) {
       #Round numeric variables
       #Arrange the order of columns in a logical way, with the most important variables coming first.
 
-    ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::select(scale, date, score, pts, se, ci, ci_upper, ci_lower, everything())
+    ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::select(measure, subscale, date, score, pts, se, ci, ci_upper, ci_lower, everything())
 
 
     return(scale_data)

@@ -42,7 +42,7 @@ download_report<- function(input, output, session, db_data) {
 
   #Nest the db_dataframe: create a list column of db_dataframes - one per each subscale
 
-  nested_subscale_df<- db_data() %>% dplyr::group_by(scale) %>% tidyr::nest() %>% dplyr::mutate(subscale_info = list(psychlytx::gad7_params))
+  nested_subscale_df<- db_data() %>% dplyr::group_by(scale) %>% tidyr::nest() %>% dplyr::mutate(subscale_info = list(psychlytx::gad7_info))
 
 
 

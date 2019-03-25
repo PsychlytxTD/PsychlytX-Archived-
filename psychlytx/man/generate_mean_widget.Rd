@@ -4,16 +4,18 @@
 \alias{generate_mean_widget}
 \title{Mean widget module}
 \usage{
-generate_mean_widget(input, output, session, panel_name, subscale_name,
+generate_mean_widget(input, output, session, title, measure, subscale,
   population_quantity, populations, input_population, sds, means,
-  mean_sd_references, reliabilities, reliability_references, cutoffs,
-  cutoff_names, cutoff_references, cutoff_quantity, items, max_score,
+  mean_sd_references, reliabilities, reliability_references, cutoff_values,
+  cutoff_labels, cutoff_references, cutoff_quantity, items, max_score,
   min_score)
 }
 \arguments{
-\item{panel_name}{string (white space allowed) indicating the name of the subscale, to be used as a panel title.}
+\item{title}{A string (white space allowed) indicating the name of the subscale, to be used as a panel title.}
 
-\item{subscale_name}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
+\item{measure}{A string indicating the global measure.}
+
+\item{subscale}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
 
 \item{population_quantity}{A numeric value of possible populations from which the user can select.}
 
@@ -29,9 +31,9 @@ generate_mean_widget(input, output, session, panel_name, subscale_name,
 
 \item{reliability_references}{A list of strings indicating the references for each reliability value by population.}
 
-\item{cutoffs}{A list of concatenated numeric values representing the cutoff values on this subscale for each population.}
+\item{cutoff_values}{A list of concatenated numeric values representing the cutoff values on this subscale for each population.}
 
-\item{cutoff_names}{A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.}
+\item{cutoff_labels}{A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.}
 
 \item{cutoff_references}{A list of strings indicating the references for each reliability value by population.}
 

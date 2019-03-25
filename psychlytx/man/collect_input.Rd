@@ -4,7 +4,7 @@
 \alias{collect_input}
 \title{Collect subscale input}
 \usage{
-collect_input(input, output, session, panel_name, manual_entry,
+collect_input(input, output, session, measure, title, manual_entry,
   aggregate_scores, mean_input, sd_input, reliability_input, confidence,
   method, input_population, cutoff_input, subscale_number)
 }

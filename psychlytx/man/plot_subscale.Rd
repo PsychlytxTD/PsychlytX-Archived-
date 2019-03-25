@@ -4,16 +4,16 @@
 \alias{plot_subscale}
 \title{Plot Subscale}
 \usage{
-plot_subscale(subscale_df, params_list)
+plot_subscale(subscale_df, subscale_info)
 }
 \arguments{
 \item{subscale_df}{A dataframe containing only data for a particular subscale}
 
-\item{params_list}{A list of subscale parameters}
+\item{subscale_infoA}{list of subscale parameters}
 }
 \description{
 Plot an individual subscale
 }
 \examples{
-plot_subscale(subscale_df = subscale_df, params_list = psychlytx::gad7_params)
+plot_subscale(subscale_df = subscale_df, subscale_info= psychlytx::gad7_params)
 }

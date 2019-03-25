@@ -26,7 +26,7 @@ sd<- c(3, 3, 3, 3, 3)
 sd_reference<- c("yes", "yes", "yes", "yes", "yes")
 reliability<- c(.9, .9, .9, .9, .9)
 reliability_reference<- c("yes", "yes", "yes", "yes", "yes")
-confidence<- c(1.96, 1.96, 1.96, 1.96, 1.96)
+confidence<- c(1.96, 1.645, 1.96, 2.575, 1.645)
 method<- c("nun", "nun", "nun", "nun", "nun")
 population<- c("veteran", "veteran", "veteran", "veteran", "veteran")
 cutoff_label_1<- c("mod", "mod", "mod", "mod", "mod")
@@ -49,6 +49,7 @@ cutoff_reference_5<- c("aed", "aed", "aed", "aed", "aed")
 cutoff_reference_5<- c("oed", "oed", "oed", "oed", "oed")
 cutoff_reference_6<- c("wed", "wed", "wed", "wed", "wed")
 
+
 #create sample df - same as what we'll get from db
 
 data<- data.frame(scale, date, score, pts, se, ci, ci_upper, ci_lower, mean, mean_reference, sd, sd_reference, reliability, reliability_reference,
@@ -65,6 +66,14 @@ subscale_df<- data %>% dplyr::group_by(scale) %>% tidyr::nest() %>% dplyr::mutat
 #Add a 'change' variable to each dataframe showing statistically reliable change in scores 
 
 subscale_df<- subscale_df %>% dplyr::mutate( data = purrr::map(data, ~ psychlytx::make_change_variable(.x))) 
+
+#Change the value of the confidence variable so that percentages (not decimals) appear in the report 
+
+subscale_df<- subscale_df %>% dplyr::mutate( data = purrr::map(data, ~ dplyr::mutate(.,
+  confidence = dplyr::case_when(
+  confidence == 1.645 ~ "99%", 
+  confidence == 1.96 ~ "95%",
+  confidence == 2.575 ~ "90%"))))
 
 #Create a seperate plot for each subscale and store the plots in a list column
 

@@ -26,9 +26,11 @@ generate_reliability_widget_UI <- function(id) {
 #'
 #' Generates the widget with correct default values for the reliability widget and references.
 #'
-#' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
+#' @param title A string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
-#' @param subscale_name A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
+#' @param measure A string indicating the global measure.
+#'
+#' @param subscale A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
 #'
 #' @param population_quantity A numeric value of possible populations from which the user can select.
 #'
@@ -44,9 +46,9 @@ generate_reliability_widget_UI <- function(id) {
 #'
 #' @param reliability_references A list of strings indicating the references for each reliability value by population.
 #'
-#' @param cutoffs A list of concatenated numeric values representing the cutoff values on this subscale for each population.
+#' @param cutoff_values A list of concatenated numeric values representing the cutoff values on this subscale for each population.
 #'
-#' @param cutoff_names A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.
+#' @param cutoff_labels A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.
 #'
 #' @param cutoff_references A list of strings indicating the references for each reliability value by population.
 #'
@@ -55,8 +57,8 @@ generate_reliability_widget_UI <- function(id) {
 
 #Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
-generate_reliability_widget <- function(input, output, session, panel_name, subscale_name, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities,
-           reliability_references, cutoffs, cutoff_names, cutoff_references, cutoff_quantity, items, max_score, min_score) {
+generate_reliability_widget <- function(input, output, session, title, measure, subscale, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities,
+           reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score) {
 
 
 
@@ -69,7 +71,7 @@ generate_reliability_widget <- function(input, output, session, panel_name, subs
 
       subscale_title<- div(fluidRow(column(width = 2, offset = 5,
 
-                                           h4(tags$strong(subscale_name)) #The name of the subscale should appear centred, above the widgets
+                                           h4(tags$strong(title)) #The name of the subscale should appear centred, above the widgets
 
       )))
 
@@ -81,7 +83,9 @@ generate_reliability_widget <- function(input, output, session, panel_name, subs
         #It will return a single list matching the population selected by the user
 
         purrr::pmap(params_list_maker(
-          subscale_name = subscale_name,
+          title = title,
+          measure = measure,
+          subscale = subscale,
           population_quantity = population_quantity,
           populations = populations,
           input_population = input_population(), #input_population() is the population reactive object selected from the selectInput widget in the parent app
@@ -90,8 +94,8 @@ generate_reliability_widget <- function(input, output, session, panel_name, subs
           mean_sd_references = mean_sd_references,
           reliabilities = reliabilities,
           reliability_references = reliability_references,
-          cutoffs = cutoffs,
-          cutoff_names = cutoff_names,
+          cutoff_values = cutoff_values,
+          cutoff_labels = cutoff_labels,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
         )[c(1, 6, 7, 13)], #Within the list, iterate only over the parameters  relevant to generating the reliability widget

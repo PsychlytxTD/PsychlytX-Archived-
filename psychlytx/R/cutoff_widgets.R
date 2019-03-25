@@ -21,9 +21,11 @@ generate_cutoff_widget_UI <- function(id) {
 #'
 #' Generates the widget with correct default values for the reliability widget and references.
 #'
-#' @param panel_name string (white space allowed) indicating the name of the subscale, to be used as a panel title.
+#' @param title A string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
-#' @param subscale_name A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
+#' @param measure A string indicating the global measure.
+#'
+#' @param subscale A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
 #'
 #' @param population_quantity A numeric value of possible populations from which the user can select.
 #'
@@ -39,9 +41,9 @@ generate_cutoff_widget_UI <- function(id) {
 #'
 #' @param reliability_references A list of strings indicating the references for each reliability value by population.
 #'
-#' @param cutoffs A list of concatenated numeric values representing the cutoff values on this subscale for each population.
+#' @param cutoff_values A list of concatenated numeric values representing the cutoff values on this subscale for each population.
 #'
-#' @param cutoff_names A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.
+#' @param cutoff_labels A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.
 #'
 #' @param cutoff_references A list of strings indicating the references for each reliability value by population.
 #'
@@ -52,8 +54,8 @@ generate_cutoff_widget_UI <- function(id) {
 
 #Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
-generate_cutoff_widget <-function(input, output, session, panel_name, subscale_name, population_quantity, populations, input_population, sds,means,
-                                  mean_sd_references, reliabilities, reliability_references, cutoffs, cutoff_names, cutoff_references, cutoff_quantity, items, max_score, min_score) {
+generate_cutoff_widget <-function(input, output, session, title, measure, subscale, population_quantity, populations, input_population, sds,means,
+                                  mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score) {
 
     cutoff_widget_reac <- reactive({
 
@@ -61,7 +63,7 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
 
       subscale_title<- div(fluidRow(column(width = 2, offset = 5,
 
-      h4(tags$strong(subscale_name)) #The name of the subscale should appear centred, above the widgets
+      h4(tags$strong(title)) #The name of the subscale should appear centred, above the widgets
 
       )))
 
@@ -74,7 +76,9 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
          #It will return a single list matching the population selected by the user
 
         purrr::pmap(params_list_maker(
-          subscale_name = subscale_name,
+          title = title,
+          measure = measure,
+          subscale = subscale,
           population_quantity = population_quantity,
           populations = populations,
           input_population = input_population(),
@@ -83,21 +87,21 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
           mean_sd_references = mean_sd_references,
           reliabilities = reliabilities,
           reliability_references = reliability_references,
-          cutoffs = cutoffs,
-          cutoff_names = cutoff_names,
+          cutoff_values = cutoff_values,
+          cutoff_labels = cutoff_labels,
           cutoff_references = cutoff_references,
           cutoff_quantity = cutoff_quantity
         )[c(8, 9, 10, 11, 12, 14)],
 
        #Set these relevant parameters as function arguments (need to do this or the code won't run).
 
-        function(cutoff_ids, cutoff_name_ids, cutoffs, cutoff_names, cutoff_references, cutoff_reference_ids) {
+        function(cutoff_ids, cutoff_label_ids, cutoff_values, cutoff_labels, cutoff_references, cutoff_reference_ids) {
           div(
           column(width = 2,
 
-            textInput(inputId = ns(cutoff_name_ids), label = "Description", value = cutoff_names),
+            textInput(inputId = ns(cutoff_label_ids), label = "Description", value = cutoff_labels),
 
-            numericInput(inputId = ns(cutoff_ids), label = "Value", value = cutoffs),
+            numericInput(inputId = ns(cutoff_value_ids), label = "Value", value = cutoff_values),
 
             textInput(inputId = ns(cutoff_reference_ids), label = "Reference", value = cutoff_references),
 
@@ -134,7 +138,7 @@ generate_cutoff_widget <-function(input, output, session, panel_name, subscale_n
     reactive({    #use the param_list_maker() function to access all the needed cutoff widget ids (regardless)
                   #of how many there are
 
-      list( req(input$cutoff_name_id_1), req(input$cutoff_name_id_2), req(input$cutoff_name_id_3), req(input$cutoff_name_id_4), req(input$cutoff_name_id_5),
+      list( req(input$cutoff_label_id_1), req(input$cutoff_label_id_2), req(input$cutoff_label_id_3), req(input$cutoff_label_id_4), req(input$cutoff_label_id_5),
            req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4), req(input$cutoff_value_id_5),
            req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2), req(input$cutoff_reference_id_3),
           req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5) )
