@@ -65,11 +65,9 @@
                                 border-color: #283747;
                                 border-width: 2px;
                                 }
-                                .handsontable th {
-                                background-color: #283747;
-                                color: white
-                                }
-                                .well { background-color: #827717; color: white;
+                                .well {background-color:#e5e5e5; 
+                                       color: #000000;
+                                       border: 2px solid #827717
                                 }
                                 .progress-bar {background-color: #d35400;}
                                 .progress-bar {background-color: #d35400;}

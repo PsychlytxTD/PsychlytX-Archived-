@@ -1,11 +1,56 @@
 library(shinydashboard)
+library(magrittr)
+library(purrr)
+library(tidyr)
+library(dplyr)
+library(lubridate)
+library(chron)
+library(shinyjs)
+library(RPostgreSQL)
+library(DBI)
+library(pool)
+library(ggplot2)
+library(postGIStools)
+library(DT)
+library(shinyjs)
+
+pool <- dbPool( #Set up the pool connection management
+  drv = dbDriver("PostgreSQL"),
+  dbname = "scaladb",
+  host = "scaladb.cdanbvyi6gfm.ap-southeast-2.rds.amazonaws.com",
+  user = "jameslovie",
+  password = "e2534e41-bbb6-4e2b-b687-71c5be7c7d35"
+)
+
+onStop(function() { 
+                    #Close pool object when session ends
+  poolClose(pool)
+  
+})
+
+
+clinician_id<- '12345.000000' #Temp storage of client and clinician id
+
+
+################################ From db, pull in clients associated with the clinician, to be displayed in a dropdown
+
+client_list_sql<- "SELECT clinician_id, client_id, first_name, last_name, birth_date
+                                       FROM client
+                                       WHERE clinician_id = ?clinician_id;"
+
+client_list_query<- sqlInterpolate(pool, client_list_sql, clinician_id = clinician_id)
+
+client_list<- dbGetQuery(pool, client_list_query)
+
+################################
+
 
 
 ui<- function(request) {
   sidebar <- dashboardSidebar(
     sidebarMenu(
       br(),
-      menuItem(actionButton("Disclaimer", "Get Started", icon = icon("line-chart")), tabName = "Scale"),
+      menuItem("Home", icon = icon("line-chart"), tabName = "Home"),
       menuItem("About PsychlytX", tabName = "About", icon = icon("info"), selected = TRUE),
       menuItem("References", tabName = "References", icon = icon("book")),
       br(),
@@ -51,61 +96,90 @@ ui<- function(request) {
         
         
         
-        tabItem(tabName = "Scale",
+        tabItem(tabName = "Home",
                 fluidRow(
                   tabBox(
                     id = "Box",
                     width = 12,
-                    tabPanel(tags$strong("Create Client Profile"),
-                             psychlytx::analytics_clientstatus_UI("analytics_clientstatus_id"),
-                             psychlytx::analytics_widgets_UI("analytics_widgets_id"),
-                             psychlytx::analytics_newcustom_widgets_UI("analytics_newcustom_widgets_id")
+                    tabPanel(tags$strong("Register New Client "),
+                             psychlytx::analytics_pretherapy_UI("analytics_pretherapy")
+                             
                              
                     ),
-                    tabPanel(tags$strong("Submit Data & Generate Report"),
+                    
+                    tabPanel(tags$strong("Select Existing Client"),
                              
-                             selectInput("pop", "Select Population", choices = c("male general population", "female general population", "older adult", "primary care",
-                                                                                 "psychiatric", "Generalized Anxiety Disorder", "chronic musculoskeletal pain", 
-                                                                                 "coronary heart disease", "type 1 diabetes", "type 2 diabetes", "stroke")),
+                             sidebarLayout(
+                               sidebarPanel(
+                                 
+                                 uiOutput("client_dropdown"),
+                                 
+                                 actionButton("retrieve_client_data", "Select This Client", class = "submit_data"),
+                                 
+                                 tags$head(tags$style(".submit_data{color:#d35400;}"))
+                                 
+                               ),
+                               
+                               mainPanel(
+                                 
+                                 DT::dataTableOutput("selected_client_data_out")
+                                 
+                               ))
                              
-                             psychlytx::manual_data_UI("manual_data_id"),
-                             psychlytx::gad7_scale_UI("gad7_scale_id"),
-                             psychlytx::download_buttons_UI("download_buttons_id")
+                    ),
+                    
+                    tabPanel(tags$strong("Complete Scale Items"),
+                             
+                             psychlytx::analytics_posttherapy_UI("analytics_posttherapy"),
+                             psychlytx::gad7_scale_UI("gad7_scale"),
+                             psychlytx::manual_data_UI("manual_data"),
+                             psychlytx::calculate_subscale_UI("calculate_subscales"),
+                             psychlytx::collect_input_UI("collect_input_1"),
+                             psychlytx::combine_all_input_UI("combine_all_input")
+                             
        
                     ),
                     
-                    tabPanel(tags$strong("Customise Parameters"),
+                    tabPanel(tags$strong("Generate Clinical Report"),
+                             
+                             psychlytx::download_report_UI("download_report")
+                             
+                             
+                    ),
+                    
+                    tabPanel(tags$strong("Customisation (Optional)"),
                              fluidPage(
-                               
                                fluidRow(
                                  tabsetPanel(type = "pills",
                                              
                                              tabPanel("Reliable Change Method", width = 12,
-                                                      psychlytx::interval_widgets_UI("interval_widgets_id")
+                                                      psychlytx::method_widget_UI("method_widget")
                                              ),
                                              
                                              
                                              
                                              tabPanel("Mean", width = 12, 
-                                                      psychlytx::generate_mean_widget_UI("mean_widget_id")
+                                                      psychlytx::generate_mean_widget_UI("mean_widget_1")
                                              ),
                                              
                                              tabPanel("Sd", width = 12,
-                                                      psychlytx::stats_widgets_UI("sd_widgets_id")
+                                                      psychlytx::generate_sd_widget_UI("sd_widget_1")
                                              ),
                                              
                                              tabPanel("Test-Retest Reliability", width = 12,
-                                                      psychlytx::stats_widgets_UI("rel_widgets_id"),
-                                                      psychlytx::reliability_calc_UI("rel_calcs_id")
+                                                      psychlytx::generate_reliability_widget_UI("reliability_widget_1"),
+                                                      psychlytx::reliability_calc_UI("reliability_derivation")
                                                       
                                              ),
                                              
                                              tabPanel("Confidence Level", width = 12,
-                                                      psychlytx::confidence_level_UI("confidence_widget_id")
+                                                      psychlytx::confidence_level_UI("confidence_widget"),
+                                                      uiOutput("test")
                                                       
                                                       
                                              ),
-                                             tabPanel("User-Defined Cut-Off Scores", width = 12
+                                             tabPanel("User-Defined Cut-Off Scores", width = 12,
+                                                      psychlytx::generate_cutoff_widget_UI("cutoff_widget_1")
                                                 
                                                       
                                                       
@@ -132,97 +206,188 @@ ui<- function(request) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 server <- function(input, output, session) {
 
-  clientstatus_module<- callModule(psychlytx::analytics_clientstatus, "analytics_clientstatus_id")
-  callModule(psychlytx::analytics_widgets, "analytics_widgets_id", clientstatus_module)
-  callModule(psychlytx::analytics_newcustom_widgets, "analytics_newcustom_widgets_id")
-  
-  input_population<- reactive({ input$pop })
-  
-  
-  callModule(psychlytx::generate_mean_widget, "mean_widget_id", 
-             panel_name = "GAD-7 Total Scale", 
-             subscale_name = "GAD-7", 
-             population_quantity = 11,
-             populations = list("male_general_population", "female_general_population", "older_adult", "primary_care", "psychiatric", "Generalized_Anxiety_Disorder",
-                                "chronic_musculoskeletal_pain", "coronary_heart_disease", "type_1_diabetes", "type_2_diabetes", "stroke"), 
-             input_population = input_population,
-             means = list(3.01, 4.07, 2, 5.75, 10.86, 12.59, 2.6, 11.9, 4.7, 4.5, 3.87), sds = list(3.12, 3.53, 2.88, 4.76, 5.62, 3.96, 2.3, 5.3, 4.6, 4.9, 5.2), 
-             mean_sd_references = list("Hinz, Klein, Brähler, Glaesmer et al (2017)", "Hinz, Klein, Brähler, Glaesmer et al (2017)", "Wild, Eckl, Herzog, Niehoff et al (2012)",
-                                       "Jordan, Shedden-Mora & Löwe (2017)", "Beard & Björgvinsson (2014)", "Dear, Titov, Sunderland, McMillan, Anderson, Lorian & Robinson (2011)",
-                                       "Bair, Wu, Damush, Sutherland & Kroenke (2008)", "Conventry, Lovell, Dickens, Bower et al (2015)", "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)",
-                                       "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)", "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)"),
-             reliabilities = list(.83, .83, .83, .83, .83, .83, .83, .83, .83, .83, .83), 
-             reliability_references = list("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", 
-                                           "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                           "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                           "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)"),
-             cutoffs = list(c(5, 10, 15, 3.01, 3.01 + 3.12), c(5, 10, 15, 4.07, 4.07 + 3.53), c(5, 10, 15, 2, 2 + 2.88), c(5, 10, 15, 4.75, 4.75 + 4.76), 
-                            c(5, 10, 15, 10.86, 10.86 + 5.62), c(5, 10, 15, 12.59, 12.59 + 3.96), c(5, 10, 15, 2.6, 2.6 + 2.3),
-                            c(5, 10, 15, 11.9, 11.9 + 5.3), c(5, 10, 15, 4.7, 4.7 + 4.6), c(5, 10, 15, 4.5, 4.5 + 4.9), 
-                            c(5, 10, 15, 3.87, 3.87 + 4.52)), 
-             cutoff_names = list(rep(c("Mild", "Moderate: for further evaluation", "Severe", "Mean", "Mean + 1 Sd"), 11)),
-             cutoff_references = list(c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Hinz, Klein, Brähler, Glaesmer et al (2017)", "Hinz, Klein, Brähler, Glaesmer et al (2017)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Hinz, Klein, Brähler, Glaesmer et al (2017)", "Hinz, Klein, Brähler, Glaesmer et al (2017)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Wild, Eckl, Herzog, Niehoff et al (2012)", "Wild, Eckl, Herzog, Niehoff et al (2012)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Jordan, Shedden-Mora & Löwe (2017)", "Jordan, Shedden-Mora & Löwe (2017)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Beard & Björgvinsson (2014)", "Beard & Björgvinsson (2014)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Dear, Titov, Sunderland, McMillan, Anderson, Lorian & Robinson (2011)", "Dear, Titov, Sunderland, McMillan, Anderson, Lorian & Robinson (2011)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Bair, Wu, Damush, Sutherland & Kroenke (2008)", "Bair, Wu, Damush, Sutherland & Kroenke (2008)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Conventry, Lovell, Dickens, Bower et al (2015)", "Conventry, Lovell, Dickens, Bower et al (2015)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)", "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)" , "Fenwick, Rees, Homes-Truscott, Browne, Pouwer & Speight (2016)"),
-                                      c("Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)", "Spitzer, Kroenke, Williams & Löwe (2006)",
-                                        "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)" , "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)")),
-             cutoff_quantity = 5)
-  
-  
-  callModule(psychlytx::stats_widgets, "sd_widgets_id", list("GAD-7 Total Scale"), psychlytx::gad7_sds_df, psychlytx::gad7_refs_df, input_population)
-  callModule(psychlytx::stats_widgets, "rel_widgets_id", list("GAD-7 Total Scale"), psychlytx::gad7_rels_df, psychlytx::gad7_refs_rels_df, input_population)
-  callModule(psychlytx::reliability_calc, "reliability_calcs_id")
-  
-  callModule(psychlytx::gad7_scale, "gad7_scale_id")
-  
-  callModule(psychlytx::manual_data, "manual_data_id")
-  
-  callModule(psychlytx::download_buttons, "download_buttons_id")
-  
-  callModule(psychlytx::confidence_level, "confidence_widget_id")
-  
-  callModule(psychlytx::interval_widgets, "interval_widgets_id", list("GAD-7 Total Scale", "other scale"))
 
+    
+    
+  #Write to pre-therapy analytics data to db
+  
+  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy")
+  
+  observe({ 
+                       #pass the pretherapy analytics dataframe in and append the client table in db
+  dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE)
+  
+  
+  })
+  
+  
+  
+  callModule(psychlytx::reliability_calc, "reliability_derivation")
+  
+  confidence<- callModule(psychlytx::confidence_level, "confidence_widget")
+  
+  
+  #Yields the reliable change method (a string)
+  
+  method<- callModule(psychlytx::method_widget, "method_widget")
+  
+  
+  input_population<- reactive({ input$pop }) #Store the selected population
+  
+  
+  
+  scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
+  
+  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry)
+  
+  
+  #Make a list of aggregate scores across subscales (in this case there is only one)
+
+  aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales", manual_entry = manual_entry, item_index = list( c(1:7) ), aggregation_method = "sum")
+  
+  selected_client<- reactive({ input$client_selection }) #Store the id of the client selected in the dropdown
+  
+ ################################## 
+  
+  #For each subscale individually, collect the values from widgets and store them in a list 
+  
+  mean_input_1<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_1", input_population, psychlytx::gad7_info))
+  sd_input_1<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_1", input_population, psychlytx::gad7_info))
+  reliability_input_1<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_1", input_population, psychlytx::gad7_info))
+  cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::gad7_info))
+  
+  #Create list of input values for the first subscale 
+  #Need to extract the date from manual_entry data & need the first aggregate score
+  
+  input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, psychlytx::gad7_info$measure, psychlytx::gad7_info$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, 
+                            reliability_input_1, confidence, method, input_population, cutoff_input_1, 1)
+  
+  
+ #Currently, the code in between hashes must be written for each subscale 
+  
+ ##################################
+  
+  #Store each list of input values in a larger list object (i.e. all_input)
+  #If there were more than one subscale it would look like this: input_list<- reactive({ list( input_list_1(), input_list_2(), etc. ) })
+  #Have to store the list of sublists as a reactive object
+  
+  
+  input_list<- reactive({ list( input_list_1() ) })
+  
+  
+  #After creating the list of lists, flatten each sublist and set the names of sublist elements so that they are the same across lists -
+  # this will ensure we can iterate over the lists using purrr. So pass the input_list object to the combine_all_input module.
+  
+  
+  #Generate a dataframe with all necessary scale data (date, score, pts, se, ci etc.). This dataframe will be sent to the db
+  
+  client_data_to_db<- callModule(psychlytx::combine_all_input, "combine_all_input", input_list)
+  
+  
+  observe({ 
+    
+    #pass the client_data_to_db dataframe in and append the scale table in db
+    
+    dbWriteTable(pool, "scale",  data.frame(client_data_to_db()), row.names = FALSE, append = TRUE)
+    
+    
+  })
+  
+
+ 
+  
+  output$client_dropdown<- renderUI({
+  
+    
+    req(client_list)
+    
+    #The code below takes data from the db (for all clients linked to this clinician) and wrangles it into a
+    # nice dropdown for client selection. Selection returns the unique client id (not the client's name) so that
+    #the correct client info is subsequently pulled down from the db.
+    
+    client_list <- client_list %>%
+      tidyr::unite(dropdown_client, first_name, last_name, birth_date, sep = " ", remove = FALSE)
+    
+    client_list<- client_list %>%
+      collect  %>%
+      split( .$dropdown_client ) %>%    # Field that will be used for the labels
+      purrr::map(~.$client_id) #Field that will be returned when the clinician actually chooses the client
+    
+    selectInput(
+    inputId = "client_selection",
+    label = "Select Your Client",
+    choices = client_list,
+    selectize = FALSE)
+  
+
+  })
+  
+  
+  
+  selected_client_data<- eventReactive(input$retrieve_client_data, {
+    
+    
+    selected_client_sql<- "SELECT clinician_id, client_id, date, measure, subscale, score
+                           FROM scale
+                           WHERE client_id = ?client_id AND measure = ?measure;"
+    
+    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = "GAD-7")
+    
+    selected_client_data<- dbGetQuery(pool, selected_client_query)
+    
+    selected_client_data %>% dplyr::select(date, measure, subscale, score) %>% dplyr::rename_all(toupper)
+    
+    
+  })
+  
+  
+  output$selected_client_data_out<- DT::renderDataTable({
+    
+    
+    DT::datatable(
+      
+                   selected_client_data(), extensions = 'Scroller', rownames = FALSE,
+                  options = list(initComplete = JS(
+                    "function(settings, json) {",
+                    "$(this.api().table().header()).css({'background-color': '#827717', 'color': '#fff'});",
+                    "}"), deferRender = TRUE, scrollY = 200, scroller = TRUE, dom = "t" ) 
+                  
+                  )
+    
+    
+  })
+  
+  
+  
+  
+  
+  #Write post-therapy analytics data to db
+  
+  analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", selected_client)
+  
+  
+  observe({ 
+    
+    #pass the analytics dataframe in and append the client table in db
+    
+    dbWriteTable(pool, "posttherapy_analytics",  data.frame(analytics_posttherapy()), row.names = FALSE, append = TRUE)
+    
+    
+  })
+  
+  
+  
+  
+  
+  #The module below takes the specific client's data pulled from the db, creates a nested df and sends that df
+  #to the R Markdown report
+  
+  #callModule(psychlytx::download_report, "download_report", client_db_data)
+  
+
+  
   }
 
 
