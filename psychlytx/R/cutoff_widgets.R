@@ -95,7 +95,7 @@ generate_cutoff_widget <-function(input, output, session, title, measure, subsca
 
        #Set these relevant parameters as function arguments (need to do this or the code won't run).
 
-        function(cutoff_ids, cutoff_label_ids, cutoff_values, cutoff_labels, cutoff_references, cutoff_reference_ids) {
+        function(cutoff_value_ids, cutoff_label_ids, cutoff_values, cutoff_labels, cutoff_references, cutoff_reference_ids) {
           div(
           column(width = 2,
 

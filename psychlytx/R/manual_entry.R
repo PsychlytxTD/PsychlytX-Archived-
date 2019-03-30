@@ -11,24 +11,16 @@ manual_data_UI<- function(id) {
 
   ns<- NS(id) #Set the namespace
 
+
+
 tagList(
 
-fluidRow(
-  column(width = 12,
-         titlePanel(span(tagList(icon("edit", lib = "font-awesome")), h4(tags$b("Enter Item Scores")),
-                         tags$ul(
-                           tags$li(helpText(h5(tags$em(tags$b("Item scores appear when you complete the scale above.", style = "color:black"))))),
-                           tags$li(helpText(h5(tags$em(tags$b("You can also input the item scores directly below, separated by commas (e.g. 1,2,3).", style = "color:black")))))
-                         )
-         ))
-  )
-),
 
 fluidRow(
 
   column(width = 4,
 
-         textInput(ns('item_scores'), 'Item Scores', "0,1,2,etc")),
+         textInput(ns('item_scores'), 'Inputted Item Scores', "0,1,2,etc")),
 
 
 
@@ -40,13 +32,15 @@ fluidRow(
 
 fluidRow(
 
-  column(width = 2, offset = 9,
+  column(width = 4,
 
-actionButton(ns("submit_scores"), "Submit Scale Responses", class = "submit_data"),
+         actionButton(ns("submit_scores"), "Submit Scale Responses", class = "submit_data"),
 
-tags$head(tags$style(".submit_data{color:#d35400;}"))
+         tags$head(tags$style(".submit_data{color:#d35400;}"))
 
-  )))
+  ))
+
+)
 
 
 

@@ -4,11 +4,14 @@
 \alias{collect_input}
 \title{Collect subscale input}
 \usage{
-collect_input(input, output, session, measure, title, manual_entry,
-  aggregate_scores, mean_input, sd_input, reliability_input, confidence,
-  method, input_population, cutoff_input, subscale_number)
+collect_input(input, output, session, clinician_id, client_id, measure,
+  subscale, manual_entry, aggregate_scores, mean_input, sd_input,
+  reliability_input, confidence, method, input_population, cutoff_input,
+  subscale_number)
 }
 \arguments{
+\item{client_id}{A string indicating the client's unique id}
+
 \item{manual_entry}{A list containing the date and original item scores.}
 
 \item{aggregate_scores}{A list of aggregated subscale scores}
@@ -26,8 +29,6 @@ collect_input(input, output, session, measure, title, manual_entry,
 \item{input_population}{A string value indicating the reference population selected by the user}
 
 \item{cutoff_input}{A list containing the cutoff values, labels and references (widget inputs)}
-
-\item{id}{A string to create a unique namespace.}
 }
 \description{
 Store subscale widget input values in a list

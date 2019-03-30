@@ -20,7 +20,7 @@ collect_input_UI<-  function(id) {
 #'
 #' Store subscale widget input values in a list
 #'
-#' @param id A string to create a unique namespace.
+#' @param client_id A string indicating the client's unique id
 #'
 #' @param manual_entry A list containing the date and original item scores.
 #'
@@ -42,8 +42,8 @@ collect_input_UI<-  function(id) {
 
 
 
-collect_input<- function(input, output, session, measure, title, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, confidence, method, input_population, cutoff_input, subscale_number) {
+collect_input<- function(input, output, session, clinician_id, client_id, measure, subscale, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, confidence, method, input_population, cutoff_input, subscale_number) {
 
-reactive({ list( measure, title, manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), confidence(), method(), input_population(), cutoff_input() ) })
+reactive({ list( clinician_id, client_id(), measure, subscale, manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), confidence(), method(), input_population(), cutoff_input() ) })
 
 }
