@@ -32,7 +32,7 @@ onStop(function() {
 clinician_id<- '12345.000000' #Temp storage of client and clinician id
 
 
-################################ From db, pull in clients associated with the clinician, to be displayed in a dropdown
+################################ Querying code to be called when clinician clicks 'existing client' tab further down. To generate dropdown of clients.
 
 client_list_sql<- "SELECT clinician_id, client_id, first_name, last_name, birth_date
                                        FROM client
@@ -40,7 +40,6 @@ client_list_sql<- "SELECT clinician_id, client_id, first_name, last_name, birth_
 
 client_list_query<- sqlInterpolate(pool, client_list_sql, clinician_id = clinician_id)
 
-client_list<- dbGetQuery(pool, client_list_query)
 
 ################################
 
@@ -71,7 +70,7 @@ ui<- function(request) {
       br(),
       br(),
       tags$footer(tags$a(href = "http://psychlytx.com.au", target = "_blank", HTML("<br><center>"), "PsychlytX", tags$sup(icon("registered")), br(),
-                         "© Timothy Deitz 2018"))
+                         "© PsychlytX 2019"))
     )
   )
   
@@ -99,7 +98,7 @@ ui<- function(request) {
         tabItem(tabName = "Home",
                 fluidRow(
                   tabBox(
-                    id = "Box",
+                    id = "tabset",
                     width = 12,
                     tabPanel(tags$strong("Register New Client "),
                              psychlytx::analytics_pretherapy_UI("analytics_pretherapy")
@@ -107,7 +106,8 @@ ui<- function(request) {
                              
                     ),
                     
-                    tabPanel(tags$strong("Select Existing Client"),
+                    useShinyjs(),
+                    tabPanel(tags$strong("Select Existing Client", id = "element"), 
                              
                              sidebarLayout(
                                sidebarPanel(
@@ -116,13 +116,21 @@ ui<- function(request) {
                                  
                                  actionButton("retrieve_client_data", "Select This Client", class = "submit_data"),
                                  
-                                 tags$head(tags$style(".submit_data{color:#d35400;}"))
+                                 tags$head(tags$style(".submit_data{color:#d35400;}")),
+                                 
+                                 br(),
+                                 br(),
+                                 
+                                 psychlytx::select_population_UI("select_population"),
+                                 
+                                 textOutput("element")
                                  
                                ),
                                
                                mainPanel(
                                  
-                                 DT::dataTableOutput("selected_client_data_out")
+                                 DT::dataTableOutput("selected_client_data_out"),
+                                 verbatimTextOutput("client_selection_message")
                                  
                                ))
                              
@@ -151,12 +159,10 @@ ui<- function(request) {
                              fluidPage(
                                fluidRow(
                                  tabsetPanel(type = "pills",
-                                             
+                                        
                                              tabPanel("Reliable Change Method", width = 12,
                                                       psychlytx::method_widget_UI("method_widget")
                                              ),
-                                             
-                                             
                                              
                                              tabPanel("Mean", width = 12, 
                                                       psychlytx::generate_mean_widget_UI("mean_widget_1")
@@ -196,7 +202,7 @@ ui<- function(request) {
                   
                 ),
                 
-                column(span(tagList(icon("copyright", lib = "font-awesome")), "Timothy Deitz 2018 | PsychlytX") , offset = 4, width = 12)
+                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)
         ))))
   
 }
@@ -211,20 +217,42 @@ server <- function(input, output, session) {
 
     
     
+                                                               #Need clinician id to be available to module
+  
+  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) 
+  
+  
   #Write to pre-therapy analytics data to db
-  
-  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy")
-  
+                                                                                                           
   observe({ 
+    
+    client_check_sql<- "SELECT *
+                        FROM client
+                        WHERE first_name = ?inputted_first_name AND last_name = ?inputted_last_name AND birth_date = ?inputted_birth_date;"
+    
+    client_check_query<- sqlInterpolate(pool, client_check_sql, inputted_first_name = analytics_pretherapy()$first_name, 
+                                        inputted_last_name = analytics_pretherapy()$last_name, inputted_birth_date = analytics_pretherapy()$birth_date)
+    
+    client_check_data<- dbGetQuery(pool, client_check_query)
+    
+    if(length(client_check_data) == 0) {
+
                        #pass the pretherapy analytics dataframe in and append the client table in db
-  dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE)
+       dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE) ; showModal(modalDialog(title = "Registration Successful", 
+                                                        footer = modalButton("Okay"), "The client can now complete a measure using any PsychlytX web application."))
   
+    } else(showModal(modalDialog(title = "Registration Unsuccessful", footer = modalButton("Okay"), 
+                                 "An entry already exists for this client. Please check the details you inputted and resubmit.")))
   
   })
   
   
+  #If selected, derive reliability value from statistics
   
   callModule(psychlytx::reliability_calc, "reliability_derivation")
+  
+  
+  #Confidence level for intervals
   
   confidence<- callModule(psychlytx::confidence_level, "confidence_widget")
   
@@ -234,16 +262,17 @@ server <- function(input, output, session) {
   method<- callModule(psychlytx::method_widget, "method_widget")
   
   
-  input_population<- reactive({ input$pop }) #Store the selected population
+  
+  input_population<- callModule(psychlytx::select_population, "select_population")  #Store the selected population
   
   
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
   
-  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry)
+  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored in manual_entry for use by other modules
   
   
-  #Make a list of aggregate scores across subscales (in this case there is only one)
+  #Make a list of aggregate scores across subscales (in this case there is only one subscale)
 
   aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales", manual_entry = manual_entry, item_index = list( c(1:7) ), aggregation_method = "sum")
   
@@ -259,7 +288,6 @@ server <- function(input, output, session) {
   cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::gad7_info))
   
   #Create list of input values for the first subscale 
-  #Need to extract the date from manual_entry data & need the first aggregate score
   
   input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, psychlytx::gad7_info$measure, psychlytx::gad7_info$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, 
                             reliability_input_1, confidence, method, input_population, cutoff_input_1, 1)
@@ -298,16 +326,18 @@ server <- function(input, output, session) {
 
  
   
+  onclick( "element", client_list<- reactive({ dbGetQuery(pool, client_list_query) })  )
+  
+  
+  
   output$client_dropdown<- renderUI({
   
-    
-    req(client_list)
     
     #The code below takes data from the db (for all clients linked to this clinician) and wrangles it into a
     # nice dropdown for client selection. Selection returns the unique client id (not the client's name) so that
     #the correct client info is subsequently pulled down from the db.
     
-    client_list <- client_list %>%
+    client_list <- client_list() %>%
       tidyr::unite(dropdown_client, first_name, last_name, birth_date, sep = " ", remove = FALSE)
     
     client_list<- client_list %>%
@@ -317,7 +347,7 @@ server <- function(input, output, session) {
     
     selectInput(
     inputId = "client_selection",
-    label = "Select Your Client",
+    label = "Find Your Client",
     choices = client_list,
     selectize = FALSE)
   
@@ -337,18 +367,22 @@ server <- function(input, output, session) {
     
     selected_client_data<- dbGetQuery(pool, selected_client_query)
     
-    selected_client_data %>% dplyr::select(date, measure, subscale, score) %>% dplyr::rename_all(toupper)
     
+    if(length(selected_client_data)  < 1) {
+      return(NULL) } else {selected_client_data %>% dplyr::select(date, measure, subscale, score) %>% dplyr::rename_all(toupper) }
     
+  
   })
   
   
   output$selected_client_data_out<- DT::renderDataTable({
     
     
+    
     DT::datatable(
       
-                   selected_client_data(), extensions = 'Scroller', rownames = FALSE,
+                   selected_client_data(), 
+                   extensions = 'Scroller', rownames = FALSE,
                   options = list(initComplete = JS(
                     "function(settings, json) {",
                     "$(this.api().table().header()).css({'background-color': '#827717', 'color': '#fff'});",
@@ -360,7 +394,20 @@ server <- function(input, output, session) {
   })
   
   
-  
+  output$client_selection_message<- renderText({
+    
+    if(length(selected_client_data() >= 1)) {
+      
+      print("Client selected.")
+      
+    } else {
+      
+      print("No data to show yet for this client.")
+      
+    }
+    
+    
+  })
   
   
   #Write post-therapy analytics data to db
@@ -376,8 +423,6 @@ server <- function(input, output, session) {
     
     
   })
-  
-  
   
   
   

@@ -4,7 +4,7 @@
 \alias{analytics_pretherapy}
 \title{New or existing client status widget and headings}
 \usage{
-analytics_pretherapy(input, output, session)
+analytics_pretherapy(input, output, session, clinician_id)
 }
 \arguments{
 \item{id}{String to create a unique namespace.}

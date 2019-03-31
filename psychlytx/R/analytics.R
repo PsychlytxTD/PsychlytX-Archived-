@@ -32,14 +32,6 @@ analytics_pretherapy_UI<- function(id) {
                      selectInput(ns("education"), "Highest Education Level", c("", "No education", "Primary Education", "Secondary Education", "Post-Secondary/Tertiary Education",
                                                                                "Bachelor or Equivalent", "Master or Equivalent", "Doctoral or Equivalent"), width = '30%'),
 
-                     br(),
-
-                     selectInput("pop", "Which population below most closely matches the
-                                 characteristics of your client?", width = '70%',
-                                 choices = c("male general population", "female general population", "older adult",
-                                             "primary care", "psychiatric", "Generalized Anxiety Disorder",
-                                             "chronic musculoskeletal pain", "coronary heart disease",
-                                             "type 1 diabetes", "type 2 diabetes", "stroke")),
 
                      actionButton(ns("submit_analytics_pretherapy"), "Register Client")
 
@@ -62,7 +54,7 @@ analytics_pretherapy_UI<- function(id) {
 #'
 #' @export
 
-analytics_pretherapy<- function(input, output, session) {
+analytics_pretherapy<- function(input, output, session, clinician_id) {
 
   #Need to return input to make input parameters available
 
