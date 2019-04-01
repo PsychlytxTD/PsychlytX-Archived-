@@ -32,7 +32,8 @@ onStop(function() {
 clinician_id<- '12345.000000' #Temp storage of client and clinician id
 
 
-################################ Querying code to be called when clinician clicks 'existing client' tab further down. To generate dropdown of clients.
+
+# Querying code to be called when clinician clicks 'existing client' tab further down. To generate dropdown of clients.
 
 client_list_sql<- "SELECT clinician_id, client_id, first_name, last_name, birth_date
                                        FROM client
@@ -41,75 +42,51 @@ client_list_sql<- "SELECT clinician_id, client_id, first_name, last_name, birth_
 client_list_query<- sqlInterpolate(pool, client_list_sql, clinician_id = clinician_id)
 
 
-################################
 
 
 
 ui<- function(request) {
-  sidebar <- dashboardSidebar(
-    sidebarMenu(
-      br(),
-      menuItem("Home", icon = icon("line-chart"), tabName = "Home"),
-      menuItem("About PsychlytX", tabName = "About", icon = icon("info"), selected = TRUE),
-      menuItem("References", tabName = "References", icon = icon("book")),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      br(),
-      tags$footer(tags$a(href = "http://psychlytx.com.au", target = "_blank", HTML("<br><center>"), "PsychlytX", tags$sup(icon("registered")), br(),
-                         "© PsychlytX 2019"))
-    )
-  )
   
+
   dashboardPage(
-    dashboardHeader(title = span(tagList(tags$a(href = "http://psychlytx.com.au", "PsychlytX", style = "color: white; font-size: 26px; letter-spacing: 7.8px;font-weight: bolder;"), tags$sup("®"), "| Generalized Anxiety Disorder - 7-Item Scale (GAD-7)"), style = "color: white; letter-spacing: 1.8px;"), titleWidth = 820),
-    sidebar,
+    
+    header<- psychlytx::make_header_UI("header"), #Make the header
+    
+    sidebar <- psychlytx::make_sidebar_UI("sidebar"), #Make the sidebar
+    
     dashboardBody(
       
-      tags$head(            #Link to the css style sheet
-        tags$link(rel = "stylesheet", type = "text/css", href = "Styling.css")
-      ),
+      tags$head( 
+        
+        tags$link(rel = "stylesheet", type = "text/css", href = "Styling.css") #Link to the css style sheet
+        
+              ),
       
       tabItems(
-        tabItem(tabName = "About", br(), br(), br(), br(),br(), br(),br(),br(), br(),
-                column(12, offset = 4, h1(tags$a(href = "http://psychlytx.com.au", "Visit PsychlytX here.",  style = "color: #827717;")))
-        ),
         
-        tabItem(tabName = "References"
-                
-                
-        ),
+        about_tab<- psychlytx::make_about_tab_UI("about_tab"), #Make the 'About Psychlytx' tab
         
-        
+        references_tab<- psychlytx::make_references_tab_UI("references_tab"), #Make the references tab
         
         tabItem(tabName = "Home",
+                
                 fluidRow(
-                  tabBox(
-                    id = "tabset",
-                    width = 12,
+                  
+                 tabBox(id = "tabset", width = 12,
+                         
                     tabPanel(tags$strong("Register New Client "),
-                             psychlytx::analytics_pretherapy_UI("analytics_pretherapy")
+                             
+                             psychlytx::analytics_pretherapy_UI("analytics_pretherapy") #Make the client registration panel
                              
                              
                     ),
                     
                     useShinyjs(),
-                    tabPanel(tags$strong("Select Existing Client", id = "element"), 
+                    
+                    tabPanel(tags$strong("Select Existing Client", id = "trigger_query"), #Clicking on the 'existing client' tab sends query, pulling clients from db into dropdown menu
                              
                              sidebarLayout(
+                               
                                sidebarPanel(
                                  
                                  uiOutput("client_dropdown"),
@@ -121,9 +98,7 @@ ui<- function(request) {
                                  br(),
                                  br(),
                                  
-                                 psychlytx::select_population_UI("select_population"),
-                                 
-                                 textOutput("element")
+                                 psychlytx::select_population_UI("select_population")
                                  
                                ),
                                
@@ -156,54 +131,53 @@ ui<- function(request) {
                     ),
                     
                     tabPanel(tags$strong("Customisation (Optional)"),
+                             
                              fluidPage(
+                               
                                fluidRow(
+                                 
                                  tabsetPanel(type = "pills",
                                         
                                              tabPanel("Reliable Change Method", width = 12,
+                                                      
                                                       psychlytx::method_widget_UI("method_widget")
                                              ),
                                              
                                              tabPanel("Mean", width = 12, 
+                                                      
                                                       psychlytx::generate_mean_widget_UI("mean_widget_1")
                                              ),
                                              
                                              tabPanel("Sd", width = 12,
+                                                      
                                                       psychlytx::generate_sd_widget_UI("sd_widget_1")
                                              ),
                                              
                                              tabPanel("Test-Retest Reliability", width = 12,
+                                                      
                                                       psychlytx::generate_reliability_widget_UI("reliability_widget_1"),
+                                                      
                                                       psychlytx::reliability_calc_UI("reliability_derivation")
                                                       
                                              ),
                                              
                                              tabPanel("Confidence Level", width = 12,
-                                                      psychlytx::confidence_level_UI("confidence_widget"),
-                                                      uiOutput("test")
                                                       
+                                                      psychlytx::confidence_level_UI("confidence_widget")
                                                       
                                              ),
+                                             
                                              tabPanel("User-Defined Cut-Off Scores", width = 12,
+                                                      
                                                       psychlytx::generate_cutoff_widget_UI("cutoff_widget_1")
                                                 
-                                                      
-                                                      
                                              )
                                              
                                              
                                              
-                                 ))))
-
-                    
-                   )
-                  
-                  
-                  
-                ),
+                                 )))))),
                 
-                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)
-        ))))
+                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)))))
   
 }
 
@@ -214,9 +188,14 @@ ui<- function(request) {
 
 server <- function(input, output, session) {
 
-
-    
-    
+ callModule(psychlytx::make_sidebar, "sidebar")
+ callModule(psychlytx::make_sidebar, "sidebar")
+ callModule(psychlytx::make_header, "header")
+ 
+ callModule(psychlytx::make_about_tab, "about_tab")
+ callModule(psychlytx::make_references_tab, "references_tab")
+  
+  
                                                                #Need clinician id to be available to module
   
   analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) 
@@ -251,11 +230,9 @@ server <- function(input, output, session) {
   
   callModule(psychlytx::reliability_calc, "reliability_derivation")
   
-  
   #Confidence level for intervals
   
   confidence<- callModule(psychlytx::confidence_level, "confidence_widget")
-  
   
   #Yields the reliable change method (a string)
   
@@ -270,6 +247,7 @@ server <- function(input, output, session) {
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
   
   manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored in manual_entry for use by other modules
+  
   
   
   #Make a list of aggregate scores across subscales (in this case there is only one subscale)
@@ -318,7 +296,9 @@ server <- function(input, output, session) {
     
     #pass the client_data_to_db dataframe in and append the scale table in db
     
-    dbWriteTable(pool, "scale",  data.frame(client_data_to_db()), row.names = FALSE, append = TRUE)
+    dbWriteTable(pool, "scale",  data.frame(client_data_to_db()), row.names = FALSE, append = TRUE) ; 
+    showModal(modalDialog(title = "Successful Completion", footer = modalButton("Okay"), 
+                          "Responses have been submitted."))
     
     
   })
@@ -326,7 +306,7 @@ server <- function(input, output, session) {
 
  
   
-  onclick( "element", client_list<- reactive({ dbGetQuery(pool, client_list_query) })  )
+  onclick( "trigger_query", client_list<- reactive({ dbGetQuery( pool, client_list_query ) })  )
   
   
   
@@ -398,11 +378,11 @@ server <- function(input, output, session) {
     
     if(length(selected_client_data() >= 1)) {
       
-      print("Client selected.")
+      "Client selected."
       
     } else {
       
-      print("No data to show yet for this client.")
+      "No data to show yet for this client."
       
     }
     
@@ -412,14 +392,15 @@ server <- function(input, output, session) {
   
   #Write post-therapy analytics data to db
   
-  analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", selected_client)
+  analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client)
   
   
   observe({ 
     
     #pass the analytics dataframe in and append the client table in db
     
-    dbWriteTable(pool, "posttherapy_analytics",  data.frame(analytics_posttherapy()), row.names = FALSE, append = TRUE)
+    dbWriteTable(pool, "posttherapy_analytics",  data.frame(analytics_posttherapy()), row.names = FALSE, append = TRUE) ; 
+    showModal(modalDialog(title = "Successful Completion", footer = modalButton("Okay"), "End-of-therapy outcome data has been submitted."))
     
     
   })
