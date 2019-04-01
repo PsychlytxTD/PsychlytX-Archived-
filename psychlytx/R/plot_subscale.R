@@ -4,7 +4,7 @@
 #'
 #' @param subscale_df A dataframe containing only data for a particular subscale
 #'
-#' @param subscale_infoA list of subscale parameters
+#' @param subscale_info A list of subscale parameters
 #'
 #' @export
 #'

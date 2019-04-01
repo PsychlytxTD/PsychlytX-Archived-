@@ -10,12 +10,10 @@ analytics_pretherapy_UI<- function(id) {
 
   ns<- NS(id)
 
-  tagList(
-
                    tagList(
                      sidebarLayout(
                       sidebarPanel(width = 9,
-                     h3("Please Provide Some Demographic Information"),
+                     h3("Please provide demographic information"),
                      br(),
                      textInput(ns("first_name"), "First Name", width = '50%'),
                      textInput(ns("last_name"), "Last Name", width = '50%'),
@@ -39,7 +37,7 @@ analytics_pretherapy_UI<- function(id) {
 
                      mainPanel()
 
-                   )))
+                   ))
 
 
 }
@@ -118,6 +116,10 @@ analytics_posttherapy_UI<- function(id) {
 
   ns<- NS(id)
 
+  tagList(
+
+    checkboxGroupInput(ns("last_assessment"), "", choices = c("I am administering a measure to this client
+                                                                               for the last time" = "last")),
 
     conditionalPanel(condition = "input.last_assessment == 'last'", ns = ns,
 
@@ -125,7 +127,7 @@ analytics_posttherapy_UI<- function(id) {
                        sidebarLayout(
                          sidebarPanel(width = 9,
                                       tagList(
-                                        h3("Before Proceeding, Please Provide Important Information About Clinical Outcomes"),
+                                        h3("Before proceeding, please provide important information about clinical outcomes"),
                                         br(),
                                         selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", psychlytx::diagnosis_list, width = '60%'),
                                         selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", psychlytx::diagnosis_list, multiple = TRUE, width = '60%'),
@@ -147,7 +149,7 @@ analytics_posttherapy_UI<- function(id) {
 
                          mainPanel()
 
-                       )))
+                       ))))
 
 
 }
@@ -162,7 +164,7 @@ analytics_posttherapy_UI<- function(id) {
 #'
 #' @export
 
-analytics_posttherapy<- function(input, output, session, selected_client) {
+analytics_posttherapy<- function(input, output, session, clinician_id, selected_client) {
 
   #Need to return input to make input parameters available
 
@@ -172,9 +174,7 @@ analytics_posttherapy<- function(input, output, session, selected_client) {
     #For now use temp vars to check that writing works: in reality, at clinician argument to function
     # and bring it in from Shiny Proxy login details
 
-    clinician_id<- 12345
-
-    client_id<- selected_client
+    client_id<- selected_client()
 
     posttherapy_analytics_items<- list( req(clinician_id), req(client_id), req(input$principal_diagnosis), req(input$secondary_diagnosis), req(input$referrer), req(input$attendance_schedule), req(input$non_attendances),
           req(input$attendances), req(input$premature_dropout), req(input$therapy), req(input$funding), req(input$out_of_pocket) ) %>% purrr::set_names(c("clinician_id", "client_id", "principal_diagnosis",
