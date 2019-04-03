@@ -33,18 +33,6 @@ clinician_id<- '12345.000000' #Temp storage of client and clinician id
 
 
 
-# Querying code to be called when clinician clicks 'existing client' tab further down. To generate dropdown of clients.
-
-client_list_sql<- "SELECT clinician_id, client_id, first_name, last_name, birth_date
-                                       FROM client
-                                       WHERE clinician_id = ?clinician_id;"
-
-client_list_query<- sqlInterpolate(pool, client_list_sql, clinician_id = clinician_id)
-
-
-
-
-
 ui<- function(request) {
   
 
@@ -89,43 +77,45 @@ ui<- function(request) {
                                
                                sidebarPanel(
                                  
-                                 uiOutput("client_dropdown"),
+                                 psychlytx::make_client_dropdown_UI("dropdown"),
                                  
-                                 actionButton("retrieve_client_data", "Select This Client", class = "submit_data"),
-                                 
-                                 tags$head(tags$style(".submit_data{color:#d35400;}")),
-                                 
-                                 br(),
-                                 br(),
+                                 psychlytx::retrive_selected_client_UI("retrieve_selected_client"),
                                  
                                  psychlytx::select_population_UI("select_population")
                                  
                                ),
                                
                                mainPanel(
-                                 
+                               
                                  DT::dataTableOutput("selected_client_data_out"),
-                                 verbatimTextOutput("client_selection_message")
-                                 
-                               ))
+                                 verbatimTextOutput("client_data_availability_message")
+                               
+                               )
+                               
+                               )
                              
                     ),
                     
                     tabPanel(tags$strong("Complete Scale Items"),
                              
-                             psychlytx::analytics_posttherapy_UI("analytics_posttherapy"),
-                             psychlytx::gad7_scale_UI("gad7_scale"),
-                             psychlytx::manual_data_UI("manual_data"),
-                             psychlytx::calculate_subscale_UI("calculate_subscales"),
-                             psychlytx::collect_input_UI("collect_input_1"),
-                             psychlytx::combine_all_input_UI("combine_all_input")
+                             psychlytx::analytics_posttherapy_UI("analytics_posttherapy"), #End-of-therapy clinical outcomes panel
+                             
+                             psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
+                             
+                             psychlytx::manual_data_UI("manual_data"), #Items of the specific measure are passed here as a string of numbers
+                             
+                             psychlytx::calculate_subscale_UI("calculate_subscales"), #Calculate all aggregate subscale scores for the measure
+                             
+                             psychlytx::collect_input_UI("collect_input_1"), #Collect all input for a subscale
+                             
+                             psychlytx::combine_all_input_UI("combine_all_input") #Combine collected inputs from all subscales
                              
        
                     ),
                     
                     tabPanel(tags$strong("Generate Clinical Report"),
                              
-                             psychlytx::download_report_UI("download_report")
+                             psychlytx::download_report_UI("download_report") #Report download
                              
                              
                     ),
@@ -140,36 +130,36 @@ ui<- function(request) {
                                         
                                              tabPanel("Reliable Change Method", width = 12,
                                                       
-                                                      psychlytx::method_widget_UI("method_widget")
+                                                      psychlytx::method_widget_UI("method_widget") #Reliable change method widget for one subscale
                                              ),
                                              
                                              tabPanel("Mean", width = 12, 
                                                       
-                                                      psychlytx::generate_mean_widget_UI("mean_widget_1")
+                                                      psychlytx::generate_mean_widget_UI("mean_widget_1") #Mean widget for one subscale
                                              ),
                                              
                                              tabPanel("Sd", width = 12,
                                                       
-                                                      psychlytx::generate_sd_widget_UI("sd_widget_1")
+                                                      psychlytx::generate_sd_widget_UI("sd_widget_1") #Sd widget for one subscale
                                              ),
                                              
                                              tabPanel("Test-Retest Reliability", width = 12,
                                                       
-                                                      psychlytx::generate_reliability_widget_UI("reliability_widget_1"),
+                                                      psychlytx::generate_reliability_widget_UI("reliability_widget_1"), #Reliability widget for one subscale
                                                       
-                                                      psychlytx::reliability_calc_UI("reliability_derivation")
+                                                      psychlytx::reliability_calc_UI("reliability_derivation") #Derive reliability from stats (if required)
                                                       
                                              ),
                                              
                                              tabPanel("Confidence Level", width = 12,
                                                       
-                                                      psychlytx::confidence_level_UI("confidence_widget")
+                                                      psychlytx::confidence_level_UI("confidence_widget") #Confidence level widget for one subscale
                                                       
                                              ),
                                              
                                              tabPanel("User-Defined Cut-Off Scores", width = 12,
                                                       
-                                                      psychlytx::generate_cutoff_widget_UI("cutoff_widget_1")
+                                                      psychlytx::generate_cutoff_widget_UI("cutoff_widget_1") #Cutoff widgets for one subscale
                                                 
                                              )
                                              
@@ -187,74 +177,50 @@ ui<- function(request) {
 
 
 server <- function(input, output, session) {
+  
 
- callModule(psychlytx::make_sidebar, "sidebar")
- callModule(psychlytx::make_sidebar, "sidebar")
- callModule(psychlytx::make_header, "header")
+ callModule(psychlytx::make_sidebar, "sidebar") #Make sidebar
  
- callModule(psychlytx::make_about_tab, "about_tab")
- callModule(psychlytx::make_references_tab, "references_tab")
+ callModule(psychlytx::make_header, "header") #Make header
+ 
+ callModule(psychlytx::make_about_tab, "about_tab") #Make 'About' tab
+ 
+ callModule(psychlytx::make_references_tab, "references_tab") #Make references tab
   
   
-                                                               #Need clinician id to be available to module
+                                                                                                          #Register a new client with pretherapy analytics data. Module 
+                                                                                                          #creates unique client id. Need clinician id needs to be available 
+                                                                                                          #to module so pass it in.
   
-  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) 
+ analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) 
   
   
-  #Write to pre-therapy analytics data to db
-                                                                                                           
-  observe({ 
-    
-    client_check_sql<- "SELECT *
-                        FROM client
-                        WHERE first_name = ?inputted_first_name AND last_name = ?inputted_last_name AND birth_date = ?inputted_birth_date;"
-    
-    client_check_query<- sqlInterpolate(pool, client_check_sql, inputted_first_name = analytics_pretherapy()$first_name, 
-                                        inputted_last_name = analytics_pretherapy()$last_name, inputted_birth_date = analytics_pretherapy()$birth_date)
-    
-    client_check_data<- dbGetQuery(pool, client_check_query)
-    
-    if(length(client_check_data) == 0) {
+ psychlytx::write_pretherapy_analytics_to_db(pool, analytics_pretherapy) #Write pre-therapy analytics data to db
+  
+  
+  callModule(psychlytx::reliability_calc, "reliability_derivation")  #If selected, derive reliability value from statistics
+  
 
-                       #pass the pretherapy analytics dataframe in and append the client table in db
-       dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE) ; showModal(modalDialog(title = "Registration Successful", 
-                                                        footer = modalButton("Okay"), "The client can now complete a measure using any PsychlytX web application."))
+  confidence<- callModule(psychlytx::confidence_level, "confidence_widget")  #Confidence level for intervals
   
-    } else(showModal(modalDialog(title = "Registration Unsuccessful", footer = modalButton("Okay"), 
-                                 "An entry already exists for this client. Please check the details you inputted and resubmit.")))
-  
-  })
+
+  method<- callModule(psychlytx::method_widget, "method_widget") #Reliable change method (a string)
   
   
-  #If selected, derive reliability value from statistics
-  
-  callModule(psychlytx::reliability_calc, "reliability_derivation")
-  
-  #Confidence level for intervals
-  
-  confidence<- callModule(psychlytx::confidence_level, "confidence_widget")
-  
-  #Yields the reliable change method (a string)
-  
-  method<- callModule(psychlytx::method_widget, "method_widget")
-  
-  
-  
-  input_population<- callModule(psychlytx::select_population, "select_population")  #Store the selected population
-  
+  input_population<- callModule(psychlytx::select_population, "select_population")  #Store the selected population for downstream use in other modules
   
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
   
+  
   manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored in manual_entry for use by other modules
   
   
+  aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  
+                                manual_entry = manual_entry, item_index = list( psychlytx::gad7_info$items ), 
+                                aggregation_method = "sum")                                #Make a list of aggregate scores across subscales 
+                                                                                           #(in this case there is only one subscale)
   
-  #Make a list of aggregate scores across subscales (in this case there is only one subscale)
-
-  aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales", manual_entry = manual_entry, item_index = list( c(1:7) ), aggregation_method = "sum")
-  
-  selected_client<- reactive({ input$client_selection }) #Store the id of the client selected in the dropdown
   
  ################################## 
   
@@ -265,7 +231,7 @@ server <- function(input, output, session) {
   reliability_input_1<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_1", input_population, psychlytx::gad7_info))
   cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::gad7_info))
   
-  #Create list of input values for the first subscale 
+  #Create list of input values for a subscale 
   
   input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, psychlytx::gad7_info$measure, psychlytx::gad7_info$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, 
                             reliability_input_1, confidence, method, input_population, cutoff_input_1, 1)
@@ -275,135 +241,53 @@ server <- function(input, output, session) {
   
  ##################################
   
-  #Store each list of input values in a larger list object (i.e. all_input)
-  #If there were more than one subscale it would look like this: input_list<- reactive({ list( input_list_1(), input_list_2(), etc. ) })
+
   #Have to store the list of sublists as a reactive object
   
   
-  input_list<- reactive({ list( input_list_1() ) })
+  input_list<- reactive({ list( input_list_1() ) })  #Store each list of input values in a larger list object (i.e. all_input). If there were more than one 
+                                                     #subscale it would look like this: input_list<- reactive({ list( input_list_1(), input_list_2(), etc. ) })
+                                                     #After creating the list of lists, flatten each sublist and set the names of sublist elements so that they 
+                                                     #are the same across lists - this will ensure we can iterate over the lists using purrr. 
+                                                     #So pass the input_list object to the combine_all_input module.
   
   
-  #After creating the list of lists, flatten each sublist and set the names of sublist elements so that they are the same across lists -
-  # this will ensure we can iterate over the lists using purrr. So pass the input_list object to the combine_all_input module.
+  
+  measure_data<- callModule(psychlytx::combine_all_input, "combine_all_input", input_list)  #Generate a dataframe with all necessary scale data (date, score, pts, se,
+                                                                                            #ci etc.). This dataframe will be sent to the db
   
   
-  #Generate a dataframe with all necessary scale data (date, score, pts, se, ci etc.). This dataframe will be sent to the db
-  
-  client_data_to_db<- callModule(psychlytx::combine_all_input, "combine_all_input", input_list)
-  
-  
-  observe({ 
-    
-    #pass the client_data_to_db dataframe in and append the scale table in db
-    
-    dbWriteTable(pool, "scale",  data.frame(client_data_to_db()), row.names = FALSE, append = TRUE) ; 
-    showModal(modalDialog(title = "Successful Completion", footer = modalButton("Okay"), 
-                          "Responses have been submitted."))
-    
-    
-  })
-  
+  psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
 
- 
-  
-  onclick( "trigger_query", client_list<- reactive({ dbGetQuery( pool, client_list_query ) })  )
-  
-  
-  
-  output$client_dropdown<- renderUI({
-  
-    
-    #The code below takes data from the db (for all clients linked to this clinician) and wrangles it into a
-    # nice dropdown for client selection. Selection returns the unique client id (not the client's name) so that
-    #the correct client info is subsequently pulled down from the db.
-    
-    client_list <- client_list() %>%
-      tidyr::unite(dropdown_client, first_name, last_name, birth_date, sep = " ", remove = FALSE)
-    
-    client_list<- client_list %>%
-      collect  %>%
-      split( .$dropdown_client ) %>%    # Field that will be used for the labels
-      purrr::map(~.$client_id) #Field that will be returned when the clinician actually chooses the client
-    
-    selectInput(
-    inputId = "client_selection",
-    label = "Find Your Client",
-    choices = client_list,
-    selectize = FALSE)
-  
 
-  })
+  onclick( "trigger_query", 
+           
+           client_list<- psychlytx::pull_clients_for_dropdown( pool, clinician_id )  #Query client table in db when tab is clicked - to create dropdown list
+           
+           ) 
+  
+  
+ selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list)
   
   
   
-  selected_client_data<- eventReactive(input$retrieve_client_data, {
-    
-    
-    selected_client_sql<- "SELECT clinician_id, client_id, date, measure, subscale, score
-                           FROM scale
-                           WHERE client_id = ?client_id AND measure = ?measure;"
-    
-    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = "GAD-7")
-    
-    selected_client_data<- dbGetQuery(pool, selected_client_query)
-    
-    
-    if(length(selected_client_data)  < 1) {
-      return(NULL) } else {selected_client_data %>% dplyr::select(date, measure, subscale, score) %>% dplyr::rename_all(toupper) }
-    
   
-  })
+  selected_client_data<- callModule(psychlytx::retrive_selected_client, "retrieve_selected_client", pool, 
+                                    selected_client, psychlytx::gad7_info$measure)
   
   
-  output$selected_client_data_out<- DT::renderDataTable({
-    
-    
-    
-    DT::datatable(
-      
-                   selected_client_data(), 
-                   extensions = 'Scroller', rownames = FALSE,
-                  options = list(initComplete = JS(
-                    "function(settings, json) {",
-                    "$(this.api().table().header()).css({'background-color': '#827717', 'color': '#fff'});",
-                    "}"), deferRender = TRUE, scrollY = 200, scroller = TRUE, dom = "t" ) 
-                  
-                  )
-    
-    
-  })
   
+  output$selected_client_data_out<- psychlytx::show_selected_client_scores( selected_client_data )
   
-  output$client_selection_message<- renderText({
-    
-    if(length(selected_client_data() >= 1)) {
-      
-      "Client selected."
-      
-    } else {
-      
-      "No data to show yet for this client."
-      
-    }
-    
-    
-  })
+  output$client_data_availability_message<- psychlytx::show_data_availability_message( selected_client_data )
   
   
   #Write post-therapy analytics data to db
   
   analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client)
   
-  
-  observe({ 
-    
-    #pass the analytics dataframe in and append the client table in db
-    
-    dbWriteTable(pool, "posttherapy_analytics",  data.frame(analytics_posttherapy()), row.names = FALSE, append = TRUE) ; 
-    showModal(modalDialog(title = "Successful Completion", footer = modalButton("Okay"), "End-of-therapy outcome data has been submitted."))
-    
-    
-  })
+  psychlytx::write_posttherapy_to_db(pool, analytics_posttherapy)
+
   
   
   

@@ -9,7 +9,7 @@ plot_subscale(subscale_df, subscale_info)
 \arguments{
 \item{subscale_df}{A dataframe containing only data for a particular subscale}
 
-\item{subscale_infoA}{list of subscale parameters}
+\item{subscale_info}{A list of subscale parameters}
 }
 \description{
 Plot an individual subscale
