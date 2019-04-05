@@ -8,6 +8,7 @@
 
 make_change_variable<- function( subscale_df ) {
 
+
 #Make logical vector indicating whether change is statistically reliable
 
 status<- subscale_df$score > lag( subscale_df$ci_upper ) | subscale_df$score < lag( subscale_df$ci_lower )

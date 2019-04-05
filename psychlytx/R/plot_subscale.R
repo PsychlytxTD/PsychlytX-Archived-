@@ -42,19 +42,15 @@ plot_subscale <- function( subscale_df, subscale_info) {
 
   ymin_cutoff_5 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )]
 
-  ymax_cutoff_5 <- subscale_df$cutoff_value_6[length( subscale_df$cutoff_value_6 )] - 0.1
-
-  ymin_cutoff_6 <- subscale_df$cutoff_value_6[length( subscale_df$cutoff_value_6 )]
-
-  ymax_cutoff_6 <- Inf
+  ymax_cutoff_5 <- Inf
 
 
   #Need to make sure confidence intervals don't disappear from plot - so manually increase y-axis limits
   #to the max/min score plus/minus 10% (this should be enough)
 
-  y_axis_upper_expansion<- params_list$max_score + ( params_list$max_score * 0.1 )
+  y_axis_upper_expansion<- subscale_info$max_score + ( subscale_info$max_score * 0.1 )
 
-  y_axis_lower_expansion<- params_list$min_score - ( params_list$min_score * 0.1 )
+  y_axis_lower_expansion<- subscale_info$min_score - ( subscale_info$min_score * 0.1 )
 
 
   #Need to increase space between 0 and first tick on x-axis to make space for cutoff labels
@@ -64,9 +60,9 @@ plot_subscale <- function( subscale_df, subscale_info) {
 
   #Plot breaks & break labs - need to replace this with the minimum and maximum possible scores on the scale
 
-  plotting_increment <- params_list$max_score * 0.2
+  plotting_increment <- subscale_info$max_score * 0.2
 
-  plotting_breaks <- seq( from = params_list$min_score, to = params_list$max_score, by = round(plotting_increment, 0 ) )
+  plotting_breaks <- seq( from = subscale_info$min_score, to = subscale_info$max_score, by = round(plotting_increment, 0 ) )
 
   plotting_break_labels <- paste( plotting_breaks )
 
@@ -118,15 +114,6 @@ plot_subscale <- function( subscale_df, subscale_info) {
       ymax = ymax_cutoff_5,
       alpha = 0.8,
       fill = "#d95f0e"
-    ) + annotate(
-      "rect",
-      xmin = -Inf,
-      xmax = Inf,
-      #Make the cutoff shading rectangles
-      ymin = ymin_cutoff_6,
-      ymax = ymax_cutoff_6,
-      alpha = 0.8,
-      fill = "#993404"
     ) + geom_errorbar(
       aes(ymin = ci_lower, ymax = ci_upper),
       #Make error bars
@@ -172,7 +159,7 @@ plot_subscale <- function( subscale_df, subscale_info) {
     ) + ggrepel::geom_label_repel(aes(label = paste0(subscale_df$score)), #Make labels for scores
                                   size = 4, family = "Palatino") + scale_y_continuous(breaks = plotting_breaks, #Customise y-axis breaks and labels
                                   labels = plotting_break_labels) + scale_x_chron(breaks = subscale_df$date, #Customise x-axis date breaks and labels to be the same as the data
-                                  format = "%d/%m/%Y") + xlab("Date") + ylab(paste(params_list$subscale_name, "Score")) #Make x and y plot labels sentence case
+                                  format = "%d/%m/%Y") + xlab("Date") + ylab(paste(subscale_info$subscale_name, "Score")) #Make x and y plot labels sentence case
 
 
   #Position cutoff labels
@@ -224,16 +211,6 @@ plot_subscale <- function( subscale_df, subscale_info) {
       y = cutoff_value_5
     ),
     #Position cutoff label 5
-    nudge_y = 0.7,
-    family = "Palatino",
-    size = 5
-  ) + geom_text(
-    aes(
-      label = cutoff_label_6,
-      x = as.Date(x_axis_lower_expansion),
-      y = cutoff_value_6
-    ),
-    #Position cutoff label 6
     nudge_y = 0.7,
     family = "Palatino",
     size = 5

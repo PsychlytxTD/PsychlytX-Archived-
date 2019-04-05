@@ -43,17 +43,13 @@ retrive_selected_client<- function(input, output, session, pool, selected_client
     eventReactive(input$retrieve_client_data, {
 
 
-    selected_client_sql<- "SELECT clinician_id, client_id, date, measure, subscale, score
+    selected_client_sql<- "SELECT *
     FROM scale
     WHERE client_id = ?client_id AND measure = ?measure;"
 
     selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = measure)
 
-    selected_client_data<- dbGetQuery(pool, selected_client_query)
-
-
-    if(length(selected_client_data)  < 1) {
-      return(NULL) } else {selected_client_data %>% dplyr::select(date, measure, subscale, score) %>% dplyr::rename_all(toupper) }
+    dbGetQuery(pool, selected_client_query)
 
 
   })

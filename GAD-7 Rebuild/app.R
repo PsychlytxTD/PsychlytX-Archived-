@@ -22,6 +22,7 @@ pool <- dbPool( #Set up the pool connection management
   password = "e2534e41-bbb6-4e2b-b687-71c5be7c7d35"
 )
 
+
 onStop(function() { 
                     #Close pool object when session ends
   poolClose(pool)
@@ -88,6 +89,7 @@ ui<- function(request) {
                                mainPanel(
                                
                                  DT::dataTableOutput("selected_client_data_out"),
+                                 
                                  verbatimTextOutput("client_data_availability_message")
                                
                                )
@@ -267,7 +269,7 @@ server <- function(input, output, session) {
            ) 
   
   
- selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list)
+  selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list)
   
   
   
@@ -289,12 +291,10 @@ server <- function(input, output, session) {
   psychlytx::write_posttherapy_to_db(pool, analytics_posttherapy)
 
   
-  
-  
   #The module below takes the specific client's data pulled from the db, creates a nested df and sends that df
   #to the R Markdown report
   
-  #callModule(psychlytx::download_report, "download_report", client_db_data)
+  callModule( psychlytx::download_report, "download_report", selected_client_data )
   
 
   

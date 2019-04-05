@@ -2,13 +2,13 @@
 % Please edit documentation in R/submit_report.R
 \name{download_report}
 \alias{download_report}
-\title{Submit db_database db_data to Report}
+\title{Submit Nested Data to Report}
 \usage{
-download_report(input, output, session, db_data)
+download_report(input, output, session, selected_client_data)
 }
 \arguments{
-\item{db_data}{An unnested dataframe pulled from the database containing all timepoint scores for an individual on a specific measure.}
+\item{selected_client_data}{An unnested dataframe pulled from the database containing all timepoint scores for an individual on a specific measure.}
 }
 \description{
-Wrangle db_data pulled from db_database and pass it to an R Markdown report
+Wrangle selected_client_data pulled from database and pass it to an R Markdown report
 }

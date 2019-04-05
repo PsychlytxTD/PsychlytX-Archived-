@@ -2,7 +2,7 @@
 % Please edit documentation in R/submit_report.R
 \name{download_report_UI}
 \alias{download_report_UI}
-\title{Submit db_database db_data to Report}
+\title{Submit Nested Data to Report}
 \usage{
 download_report_UI(id)
 }
@@ -10,5 +10,5 @@ download_report_UI(id)
 \item{id}{String to create a unique namespace.}
 }
 \description{
-Wrangle db_data pulled from db_database and pass it to an R Markdown report
+Wrangle selected_client_data pulled from database and pass it to an R Markdown report
 }
