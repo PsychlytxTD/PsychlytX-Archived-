@@ -30,7 +30,7 @@ onStop(function() {
 })
 
 
-clinician_id<- '12345.000000' #Temp storage of client and clinician id
+clinician_id<- "a71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
 
 
 

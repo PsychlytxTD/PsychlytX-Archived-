@@ -44,5 +44,5 @@ gad7_info<- list(  title = "GAD-7", #Title can contain white space. For insertio
                                               "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)" , "Schmid, Arnold, Jones, Ritter, Sapp & Van Puymbroeck (2015)")),
                    cutoff_quantity = 5,
                    items = 1:7,
-                   max_score = 21,
+                   max_score = 30,
                    min_score = 0)

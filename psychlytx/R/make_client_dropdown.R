@@ -30,7 +30,11 @@ make_client_dropdown<- function(input, output, session, client_list) {
 
   output$client_dropdown<- renderUI({
 
+    validate(need(length(client_list()) >= 1, "You do not yet have any existing clients. Please register a client."))
+
     ns <- session$ns
+
+
 
     selectInput(
       inputId = ns("client_selection"),

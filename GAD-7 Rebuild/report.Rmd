@@ -18,10 +18,13 @@ params:
 
 ---
 
-```{r}
+```{r, results = "asis"}
 
   
-params$report_data
+
+
+print( params$report_data$plot[[1]] )
+  
 
 
 ```
