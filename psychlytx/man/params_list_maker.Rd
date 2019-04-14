@@ -7,7 +7,8 @@
 params_list_maker(title, measure, subscale, population_quantity,
   populations, input_population, sds, means, mean_sd_references,
   reliabilities, reliability_references, cutoff_values, cutoff_labels,
-  cutoff_references, cutoff_quantity, items, max_score, min_score)
+  cutoff_references, cutoff_quantity, items, max_score, min_score,
+  description)
 }
 \arguments{
 \item{population_quantity}{A numeric value of possible populations from which the user can select.}
@@ -27,6 +28,14 @@ params_list_maker(title, measure, subscale, population_quantity,
 \item{cutoff_references}{A list of strings indicating the references for each reliability value by population.}
 
 \item{cutoff_quantity}{A numeric value indicating the number of cutoff scores for the subscale.}
+
+\item{items}{A numeric vector representing an item index for the subscale.}
+
+\item{max_score}{A numeric value indicating maximum possible score on the subscale.}
+
+\item{min_score}{A numeric value indicating minimum possible score on the subscale.}
+
+\item{description}{A description of subscale's properties, to display in report.}
 
 \item{subscale_name}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
 

@@ -8,7 +8,7 @@ generate_mean_widget(input, output, session, title, measure, subscale,
   population_quantity, populations, input_population, sds, means,
   mean_sd_references, reliabilities, reliability_references, cutoff_values,
   cutoff_labels, cutoff_references, cutoff_quantity, items, max_score,
-  min_score)
+  min_score, description)
 }
 \arguments{
 \item{title}{A string (white space allowed) indicating the name of the subscale, to be used as a panel title.}
@@ -38,6 +38,14 @@ generate_mean_widget(input, output, session, title, measure, subscale,
 \item{cutoff_references}{A list of strings indicating the references for each reliability value by population.}
 
 \item{cutoff_quantity}{A numeric value indicating the number of cutoff scores for the subscale.}
+
+\item{items}{A numeric vector representing an item index for the subscale.}
+
+\item{max_score}{A numeric value indicating maximum possible score on the subscale.}
+
+\item{min_score}{A numeric value indicating minimum possible score on the subscale.}
+
+\item{description}{A description of subscale's properties, to display in report.}
 }
 \description{
 Generates the widget with correct default values for the mean widget and references.

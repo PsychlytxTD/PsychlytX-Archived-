@@ -1,4 +1,4 @@
-gad7_info<- list(  title = "GAD-7", #Title can contain white space. For insertion into widget headings, plot titles etc.
+gad7_info<- list(  title = "Generalized Anxiety Disorder 7-Item Scale (GAD-7)", #Title can contain white space. For insertion into widget headings, plot titles etc.
                    measure = "GAD-7", #The overal measure (which may contain subscales)
                    subscale = "GAD-7", #The specific subscale of the measure.
                    population_quantity = 11,
@@ -45,4 +45,7 @@ gad7_info<- list(  title = "GAD-7", #Title can contain white space. For insertio
                    cutoff_quantity = 5,
                    items = 1:7,
                    max_score = 30,
-                   min_score = 0)
+                   min_score = 0,
+                   description = readr::read_file(
+                     "GAD7.md"
+                   ))

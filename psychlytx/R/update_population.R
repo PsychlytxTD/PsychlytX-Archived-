@@ -11,12 +11,7 @@ select_population_UI<- function(id) {
 
   ns<- NS(id)
 
-  selectInput(ns("population"), "To which population does your client most closely belong?",
-              choices = c("male general population", "female general population", "older adult",
-                          "primary care", "psychiatric", "Generalized Anxiety Disorder",
-                          "chronic musculoskeletal pain", "coronary heart disease",
-                          "type 1 diabetes", "type 2 diabetes", "stroke"))
-
+  uiOutput(ns("select_population"))
 
 }
 
@@ -29,7 +24,25 @@ select_population_UI<- function(id) {
 #'
 #' @export
 
-select_population<- function(input, output, session) {
+select_population<- function(input, output, session, title, measure, subscale, population_quantity, populations, sds, means,
+                             mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity,
+                             items, max_score, min_score, description) {
+
+
+
+  output$select_population<- renderUI({
+
+    ns <- session$ns
+
+    population_labels<- purrr::map(populations, ~ gsub("_", " ", .x))
+
+    population_list<- purrr::set_names(populations, population_labels)
+
+
+    selectInput(ns("population"), "To which population does your client most closely belong?",
+                choices = population_list )
+
+  })
 
 
 reactive({  input$population  })

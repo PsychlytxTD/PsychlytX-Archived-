@@ -53,12 +53,22 @@ generate_reliability_widget_UI <- function(id) {
 #' @param cutoff_references A list of strings indicating the references for each reliability value by population.
 #'
 #' @param cutoff_quantity A numeric value indicating the number of cutoff scores for the subscale.
+#'
+#' @param items A numeric vector representing an item index for the subscale.
+#'
+#' @param max_score A numeric value indicating maximum possible score on the subscale.
+#'
+#' @param min_score A numeric value indicating minimum possible score on the subscale.
+#'
+#' @param description A description of subscale's properties, to display in report.
+#'
+#' @export
 
 
 #Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
 generate_reliability_widget <- function(input, output, session, title, measure, subscale, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities,
-           reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score) {
+           reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score, description) {
 
 
 

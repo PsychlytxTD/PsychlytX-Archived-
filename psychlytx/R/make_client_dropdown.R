@@ -35,7 +35,6 @@ make_client_dropdown<- function(input, output, session, client_list) {
     ns <- session$ns
 
 
-
     selectInput(
       inputId = ns("client_selection"),
       label = "Find Your Client",

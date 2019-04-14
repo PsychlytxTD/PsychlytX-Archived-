@@ -15,11 +15,11 @@
 
 
 
-plot_subscale <- function( subscale_df, subscale_info) {
+plot_subscale <- function(subscale_df, subscale_info) {
 
   #Convert date variable to date class
 
-  subscale_df <- transform( subscale_df, date = chron(date, format = "d/m/Y" ) )
+  subscale_df <- transform(subscale_df, date = chron(date, format = "d/m/Y" ) )
 
 
   #Calculate the ymin and ymax values to use with cutoff shading
@@ -65,7 +65,6 @@ plot_subscale <- function( subscale_df, subscale_info) {
   plotting_breaks <- seq( from = subscale_info$min_score, to = subscale_info$max_score, by = round(plotting_increment, 0 ) )
 
   plotting_break_labels <- paste( plotting_breaks )
-
 
 
   plot <-
@@ -127,7 +126,9 @@ plot_subscale <- function( subscale_df, subscale_info) {
       #Make points and line
       size =
         4        #Expand y limits
-    ) + expand_limits(y = c(y_axis_lower_expansion, y_axis_upper_expansion)) + theme(
+    ) +
+    expand_limits(y = c(y_axis_lower_expansion, y_axis_upper_expansion)) +
+    theme(
       panel.border = element_rect(
         colour = "#00004c",
         fill = NA,
@@ -136,15 +137,15 @@ plot_subscale <- function( subscale_df, subscale_info) {
           3
       ),
       axis.text.x = element_text(
-        angle = 70,
+        # angle = 70,
         hjust = 1,
         #Style x-axis labels
-        size = 13,
+        size = 12,
         family = "Palatino",
         colour = "black"
       ),
       axis.text.y = element_text(
-        size = 13,
+        size = 12,
         #Style y-axis labels
         family = "Palatino",
         colour = "black"
@@ -154,68 +155,77 @@ plot_subscale <- function( subscale_df, subscale_info) {
       panel.grid.minor = element_blank(),       #Remove gridlines from background
       panel.background = element_blank(),
       axis.line = element_line(colour = "black"), #Make axis lines black
-      axis.title = element_text(size = 15,
-                              family = "Palatino") #Set font of axis titles
+      axis.title = element_text(family = "Palatino", size = 12) #Set font of axis titles
     ) + ggrepel::geom_label_repel(aes(label = paste0(subscale_df$score)), #Make labels for scores
-                                  size = 4, family = "Palatino") + scale_y_continuous(breaks = plotting_breaks, #Customise y-axis breaks and labels
-                                  labels = plotting_break_labels) + scale_x_chron(breaks = subscale_df$date, #Customise x-axis date breaks and labels to be the same as the data
-                                  format = "%d/%m/%Y") + xlab("Date") + ylab(paste(subscale_info$subscale_name, "Score")) #Make x and y plot labels sentence case
+                                  size = 4, family = "Palatino") +
+    scale_y_continuous(breaks = plotting_breaks, #Customise y-axis breaks and labels
+                       labels = plotting_break_labels) +
+    scale_x_chron(breaks = subscale_df$date, #Customise x-axis date breaks and labels to be the same as the data
+                  format = "%d/%m/%Y") +
+    xlab(NULL) +
+    ylab(paste(subscale_info$title, "Score")) #Make x and y plot labels sentence case
 
 
   #Position cutoff labels
 
-  plot <- plot + geom_text(
-    aes(
-      label = cutoff_label_1,
-      x = as.Date(x_axis_lower_expansion),
-      y = cutoff_value_1
-    ),
-    #Position cutoff label 1
-    nudge_y = 0.7,
-    family = "Palatino",
-    size = 5
-  ) + geom_text(
-    aes(
-      label = cutoff_label_2,
-      x = as.Date(x_axis_lower_expansion),
-      y = cutoff_value_2
-    ),
-    #Position cutoff label 2
-    nudge_y = 0.7,
-    family = "Palatino",
-    size = 5
-  ) + geom_text(
-    aes(
-      label = cutoff_label_3,
-      x = as.Date(x_axis_lower_expansion),
-      y = cutoff_value_3
-    ),
-    #Position cutoff label 3
-    nudge_y = 0.7,
-    family = "Palatino",
-    size = 5
-  ) + geom_text(
-    aes(
-      label = cutoff_label_4,
-      x = as.Date(x_axis_lower_expansion),
-      y = cutoff_value_4
-    ),
-    #Position cutoff label 4
-    nudge_y = 0.7,
-    family = "Palatino",
-    size = 5
-  ) + geom_text(
-    aes(
-      label = cutoff_label_5,
-      x = as.Date(x_axis_lower_expansion),
-      y = cutoff_value_5
-    ),
-    #Position cutoff label 5
-    nudge_y = 0.7,
-    family = "Palatino",
-    size = 5
-  )
+  plot <-
+    plot + geom_text(
+      aes(
+        label = cutoff_label_1,
+        x = as.Date(x_axis_lower_expansion),
+        y = cutoff_value_1
+      ),
+      #Position cutoff label 1
+      hjust = 0,
+      nudge_y = 0.7,
+      family = "Palatino",
+      size = 5
+    ) + geom_text(
+      aes(
+        label = cutoff_label_2,
+        x = as.Date(x_axis_lower_expansion),
+        y = cutoff_value_2
+      ),
+      #Position cutoff label 2
+      hjust = 0,
+      nudge_y = 0.7,
+      family = "Palatino",
+      size = 5
+    ) + geom_text(
+      aes(
+        label = cutoff_label_3,
+        x = as.Date(x_axis_lower_expansion),
+        y = cutoff_value_3
+      ),
+      #Position cutoff label 3
+      hjust = 0,
+      nudge_y = 0.7,
+      family = "Palatino",
+      size = 5
+    ) + geom_text(
+      aes(
+        label = cutoff_label_4,
+        x = as.Date(x_axis_lower_expansion),
+        y = cutoff_value_4
+      ),
+      #Position cutoff label 4
+      hjust = 0,
+      nudge_y = 0.7,
+      family = "Palatino",
+      size = 5
+    ) + geom_text(
+      aes(
+        label = cutoff_label_5,
+        x = as.Date(x_axis_lower_expansion),
+        y = cutoff_value_5
+      ),
+      #Position cutoff label 5
+      hjust = 0,
+      nudge_y = 0.7,
+      family = "Palatino",
+      size = 5
+    )
 
   plot #Print plot
-
+  # save(subscale_df, subscale_info, file = "plot_test_data.RData")
 }

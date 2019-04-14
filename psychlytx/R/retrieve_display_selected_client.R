@@ -7,7 +7,7 @@
 #' @export
 
 
-retrive_selected_client_UI<- function(id) {
+retrieve_selected_client_UI<- function(id) {
 
 
   ns <- NS(id)
@@ -37,7 +37,7 @@ retrive_selected_client_UI<- function(id) {
 #' @export
 
 
-retrive_selected_client<- function(input, output, session, pool, selected_client, measure) {
+retrieve_selected_client<- function(input, output, session, pool, selected_client, measure) {
 
 
     eventReactive(input$retrieve_client_data, {

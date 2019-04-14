@@ -13,6 +13,7 @@ library(ggplot2)
 library(postGIStools)
 library(DT)
 library(shinyjs)
+library(memor)
 
 pool <- dbPool( #Set up the pool connection management
   drv = dbDriver("PostgreSQL"),
@@ -80,7 +81,7 @@ ui<- function(request) {
                                  
                                  psychlytx::make_client_dropdown_UI("dropdown"),
                                  
-                                 psychlytx::retrive_selected_client_UI("retrieve_selected_client"),
+                                 psychlytx::retrieve_selected_client_UI("retrieve_selected_client"),
                                  
                                  psychlytx::select_population_UI("select_population")
                                  
@@ -209,7 +210,7 @@ server <- function(input, output, session) {
   method<- callModule(psychlytx::method_widget, "method_widget") #Reliable change method (a string)
   
   
-  input_population<- callModule(psychlytx::select_population, "select_population")  #Store the selected population for downstream use in other modules
+  input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info)) #Store the selected population for downstream use in other modules
   
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
@@ -265,34 +266,36 @@ server <- function(input, output, session) {
   onclick( "trigger_query", 
            
            client_list<- psychlytx::pull_clients_for_dropdown( pool, clinician_id )  #Query client table in db when tab is clicked - to create dropdown list
+                                                                                     #Made function b/c couldn't get a module to work
            
            ) 
   
   
-  selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list)
+  selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list) #Create the dropdown list and return selected client id
   
   
   
   
-  selected_client_data<- callModule(psychlytx::retrive_selected_client, "retrieve_selected_client", pool, 
+  selected_client_data<- callModule(psychlytx::retrieve_selected_client, "retrieve_selected_client", pool, 
                                     selected_client, psychlytx::gad7_info$measure)
   
   
+                                                                                                   #Print out brief version of selected client's existing data
+  output$selected_client_data_out<- psychlytx::show_selected_client_scores( selected_client_data ) #Made function b/c couldn't get a module to work
   
-  output$selected_client_data_out<- psychlytx::show_selected_client_scores( selected_client_data )
-  
-  output$client_data_availability_message<- psychlytx::show_data_availability_message( selected_client_data )
+                                                                                                              #Print out message to say whether this client has
+                                                                                                              #existing data.
+  output$client_data_availability_message<- psychlytx::show_data_availability_message( selected_client_data ) #Made function b/c couldn't get a module to work
   
   
   #Write post-therapy analytics data to db
   
-  analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client)
+  analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client) #Collect posttherapy info
   
-  psychlytx::write_posttherapy_to_db(pool, analytics_posttherapy)
+  psychlytx::write_posttherapy_to_db(pool, analytics_posttherapy) #Write posttherapy info to db
 
   
-  #The module below takes the specific client's data pulled from the db, creates a nested df and sends that df
-  #to the R Markdown report
+  #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
   callModule( psychlytx::download_report, "download_report", selected_client_data )
   
