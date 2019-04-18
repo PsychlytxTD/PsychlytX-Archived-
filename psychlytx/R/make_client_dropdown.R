@@ -11,7 +11,13 @@ make_client_dropdown_UI<- function(id) {
 
   ns <- NS(id)
 
-  uiOutput(ns("client_dropdown"))
+  tagList(
+
+  uiOutput(ns("client_dropdown")),
+
+  verbatimTextOutput("existing_client_status")
+
+  )
 
 
 }
@@ -30,16 +36,28 @@ make_client_dropdown<- function(input, output, session, client_list) {
 
   output$client_dropdown<- renderUI({
 
-    validate(need(length(client_list()) >= 1, "You do not yet have any existing clients. Please register a client."))
-
     ns <- session$ns
-
 
     selectInput(
       inputId = ns("client_selection"),
       label = "Find Your Client",
       choices = client_list(),
       selectize = FALSE)
+
+
+  })
+
+
+  output$existing_client_status<- renderText({
+
+    if(length(client_list()) >= 1) {
+
+      ""
+    } else {
+
+      "Please register a client."
+
+    }
 
   })
 

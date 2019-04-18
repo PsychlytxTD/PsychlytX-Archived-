@@ -31,7 +31,7 @@ onStop(function() {
 })
 
 
-clinician_id<- "a71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
+clinician_id<- "T71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
 
 
 
@@ -78,7 +78,7 @@ ui<- function(request) {
                              sidebarLayout(
                                
                                sidebarPanel(
-                                 
+                              
                                  psychlytx::make_client_dropdown_UI("dropdown"),
                                  
                                  psychlytx::retrieve_selected_client_UI("retrieve_selected_client"),
@@ -263,16 +263,15 @@ server <- function(input, output, session) {
   psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
 
 
+  
   onclick( "trigger_query", 
            
-           client_list<- psychlytx::pull_clients_for_dropdown( pool, clinician_id )  #Query client table in db when tab is clicked - to create dropdown list
+           client_list<- psychlytx::pull_clients_for_dropdown( pool, clinician_id),  #Query client table in db when tab is clicked - to create dropdown list
                                                                                      #Made function b/c couldn't get a module to work
            
+           selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list) #Create the dropdown list and return selected client id
+           
            ) 
-  
-  
-  selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list) #Create the dropdown list and return selected client id
-  
   
   
   

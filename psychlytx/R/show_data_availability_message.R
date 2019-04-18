@@ -4,6 +4,7 @@ show_data_availability_message<- function(selected_client_data) {
 
   renderText({
 
+
     if(length(selected_client_data()) >= 1) {
 
       "Client selected."
