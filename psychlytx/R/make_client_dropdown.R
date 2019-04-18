@@ -11,13 +11,8 @@ make_client_dropdown_UI<- function(id) {
 
   ns <- NS(id)
 
-  tagList(
 
-  uiOutput(ns("client_dropdown")),
-
-  verbatimTextOutput("existing_client_status")
-
-  )
+  uiOutput(ns("client_dropdown"))
 
 
 }
@@ -38,6 +33,8 @@ make_client_dropdown<- function(input, output, session, client_list) {
 
     ns <- session$ns
 
+    req(client_list())
+
     selectInput(
       inputId = ns("client_selection"),
       label = "Find Your Client",
@@ -47,19 +44,8 @@ make_client_dropdown<- function(input, output, session, client_list) {
 
   })
 
+  outputOptions(output, "client_dropdown", suspendWhenHidden = FALSE)
 
-  output$existing_client_status<- renderText({
-
-    if(length(client_list()) >= 1) {
-
-      ""
-    } else {
-
-      "Please register a client."
-
-    }
-
-  })
 
   reactive({ input$client_selection })
 

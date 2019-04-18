@@ -31,7 +31,7 @@ onStop(function() {
 })
 
 
-clinician_id<- "T71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
+clinician_id<- "T371c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
 
 
 
@@ -73,13 +73,13 @@ ui<- function(request) {
                     
                     useShinyjs(),
                     
-                    tabPanel(tags$strong("Select Existing Client", id = "trigger_query"), #Clicking on the 'existing client' tab sends query, pulling clients from db into dropdown menu
+                    tabPanel(tags$strong("Select Existing Client"), #Clicking on the 'existing client' tab sends query, pulling clients from db into dropdown menu
                              
                              sidebarLayout(
                                
                                sidebarPanel(
                               
-                                 psychlytx::make_client_dropdown_UI("dropdown"),
+                                 psychlytx::render_client_dropdown_UI("client_dropdown"),
                                  
                                  psychlytx::retrieve_selected_client_UI("retrieve_selected_client"),
                                  
@@ -262,16 +262,11 @@ server <- function(input, output, session) {
   
   psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
 
-
-  
-  onclick( "trigger_query", 
+   
            
-           client_list<- psychlytx::pull_clients_for_dropdown( pool, clinician_id),  #Query client table in db when tab is clicked - to create dropdown list
-                                                                                     #Made function b/c couldn't get a module to work
+  selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
            
-           selected_client<- callModule(psychlytx::make_client_dropdown, "dropdown", client_list) #Create the dropdown list and return selected client id
-           
-           ) 
+         
   
   
   

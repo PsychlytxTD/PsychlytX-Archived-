@@ -44,6 +44,8 @@ select_population<- function(input, output, session, title, measure, subscale, p
 
   })
 
+  outputOptions(output, "select_population", suspendWhenHidden = FALSE)
+
 
 reactive({  input$population  })
 

@@ -15,11 +15,7 @@ pull_clients_for_dropdown<- function(pool, clinician_id) {
 
   client_list<- dbGetQuery( pool, client_list_query )
 
-  while(length(client_list) < 1) {
-
-    ""
-
-  }
+  validate(need(length(client_list) >= 1, "No clients registered yet."))
 
     client_list <- client_list %>%
       tidyr::unite(dropdown_client, first_name, last_name, birth_date, sep = " ", remove = FALSE)
