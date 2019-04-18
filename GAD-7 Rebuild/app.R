@@ -31,7 +31,7 @@ onStop(function() {
 })
 
 
-clinician_id<- "T371c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
+clinician_id<- "a71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
 
 
 
@@ -81,17 +81,13 @@ ui<- function(request) {
                               
                                  psychlytx::render_client_dropdown_UI("client_dropdown"),
                                  
-                                 psychlytx::retrieve_selected_client_UI("retrieve_selected_client"),
-                                 
                                  psychlytx::select_population_UI("select_population")
                                  
                                ),
                                
                                mainPanel(
                                
-                                 DT::dataTableOutput("selected_client_data_out"),
-                                 
-                                 verbatimTextOutput("client_data_availability_message")
+                                psychlytx::display_client_data_UI("display_client_data") 
                                
                                )
                                
@@ -268,18 +264,7 @@ server <- function(input, output, session) {
            
          
   
-  
-  
-  selected_client_data<- callModule(psychlytx::retrieve_selected_client, "retrieve_selected_client", pool, 
-                                    selected_client, psychlytx::gad7_info$measure)
-  
-  
-                                                                                                   #Print out brief version of selected client's existing data
-  output$selected_client_data_out<- psychlytx::show_selected_client_scores( selected_client_data ) #Made function b/c couldn't get a module to work
-  
-                                                                                                              #Print out message to say whether this client has
-                                                                                                              #existing data.
-  output$client_data_availability_message<- psychlytx::show_data_availability_message( selected_client_data ) #Made function b/c couldn't get a module to work
+  callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure)
   
   
   #Write post-therapy analytics data to db
