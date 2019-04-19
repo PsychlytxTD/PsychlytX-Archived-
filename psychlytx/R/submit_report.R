@@ -12,17 +12,28 @@ download_report_UI<- function(id) {
 
   tagList(
 
-    fluidRow(
+   fluidPage(
 
-      column(width = 2, offset = 8,
+     titlePanel(span(tagList(icon("file-pdf-o", lib = "font-awesome")),
+                     h3(tags$b("Download Your Client's Clinical Report")))),
 
-         br(),
+     sidebarLayout(
 
-          downloadButton(ns("report"), "Download Clinical Report", class = "reportbutton", lib = "font-awesome"),
+       sidebarPanel(
 
-          tags$head(tags$style(".reportbutton{background-color:#283747;} .reportbutton{color:#d35400;}"))
-  )))
+             downloadButton(ns("report"), "Report Download", class = "submit_data", lib = "font-awesome")
 
+                   ),
+
+
+      mainPanel(tags$b("This report will display outcomes across all measures completed by the client using
+                       PsychlytX web applications."),
+
+                       br(),
+
+                      "*Report generation may take a few moments.")
+
+                 )))
 
 }
 

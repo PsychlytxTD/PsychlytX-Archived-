@@ -12,8 +12,11 @@ analytics_pretherapy_UI<- function(id) {
 
                    tagList(
                      sidebarLayout(
-                      sidebarPanel(width = 9,
-                     h3("Please provide demographic information"),
+                      sidebarPanel(width = 10,
+                     titlePanel(span(tagList(icon("clipboard", lib = "font-awesome")), h3(tags$b("Please Complete Client Registration.")))),
+                     br(),
+                     column(width = 7, offset = 3, tags$code(a("We take privacy seriously. View our policy here.",
+                                                    href = "https:://psychlytx.com.au", style = "color:#d35400")) ),
                      br(),
                      textInput(ns("first_name"), "First Name", width = '50%'),
                      textInput(ns("last_name"), "Last Name", width = '50%'),
@@ -31,7 +34,7 @@ analytics_pretherapy_UI<- function(id) {
                                                                                "Bachelor or Equivalent", "Master or Equivalent", "Doctoral or Equivalent"), width = '30%'),
 
 
-                     actionButton(ns("submit_analytics_pretherapy"), "Register Client")
+                     actionButton(ns("submit_analytics_pretherapy"), "Register Client", class = "submit_data")
 
                       ),
 
@@ -63,10 +66,10 @@ analytics_pretherapy<- function(input, output, session, clinician_id) {
 
     #Use req() to avoid error messages if the values are NULL
 
-    pretherapy_analytics_items<- list( req(clinician_id), req(client_id), req(input$first_name), req(input$last_name), req(input$sex),
-                                       req(input$birth_date), req(input$postcode), req(input$marital_status),
-                                       req(input$sexuality), req(input$ethnicity), req(input$indigenous), req(input$children),
-                                       req(input$workforce_status), req(input$education) ) %>% purrr::set_names(c("clinician_id", "client_id", "first_name", "last_name", "sex", "birth_date",
+    pretherapy_analytics_items<- list( req(clinician_id), req(client_id), input$first_name, input$last_name, input$sex,
+                                       input$birth_date, input$postcode, input$marital_status,
+                                       input$sexuality, input$ethnicity, input$indigenous, input$children,
+                                       input$workforce_status, input$education ) %>% purrr::set_names(c("clinician_id", "client_id", "first_name", "last_name", "sex", "birth_date",
                                        "postcode", "marital_status", "sexuality", "ethnicity", "indigenous", "children", "workforce_status", "education"))
 
 
@@ -118,6 +121,10 @@ analytics_posttherapy_UI<- function(id) {
 
   tagList(
 
+    titlePanel(span(tagList(icon("edit", lib = "font-awesome", class = "far fa-edit"),
+                            h4(tags$b("Please complete the questions and and click"),
+                               tags$code("Submit.", style = "color:#d35400"))))),
+
     checkboxGroupInput(ns("last_assessment"), "", choices = c("I am administering a measure to this client
                                                                                for the last time" = "last")),
 
@@ -127,7 +134,7 @@ analytics_posttherapy_UI<- function(id) {
                        sidebarLayout(
                          sidebarPanel(width = 9,
                                       tagList(
-                                        h3("Before proceeding, please provide important information about clinical outcomes"),
+                                        h3("Please provide important information about clinical outcomes."),
                                         br(),
                                         selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", psychlytx::diagnosis_list, width = '60%'),
                                         selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", psychlytx::diagnosis_list, multiple = TRUE, width = '60%'),
@@ -144,7 +151,7 @@ analytics_posttherapy_UI<- function(id) {
                                                                                                 "Victims of Crime Assistance Tribunal (VOCAT)",
                                                                                                 "Other"), width = '40%'),
                                         numericInput(ns("out_of_pocket"), "Out-Of-Pocket Expense", value = "", width = '20%'),
-                                        actionButton(ns("submit_analytics_posttherapy"), "Submit Data")
+                                        actionButton(ns("submit_analytics_posttherapy"), "Submit", class = "submit_data")
                                            )),
 
                          mainPanel()
@@ -176,8 +183,8 @@ analytics_posttherapy<- function(input, output, session, clinician_id, selected_
 
     client_id<- selected_client()
 
-    posttherapy_analytics_items<- list( req(clinician_id), req(client_id), req(input$principal_diagnosis), req(input$secondary_diagnosis), req(input$referrer), req(input$attendance_schedule), req(input$non_attendances),
-          req(input$attendances), req(input$premature_dropout), req(input$therapy), req(input$funding), req(input$out_of_pocket) ) %>% purrr::set_names(c("clinician_id", "client_id", "principal_diagnosis",
+    posttherapy_analytics_items<- list( clinician_id, client_id, input$principal_diagnosis, input$secondary_diagnosis, input$referrer, input$attendance_schedule, input$non_attendances,
+          input$attendances, input$premature_dropout, input$therapy, input$funding, input$out_of_pocket ) %>% purrr::set_names(c("clinician_id", "client_id", "principal_diagnosis",
           "secondary_diagnosis", "referrer", "attendance_schedule", "non_attendances", "attendances", "premature_dropout", "therapy", "funding", "out_of_pocket"))
 
 

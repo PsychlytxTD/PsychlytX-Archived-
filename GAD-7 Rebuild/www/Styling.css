@@ -74,6 +74,8 @@
                                 .radio-inline {margin-right: 45px; padding-top: 8px;}
                                 .shiny-options-group {font-size: 17px;}
                                 .reportbutton {
-                                 width: 270px; 
+                                 width: 270px; background-color:#283747;color:#d35400;
                                 }
+                                .submit_data {color:#d35400;}
+                                
                                 )

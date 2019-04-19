@@ -75,9 +75,8 @@ ui<- function(request) {
                              
                     ),
                     
-                    useShinyjs(),
                     
-                    tabPanel(tags$strong("Select Existing Client"), #Clicking on the 'existing client' tab sends query, pulling clients from db into dropdown menu
+                    tabPanel(tags$strong("Select Existing Client"),
                              
                              sidebarLayout(
                                
@@ -87,17 +86,13 @@ ui<- function(request) {
                                  
                                  psychlytx::select_population_UI("select_population")
                                  
-                               ),
+                                           ),
                                
                                mainPanel(
                                
                                 psychlytx::display_client_data_UI("display_client_data") 
                                
-                               )
-                               
-                               )
-                             
-                    ),
+                               ))),
                     
                     tabPanel(tags$strong("Complete Scale Items"),
                              
@@ -126,6 +121,20 @@ ui<- function(request) {
                     tabPanel(tags$strong("Customisation (Optional)"),
                              
                              fluidPage(
+                               
+                               fluidRow( 
+                                 
+                                 titlePanel(span(tagList(icon("calculator", lib = "font-awesome")), 
+                                                 h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))),
+                                 
+                                 br(),
+                                 
+                                 column(width = 7, offset = 3, tags$code(a("More information about customisation",
+                                                                           href = "https:://psychlytx.com.au", style = "color:#d35400")) )
+                                 
+                                 ),
+                               
+                               br(),
                                
                                fluidRow(
                                  

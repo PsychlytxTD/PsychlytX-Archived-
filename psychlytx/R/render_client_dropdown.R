@@ -12,11 +12,16 @@ ns <- NS(id)
 
 tagList(
 
-actionButton(ns("refresh"), "Refresh"),
+titlePanel(span(tagList(icon("f07c", lib = "font-awesome", class = "far fa-folder-open"), h4("Please find your client then click"),
+                        h5(tags$code("Retrieve Outcomes", style = "color:black"))))),
+
+uiOutput(ns("client_dropdown")),
+
+actionButton(ns("refresh"), "Refresh Client List", class = "submit_data_grey"),
+tags$head(tags$style(".submit_data_grey{color:#808080;}")),
 
 br(),
-
-uiOutput(ns("client_dropdown"))
+br()
 
 )
 
@@ -38,7 +43,6 @@ uiOutput(ns("client_dropdown"))
 render_client_dropdown<- function(input, output, session, pool, clinician_id) {
 
 clients<- reactive({
-
 
   input$refresh
 
@@ -75,7 +79,7 @@ output$client_dropdown<- renderUI({
 
   selectInput(
     inputId = ns("client_selection"),
-    label = "Find Your Client",
+    label = "",
     choices = clients(),
     selectize = FALSE)
 

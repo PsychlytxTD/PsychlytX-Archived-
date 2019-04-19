@@ -12,9 +12,7 @@ display_client_data_UI<- function(id) {
 
 tagList(
 
-actionButton(ns("retrieve_client_data"), "Select This Client", class = "submit_data"),
-
-tags$head(tags$style(".submit_data{color:#d35400;}")),
+actionButton(ns("retrieve_client_data"), "Retrieve Outcomes", class = "submit_data"),
 
 br(),
 br(),
