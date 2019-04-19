@@ -55,7 +55,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
 
   #Need to increase space between 0 and first tick on x-axis to make space for cutoff labels
 
-  x_axis_lower_expansion <- subscale_df$date[1] - 186
+  x_axis_lower_expansion <- subscale_df$date[1] - 30
 
 
   #Plot breaks & break labs - need to replace this with the minimum and maximum possible scores on the scale
@@ -68,7 +68,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
 
 
   plot <-
-    ggplot(subscale_df, aes(x = date, y = score, group = 1)) + theme_bw() + annotate(
+    ggplot(subscale_df, aes(x = date, y = score, group = 1)) + theme_bw(base_family = "Linux Libertine") + annotate(
       "rect",
       xmin = -Inf,
       xmax = Inf,
@@ -137,17 +137,17 @@ plot_subscale <- function(subscale_df, subscale_info) {
           3
       ),
       axis.text.x = element_text(
-        # angle = 70,
+        angle = 70,
         hjust = 1,
         #Style x-axis labels
         size = 12,
-        family = "Palatino",
+        family = "Linux Libertine",
         colour = "black"
       ),
       axis.text.y = element_text(
         size = 12,
         #Style y-axis labels
-        family = "Palatino",
+        family = "Linux Libertine",
         colour = "black"
       )
     ) + theme(
@@ -155,9 +155,9 @@ plot_subscale <- function(subscale_df, subscale_info) {
       panel.grid.minor = element_blank(),       #Remove gridlines from background
       panel.background = element_blank(),
       axis.line = element_line(colour = "black"), #Make axis lines black
-      axis.title = element_text(family = "Palatino", size = 12) #Set font of axis titles
+      axis.title = element_text(family = "Linux Libertine", size = 12) #Set font of axis titles
     ) + ggrepel::geom_label_repel(aes(label = paste0(subscale_df$score)), #Make labels for scores
-                                  size = 4, family = "Palatino") +
+                                  size = 4, family = "Linux Libertine") +
     scale_y_continuous(breaks = plotting_breaks, #Customise y-axis breaks and labels
                        labels = plotting_break_labels) +
     scale_x_chron(breaks = subscale_df$date, #Customise x-axis date breaks and labels to be the same as the data
@@ -178,7 +178,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       #Position cutoff label 1
       hjust = 0,
       nudge_y = 0.7,
-      family = "Palatino",
+      family = "Linux Libertine",
       size = 5
     ) + geom_text(
       aes(
@@ -189,7 +189,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       #Position cutoff label 2
       hjust = 0,
       nudge_y = 0.7,
-      family = "Palatino",
+      family = "Linux Libertine",
       size = 5
     ) + geom_text(
       aes(
@@ -200,7 +200,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       #Position cutoff label 3
       hjust = 0,
       nudge_y = 0.7,
-      family = "Palatino",
+      family = "Linux Libertine",
       size = 5
     ) + geom_text(
       aes(
@@ -211,7 +211,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       #Position cutoff label 4
       hjust = 0,
       nudge_y = 0.7,
-      family = "Palatino",
+      family = "Linux Libertine",
       size = 5
     ) + geom_text(
       aes(
@@ -222,7 +222,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       #Position cutoff label 5
       hjust = 0,
       nudge_y = 0.7,
-      family = "Palatino",
+      family = "Linux Libertine",
       size = 5
     )
 

@@ -14,6 +14,10 @@ library(postGIStools)
 library(DT)
 library(shinyjs)
 library(memor)
+library(extrafont)
+library(extrafontdb)
+
+
 
 pool <- dbPool( #Set up the pool connection management
   drv = dbDriver("PostgreSQL"),
@@ -264,7 +268,7 @@ server <- function(input, output, session) {
            
          
   
-  callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure)
+  selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure)
   
   
   #Write post-therapy analytics data to db

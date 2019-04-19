@@ -17,13 +17,15 @@ params:
   report_data: 'NULL'
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include = FALSE}
 library(knitr)
 library(kableExtra)
-opts_chunk$set(fig.width = 6, fig.height = 5, fig.pos = "H") 
+library(extrafont)
+
+opts_chunk$set(fig.width = 6, fig.height = 5, fig.pos = "H", dev = "cairo_pdf") 
 ```
 
-```{r, results='asis', echo=FALSE}
+```{r, results='asis', echo=FALSE, message = FALSE, warning = FALSE}
 for (i in seq(nrow(params$report_data))) {
   if (i != 1) cat("\\clearpage \n\n")
   cat("#", params$report_data$subscale_info[[i]]$title, "\n\n")

@@ -99,4 +99,6 @@ output$selected_client_data_out<- DT::renderDataTable({
 
   })
 
+  reactive({ selected_client_data() })
+
 }
