@@ -16,6 +16,7 @@ library(shinyjs)
 library(memor)
 library(extrafont)
 library(extrafontdb)
+library(shinyhelper)
 
 
 
@@ -115,7 +116,6 @@ ui<- function(request) {
                              
                              psychlytx::download_report_UI("download_report") #Report download
                              
-                             
                     ),
                     
                     tabPanel(tags$strong("Customisation (Optional)"),
@@ -190,6 +190,7 @@ ui<- function(request) {
 
 server <- function(input, output, session) {
   
+  observe_helpers()#Needed for use of the shinyhelpers package
 
  callModule(psychlytx::make_sidebar, "sidebar") #Make sidebar
  
@@ -291,7 +292,6 @@ server <- function(input, output, session) {
   
   callModule( psychlytx::download_report, "download_report", selected_client_data )
   
-
   
   }
 

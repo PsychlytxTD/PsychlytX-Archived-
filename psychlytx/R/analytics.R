@@ -65,7 +65,7 @@ analytics_pretherapy<- function(input, output, session, clinician_id) {
 
     if(input$first_name == "" | input$last_name == "") {
 
-      return(paste("<span style=\"color:red\">Please provide your client's first and last names.</span>"))
+      return(paste("<span style=\"color:red\">Please provide your client's first and last names to complete registration.</span>"))
 
     } else {
 
@@ -154,7 +154,8 @@ analytics_posttherapy_UI<- function(id) {
                        sidebarLayout(
                          sidebarPanel(width = 9,
                                       tagList(
-                                        h3("Please provide important information about clinical outcomes."),
+                                        titlePanel(span(tagList(icon("chart-bar", lib = "font-awesome")),
+                                                        h3(tags$b("Please provide important information about clinical outcomes.")))),
                                         br(),
                                         selectInput(ns("principal_diagnosis"), "Primary Diagnosis", psychlytx::diagnosis_list, width = '60%'),
                                         selectizeInput(ns("secondary_diagnosis"), "Secondary Diagnosis", psychlytx::diagnosis_list, width = '60%'),

@@ -21,11 +21,14 @@ download_report_UI<- function(id) {
 
        sidebarPanel(
 
-             htmlOutput(ns("report_data_availability_message")),
-
-             br(),
-
-             downloadButton(ns("report"), "Report Download", class = "submit_data", lib = "font-awesome")
+             downloadButton(ns("report"), "Report Download",
+                            class = "submit_data", lib = "font-awesome") %>%  helper(type = "inline",
+                            title = "Problems with report generation",
+                            colour = "#d35400",
+                            content = c("Your report may not generate for two reasons:",
+                            "1. You have selected a client who has no outcomes recorded with a Psychlytx web application.",
+                            "2. When selecting your client, you forgot to click <code style='color:#d35400;'>Retrieve Outcomes</code>."),
+                            size = "m")
 
                    ),
 
@@ -53,15 +56,7 @@ download_report_UI<- function(id) {
 #' @export
 
 
-download_report<- function(input, output, session, selected_client_data ) {
-
-  output$report_data_availability_message<- renderText({
-
-
-      validate(need(selected_client_data() == "", message = paste("<span style=\"color:red\"> Report not available yet: you have selected a client with no existing outcomes,
-                   or else haven't clicked the <code>Retrieve Outcomes</code> button when selecting the current client.</span>")))
-
-    })
+download_report<- function(input, output, session, selected_client_data) {
 
 
   report_data <- reactive({
@@ -192,8 +187,6 @@ download_report<- function(input, output, session, selected_client_data ) {
         )
       )
   })
-
-
 
 
 
