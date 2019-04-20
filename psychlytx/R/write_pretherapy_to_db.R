@@ -16,10 +16,12 @@ write_pretherapy_analytics_to_db<- function(pool, analytics_pretherapy) {
 
       #pass the pretherapy analytics dataframe in and append the client table in db
       dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE) ; showModal(modalDialog(title = "Registration Successful",
-                                                                                                                                  footer = modalButton("Okay"), "The client can now complete a measure using any PsychlytX web application."))
+                                                                                                                                  footer = modalButton("Okay"), "The client can now complete a questionnaire
+                                                                                                                                  using any PsychlytX web application."))
 
     } else(showModal(modalDialog(title = "Registration Unsuccessful", footer = modalButton("Okay"),
-                                 "An entry already exists for this client. Please check the details you inputted and resubmit.")))
+                                 "An entry already exists for this client. Please check the client details
+                                 you have inputted and resubmit.")))
 
   })
 

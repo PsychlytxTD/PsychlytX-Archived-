@@ -21,6 +21,10 @@ download_report_UI<- function(id) {
 
        sidebarPanel(
 
+             htmlOutput(ns("report_data_availability_message")),
+
+             br(),
+
              downloadButton(ns("report"), "Report Download", class = "submit_data", lib = "font-awesome")
 
                    ),
@@ -50,6 +54,14 @@ download_report_UI<- function(id) {
 
 
 download_report<- function(input, output, session, selected_client_data ) {
+
+  output$report_data_availability_message<- renderText({
+
+
+      validate(need(selected_client_data() == "", message = paste("<span style=\"color:red\"> Report not available yet: you have selected a client with no existing outcomes,
+                   or else haven't clicked the <code>Retrieve Outcomes</code> button when selecting the current client.</span>")))
+
+    })
 
 
   report_data <- reactive({

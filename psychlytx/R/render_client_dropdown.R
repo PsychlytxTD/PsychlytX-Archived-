@@ -77,11 +77,10 @@ output$client_dropdown<- renderUI({
 
   req(clients())
 
-  selectInput(
+  selectizeInput(
     inputId = ns("client_selection"),
     label = "",
-    choices = clients(),
-    selectize = FALSE)
+    choices = clients())
 
 
 })

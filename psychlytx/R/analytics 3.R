@@ -12,30 +12,24 @@ analytics_pretherapy_UI<- function(id) {
 
                    tagList(
                      sidebarLayout(
-                      sidebarPanel(width = 10,
-                     titlePanel(span(tagList(icon("clipboard", lib = "font-awesome")), h3(tags$b("Please Complete Client Registration.")))),
-                     br(),
-                     column(width = 7, offset = 3, tags$code(a("We take privacy seriously. View our policy here.",
-                                                    href = "https:://psychlytx.com.au", style = "color:#d35400")) ),
+                      sidebarPanel(width = 9,
+                     titlePanel(span(tagList(icon("address-card", lib = "font-awesome")), h3(tags$b("Please complete client registration.")))),
                      br(),
                      textInput(ns("first_name"), "First Name", width = '50%'),
                      textInput(ns("last_name"), "Last Name", width = '50%'),
                      selectInput(ns("sex"), "Sex", c("", "Male", "Female", "Other"), width = '20%'),
-                     dateInput(ns("birth_date"), "Date of Birth", startview = "year", format = "dd-mm-yyyy", width = '20%'),
-                     numericInput(ns("postcode"), "Postcode", value = "", width = '20%'),
+                     dateInput(ns("birth_date"), "Date of Birth", value = "", width = '20%'),
+                     textInput(ns("postcode"), "Postcode", value = "", width = '20%'),
                      selectInput(ns("marital_status"), "Marital Status", c("", "Never Married", "Currently Married", "Separated", "Divorced", "Widowed", "Cohabiting"), width = '30%'),
                      selectInput(ns("sexuality"), "Sexual Orientation", c("", "Heterosexual", "Lesbian", "Gay", "Bisexual", "Transgender", "Queer", "Other"), width = '30%'),
                      selectInput(ns("ethnicity"), "Ethnicity", c("", "Caucasian", "Latino/Hispanic", "Middle Eastern", "African", "Caribbean", "South Asian",
                                                                  "East Asian", "Mixed", "Other"), width = '30%'),
-                     checkboxInput(ns("indigenous"), "Identifies as Being of Aboriginal or Torres Strait Islander Descent", width = '20%'),
+                     radioButtons(ns("indigenous"), "Identifies as Being of Aboriginal or Torres Strait Islander Descent", choices = c("No", "Yes"), selected = character(0), width = '20%'),
                      numericInput(ns("children"), "Number of Dependent Children", value = "", width = '20%'),
                      selectInput(ns("workforce_status"), "Primary Workforce Status", c("", "Working Full-Time", "Working Part-Time", "Working Casual Hours", "Studying", "Unemployed", "Retired"), width = '30%'),
                      selectInput(ns("education"), "Highest Education Level", c("", "No education", "Primary Education", "Secondary Education", "Post-Secondary/Tertiary Education",
                                                                                "Bachelor or Equivalent", "Master or Equivalent", "Doctoral or Equivalent"), width = '30%'),
 
-                     htmlOutput(ns("pretherapy_data_entry_message")),
-
-                     br(),
 
                      actionButton(ns("submit_analytics_pretherapy"), "Register Client", class = "submit_data")
 
@@ -60,33 +54,16 @@ analytics_pretherapy_UI<- function(id) {
 
 analytics_pretherapy<- function(input, output, session, clinician_id) {
 
-  output$pretherapy_data_entry_message<- renderText({
-
-
-    if(input$first_name == "" | input$last_name == "") {
-
-      return(paste("<span style=\"color:red\">Please provide your client's first and last names.</span>"))
-
-    } else {
-
-      "Client registration details are ready for submission."
-
-    }
-
-  })
-
-
   #Need to return input to make input parameters available
 
   eventReactive(input$submit_analytics_pretherapy, {
-
 
    client_id<- uuid::UUIDgenerate() #Generate unique client ID
 
 
     #Use req() to avoid error messages if the values are NULL
 
-    pretherapy_analytics_items<- list( req(clinician_id), req(client_id), req(input$first_name), req(input$last_name), input$sex,
+    pretherapy_analytics_items<- list( req(clinician_id), req(client_id), input$first_name, input$last_name, input$sex,
                                        input$birth_date, input$postcode, input$marital_status,
                                        input$sexuality, input$ethnicity, input$indigenous, input$children,
                                        input$workforce_status, input$education ) %>% purrr::set_names(c("clinician_id", "client_id", "first_name", "last_name", "sex", "birth_date",
@@ -141,9 +118,7 @@ analytics_posttherapy_UI<- function(id) {
 
   tagList(
 
-    titlePanel(span(tagList(icon("edit", lib = "font-awesome", class = "far fa-edit"),
-                            h4(tags$b("Please complete the questions and and click"),
-                               tags$code("Submit.", style = "color:#d35400"))))),
+    titlePanel(span(tagList(icon("edit", lib = "font-awesome")), h4(tags$b("Please complete the questions and and click"), tags$code("Submit.", style = "color:#d35400")))),
 
     checkboxGroupInput(ns("last_assessment"), "", choices = c("I am administering a measure to this client
                                                                                for the last time" = "last")),
@@ -156,38 +131,22 @@ analytics_posttherapy_UI<- function(id) {
                                       tagList(
                                         h3("Please provide important information about clinical outcomes."),
                                         br(),
-                                        selectInput(ns("principal_diagnosis"), "Primary Diagnosis", psychlytx::diagnosis_list, width = '60%'),
-                                        selectizeInput(ns("secondary_diagnosis"), "Secondary Diagnosis", psychlytx::diagnosis_list, width = '60%'),
+                                        selectInput(ns("principal_diagnosis"), "Presenting Principal Diagnosis", psychlytx::diagnosis_list, width = '60%'),
+                                        selectizeInput(ns("secondary_diagnosis"), "Additional Presenting Diagnosis/Diagnoses", psychlytx::diagnosis_list, multiple = TRUE, width = '60%'),
                                         textInput(ns("referrer"), "Referrer", value = "", width = '50%'),
                                         selectInput(ns("attendance_schedule"), "Schedule of Attendance", c("", "Varied", "Twice A Week", "Once A Week", "Once a Fortnight", "Once Every 3 Weeks", "Once A Month", "Greater Than 1 Month Apart"), width = '40%'),
-                                        numericInput(ns("non_attendances"), "Sessions Not Attended (No Notice Given)", value = "", width = '20%'),
+                                        numericInput(ns("non_attendances"), "Number of Non-Attendances (DNAs)", value = "", width = '20%'),
                                         numericInput(ns("attendances"), "Number of Sessions Attended", value = "", width = '20%'),
                                         radioButtons(ns("premature_dropout"), "Premature Dropout", choices = c("Yes", "No"), selected = character(0), width = '20%'),
                                         selectInput(ns("therapy"), "Therapeutic Approach Used", psychlytx::therapies_list, width = '50%'),
                                         selectInput(ns("funding"), "Funding Source", choices = c("", "Entirely Self-Funded", "Partly Medicare Funded", "Entirely Medicare Funded (Bulk Billing)",
-                                                                                                "Private Health Fund", "National Disability Insurance Scheme (NDIS)",
+                                                                                                "Private Health Fund",
                                                                                                 "WorkCover", "Transport Accident Commission (TAC)",
                                                                                                 "Department of Veterans Affairs (DVA)",
                                                                                                 "Victims of Crime Assistance Tribunal (VOCAT)",
                                                                                                 "Other"), width = '40%'),
-                                        selectInput(ns("out_of_pocket"), "Out-Of-Pocket Expense", c("", "None", "$1-$10",
-                                                                                                     "$11-$20", "$21-$30", "$31-$40",
-                                                                                                     "$41-$50", "$51-$60",
-                                                                                                     "$61-$70", "$71-$80",
-                                                                                                     "$81-$90", "$91-$100",
-                                                                                                     "$101-$110", "$111-$120",
-                                                                                                     "$121-$130", "$131-140",
-                                                                                                     "$141-$150", "$151-$160",
-                                                                                                     "$161-$170", "$171-$180",
-                                                                                                     "$181-$190", "$191-$200",
-                                                                                                     "$201-$210", "$211-$220",
-                                                                                                     "$221-$230", "$231-$240",
-                                                                                                     "$241-$250", "$251-$260",
-                                                                                                     "$261-$270", "$271-$280",
-                                                                                                     "$281-$290", "$291-$300",
-                                                                                                     "More than $300"), width = '20%'),
+                                        numericInput(ns("out_of_pocket"), "Out-Of-Pocket Expense", value = "", width = '20%'),
                                         actionButton(ns("submit_analytics_posttherapy"), "Submit", class = "submit_data")
-
                                            )),
 
                          mainPanel()
@@ -209,8 +168,8 @@ analytics_posttherapy_UI<- function(id) {
 
 analytics_posttherapy<- function(input, output, session, clinician_id, selected_client) {
 
-
   #Need to return input to make input parameters available
+
 
   eventReactive(input$submit_analytics_posttherapy, {
 
@@ -219,7 +178,7 @@ analytics_posttherapy<- function(input, output, session, clinician_id, selected_
 
     client_id<- selected_client()
 
-    posttherapy_analytics_items<- list( req(clinician_id), req(client_id), input$principal_diagnosis, input$secondary_diagnosis, input$referrer, input$attendance_schedule, input$non_attendances,
+    posttherapy_analytics_items<- list( clinician_id, client_id, input$principal_diagnosis, input$secondary_diagnosis, input$referrer, input$attendance_schedule, input$non_attendances,
           input$attendances, input$premature_dropout, input$therapy, input$funding, input$out_of_pocket ) %>% purrr::set_names(c("clinician_id", "client_id", "principal_diagnosis",
           "secondary_diagnosis", "referrer", "attendance_schedule", "non_attendances", "attendances", "premature_dropout", "therapy", "funding", "out_of_pocket"))
 
@@ -239,7 +198,7 @@ analytics_posttherapy<- function(input, output, session, clinician_id, selected_
         premature_dropout = purrr::map_chr(., "premature_dropout"),
         therapy = purrr::map_chr(., "therapy"),
         funding = purrr::map_chr(., "funding"),
-        out_of_pocket = purrr::map_chr(., "out_of_pocket")
+        out_of_pocket = purrr::map_dbl(., "out_of_pocket")
 
       )
 
