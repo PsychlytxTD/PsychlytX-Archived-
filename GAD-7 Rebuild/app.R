@@ -112,7 +112,7 @@ ui<- function(request) {
        
                     ),
                     
-                    tabPanel(tags$strong("Print Clinical Report"),
+                    tabPanel(tags$strong("Print Clinical Report"), value = "report_panel",
                              
                              psychlytx::select_population_UI("select_population"),
                              
@@ -126,6 +126,19 @@ ui<- function(request) {
                              
                              fluidPage(
                                
+                               fluidRow(
+                               column(width = 10, offset = 2,   
+                               htmlOutput("selected_population_message")
+                               )),
+                               
+                               br(),
+                               
+                               fluidRow(
+                               column(width = 12, offset = 4,
+                               actionButton("update_population", "Update Population", class = "submit_data")
+                               )),
+                               
+                               
                                fluidRow( 
                                  
                                  titlePanel(span(tagList(icon("calculator", lib = "font-awesome")), 
@@ -133,7 +146,7 @@ ui<- function(request) {
                                  
                                  br(),
                                  
-                                 column(width = 7, offset = 3, tags$code(a("More information about customisation",
+                                 column(width = 8, offset = 3, HTML('&nbsp;'),HTML('&nbsp;'), HTML('&nbsp;'), tags$code(a("Learn more about customisation",
                                                                            href = "https:://psychlytx.com.au", style = "color:#d35400")) )
                                  
                                  ),
@@ -181,7 +194,12 @@ ui<- function(request) {
                                              
                                              
                                              
-                                 )))))),
+                                 ),
+                                 
+                                 verbatimTextOutput("reference_sample")
+                                 
+                                 
+                                 ))))),
                 
                 column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)),
         
@@ -211,8 +229,8 @@ server <- function(input, output, session) {
  
  callModule(psychlytx::make_references_tab, "references_tab") #Make references tab
   
-  
-                                                                                                          #Register a new client with pretherapy analytics data. Module 
+
+                                                                               #Register a new client with pretherapy analytics data. Module 
                                                                                                           #creates unique client id. Need clinician id needs to be available 
                                                                                                           #to module so pass it in.
   
@@ -233,6 +251,18 @@ server <- function(input, output, session) {
   
   input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info)) #Store the selected population for downstream use in other modules
   
+  
+  observeEvent(input$update_population, {
+    updateTabsetPanel(session, "tabset",
+                      selected = paste("report_panel"))
+  })                      
+  
+  
+  output$selected_population_message<- renderText({
+    
+    paste(tags$code("The reference population you have selected is:", gsub("_", " ", input_population()), style = "color:#283747"))
+  
+  })
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
   
@@ -292,7 +322,7 @@ server <- function(input, output, session) {
   selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure)
   
   
-  
+
   #Write post-therapy analytics data to db
   
   analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client) #Collect posttherapy info

@@ -60,7 +60,7 @@ select_population<- function(input, output, session, title, measure, subscale, p
     population_list<- purrr::set_names(populations, population_labels)
 
 
-    selectInput(ns("population"), "",
+    selectInput(ns("population"), h4("Reference Population"),
                 choices = population_list, width = "100%")
 
   })

@@ -17,8 +17,7 @@ titlePanel(span(tagList(icon("f07c", lib = "font-awesome", class = "far fa-folde
 
 uiOutput(ns("client_dropdown")),
 
-actionButton(ns("refresh"), "Refresh Client List", class = "submit_data_grey"),
-tags$head(tags$style(".submit_data_grey{color:black;}")),
+actionButton(ns("refresh"), "Refresh Client List", class = "submit_data_blue"),
 
 br(),
 br()
