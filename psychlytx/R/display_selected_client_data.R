@@ -43,19 +43,18 @@ verbatimTextOutput(ns("client_data_availability_message"))
 display_client_data<- function(input, output, session, pool, selected_client, measure) {
 
 
+  selected_client_data<- eventReactive(input$retrieve_client_data, {
 
-selected_client_data<- eventReactive(input$retrieve_client_data, {
-
-  selected_client_sql<- "SELECT *
+    selected_client_sql<- "SELECT *
   FROM scale
   WHERE client_id = ?client_id AND measure = ?measure;"
 
-  selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = measure)
+    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = measure)
 
-  dbGetQuery(pool, selected_client_query)
+    dbGetQuery(pool, selected_client_query)
 
 
-})
+  })
 
 
 
@@ -96,6 +95,8 @@ output$selected_client_data_out<- DT::renderDataTable({
     }
 
   })
+
+
 
   reactive({ selected_client_data() })
 

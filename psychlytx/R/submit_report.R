@@ -14,10 +14,7 @@ download_report_UI<- function(id) {
 
    fluidPage(
 
-     titlePanel(span(tagList(icon("file-pdf-o", lib = "font-awesome")),
-                     h3(tags$b("Download Your Client's Clinical Report")))),
-
-     sidebarLayout(
+     sidebarLayout( position = "right",
 
        sidebarPanel(
 
@@ -25,9 +22,9 @@ download_report_UI<- function(id) {
                             class = "submit_data", lib = "font-awesome") %>%  helper(type = "inline",
                             title = "Problems with report generation",
                             colour = "#d35400",
-                            content = c("Your report may not generate for two reasons:",
-                            "1. You have selected a client who has no outcomes recorded with a Psychlytx web application.",
-                            "2. When selecting your client, you forgot to click <code style='color:#d35400;'>Retrieve Outcomes</code>."),
+                            content = c("<b>Your report may not generate for two reasons:</b>",
+                            "<b>1.</b> You have selected a client who has no outcomes recorded with a Psychlytx web application.",
+                            "<b>1.</b> When selecting your client, you forgot to click <code style='color:#d35400;'>Retrieve Outcomes</code>."),
                             size = "m")
 
                    ),

@@ -59,17 +59,13 @@ ui<- function(request) {
       
       tabItems(
         
-        about_tab<- psychlytx::make_about_tab_UI("about_tab"), #Make the 'About Psychlytx' tab
-        
-        references_tab<- psychlytx::make_references_tab_UI("references_tab"), #Make the references tab
-        
-        tabItem(tabName = "Home",
+        tabItem(tabName = "Home", 
                 
                 fluidRow(
                   
                  tabBox(id = "tabset", width = 12,
                          
-                    tabPanel(tags$strong("Register New Client "),
+                    tabPanel(tags$strong("Register A New Client "),
                              
                              psychlytx::analytics_pretherapy_UI("analytics_pretherapy") #Make the client registration panel
                              
@@ -77,7 +73,7 @@ ui<- function(request) {
                     ),
                     
                     
-                    tabPanel(tags$strong("Select Existing Client"),
+                    tabPanel(tags$strong("Select An Existing Client"),
                              
                              sidebarLayout(
                                
@@ -85,13 +81,17 @@ ui<- function(request) {
                               
                                  psychlytx::render_client_dropdown_UI("client_dropdown"),
                                  
-                                 psychlytx::select_population_UI("select_population")
+                                 br(),
+                                 
+                                 tags$code(tags$a(href = "https:://psychlytx.com.au", "Edit exising client records.", style = "color:#d35400"))
+                                 
                                  
                                            ),
                                
                                mainPanel(
                                
-                                psychlytx::display_client_data_UI("display_client_data") 
+                                psychlytx::display_client_data_UI("display_client_data")
+                                
                                
                                ))),
                     
@@ -112,7 +112,11 @@ ui<- function(request) {
        
                     ),
                     
-                    tabPanel(tags$strong("Generate Clinical Report"),
+                    tabPanel(tags$strong("Print Clinical Report"),
+                             
+                             psychlytx::select_population_UI("select_population"),
+                             
+                             br(),
                              
                              psychlytx::download_report_UI("download_report") #Report download
                              
@@ -179,7 +183,14 @@ ui<- function(request) {
                                              
                                  )))))),
                 
-                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)))))
+                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)),
+        
+        
+        about_tab<- psychlytx::make_about_tab_UI("about_tab"), #Make the 'About Psychlytx' tab
+        
+        references_tab<- psychlytx::make_references_tab_UI("references_tab") #Make the references tab
+        
+        )))
   
 }
 
@@ -233,7 +244,7 @@ server <- function(input, output, session) {
                                 manual_entry = manual_entry, item_index = list( psychlytx::gad7_info$items ), 
                                 aggregation_method = "sum")                                #Make a list of aggregate scores across subscales 
                                                                                            #(in this case there is only one subscale)
-  
+ 
   
  ################################## 
   
@@ -270,15 +281,16 @@ server <- function(input, output, session) {
                                                                                             #ci etc.). This dataframe will be sent to the db
   
   
+  
   psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
 
-   
-           
+  
   selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
-           
-         
+  
+  
   
   selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure)
+  
   
   
   #Write post-therapy analytics data to db
@@ -287,6 +299,7 @@ server <- function(input, output, session) {
   
   psychlytx::write_posttherapy_to_db(pool, analytics_posttherapy) #Write posttherapy info to db
 
+  
   
   #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
