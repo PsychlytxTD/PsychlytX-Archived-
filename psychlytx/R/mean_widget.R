@@ -69,7 +69,7 @@ generate_mean_widget <-function(input, output, session, title, measure, subscale
 
       ns <- session$ns #Set the namespace
 
-      subscale_title<- div(fluidRow(column(width = 2, offset = 5,
+      subscale_title<- div(fluidRow(column(width = 7, offset = 3,
 
                                            h4(tags$strong(title)) #The name of the subscale should appear centred, above the widgets
 
