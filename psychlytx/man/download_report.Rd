@@ -4,7 +4,8 @@
 \alias{download_report}
 \title{Submit Nested Data to Report}
 \usage{
-download_report(input, output, session, selected_client_data)
+download_report(input, output, session, selected_client_data,
+  selected_client, pool)
 }
 \arguments{
 \item{selected_client_data}{An unnested dataframe pulled from the database containing all timepoint scores for an individual on a specific measure.}

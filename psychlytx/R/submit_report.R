@@ -53,7 +53,7 @@ download_report_UI<- function(id) {
 #' @export
 
 
-download_report<- function(input, output, session, selected_client_data) {
+download_report<- function(input, output, session, selected_client_data, selected_client, pool) {
 
 
   report_data <- reactive({
@@ -186,6 +186,18 @@ download_report<- function(input, output, session, selected_client_data) {
   })
 
 
+  client_name<- reactive({
+
+    client_name_sql<- "SELECT first_name, last_name, birth_date
+    FROM client
+    WHERE client_id = ?client_id;"
+
+    client_name_query<- sqlInterpolate(pool, client_name_sql, client_id = selected_client() )
+
+    client_name<- dbGetQuery( pool, client_name_query )
+
+
+    })
 
   output$report <- downloadHandler(
 
@@ -202,7 +214,8 @@ download_report<- function(input, output, session, selected_client_data) {
       # Pass data objects to Rmd document
       params <- list(
 
-        report_data = report_data() #We are passing the nested dataframe to the R markdown report.
+        report_data = report_data(), #We are passing the nested dataframe to the R markdown report.
+        client_name = client_name()
 
       )
 
