@@ -141,32 +141,7 @@ ui<- function(request) {
                              
                              fluidPage(
                                
-                               fluidRow(
-                               column(width = 10, offset = 2,   
-                               htmlOutput("selected_population_message")
-                               )),
-                               
-                               br(),
-                               
-                               fluidRow(
-                               column(width = 12, offset = 4,
-                               actionButton("update_population", "Update Population", class = "submit_data")
-                               )),
-                               
-                               
-                               fluidRow( 
-                                 
-                                 titlePanel(span(tagList(icon("calculator", lib = "font-awesome")), 
-                                                 h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))),
-                                 
-                                 br(),
-                                 
-                                 column(width = 8, offset = 3, HTML('&nbsp;'),HTML('&nbsp;'), HTML('&nbsp;'), tags$code(a("Learn more about customisation",
-                                                                           href = "https:://psychlytx.com.au", style = "color:#d35400")) )
-                                 
-                                 ),
-                               
-                               br(),
+                               psychlytx::change_population_UI("change_population"),
                                
                                fluidRow(
                                  
@@ -267,17 +242,8 @@ server <- function(input, output, session) {
   input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info)) #Store the selected population for downstream use in other modules
   
   
-  observeEvent(input$update_population, {
-    updateTabsetPanel(session, "tabset",
-                      selected = paste("report_panel"))
-  })                      
+  callModule(psychlytx::change_population, "change_population", input_population)
   
-  
-  output$selected_population_message<- renderText({
-    
-    paste(tags$code("The reference population you have selected is:", gsub("_", " ", input_population()), style = "color:#283747"))
-  
-  })
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
   
