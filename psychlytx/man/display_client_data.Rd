@@ -4,7 +4,8 @@
 \alias{display_client_data}
 \title{Select Client}
 \usage{
-display_client_data(input, output, session, pool, selected_client, measure)
+display_client_data(input, output, session, pool, selected_client, measure,
+  input_retrieve_client_data)
 }
 \arguments{
 \item{pool}{A pooled db object}

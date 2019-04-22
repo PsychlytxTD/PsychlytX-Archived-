@@ -81,7 +81,12 @@ ui<- function(request) {
                               
                                  psychlytx::render_client_dropdown_UI("client_dropdown"),
                                  
+                                 
+                                 actionButton("retrieve_client_data", "Select Client", class = "submit_data"),
+                                 
                                  br(),
+                                 br(),
+                                 
                                  
                                  tags$code(tags$a(href = "https:://psychlytx.com.au", "Edit exising client records.", style = "color:#d35400"))
                                  
@@ -102,6 +107,16 @@ ui<- function(request) {
                              psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
                              
                              psychlytx::manual_data_UI("manual_data"), #Items of the specific measure are passed here as a string of numbers
+                             
+                             fluidRow(
+                               
+                               column(width = 4,
+                                      
+                                      actionButton("submit_scores", "Submit", class = "submit_data"),
+                                      
+                                      tags$head(tags$style(".submit_data{color:#d35400;}"))
+                                      
+                               )),
                              
                              psychlytx::calculate_subscale_UI("calculate_subscales"), #Calculate all aggregate subscale scores for the measure
                              
@@ -237,7 +252,7 @@ server <- function(input, output, session) {
  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) 
   
   
- psychlytx::write_pretherapy_analytics_to_db(pool, analytics_pretherapy) #Write pre-therapy analytics data to db
+  psychlytx::write_pretherapy_analytics_to_db(pool, analytics_pretherapy) #Write pre-therapy analytics data to db
   
   
   callModule(psychlytx::reliability_calc, "reliability_derivation")  #If selected, derive reliability value from statistics
@@ -267,7 +282,9 @@ server <- function(input, output, session) {
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
   
   
-  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored in manual_entry for use by other modules
+  input_submit_responses<- reactive({ input$submit_scores })
+  
+  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry, input_submit_responses ) #Raw item scores are stored in manual_entry for use by other modules
   
   
   aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  
@@ -311,16 +328,40 @@ server <- function(input, output, session) {
                                                                                             #ci etc.). This dataframe will be sent to the db
   
   
+
   
-  psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
 
   
   selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
   
   
   
-  selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure)
+  input_retrieve_client_data<- reactive({input$retrieve_client_data})
   
+  selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
+  
+  
+  observeEvent(input_submit_responses(), {
+    
+    dbWriteTable(pool, "scale",  data.frame(measure_data()), row.names = FALSE, append = TRUE) ;
+    showModal(modalDialog(title = "Successful Completion", footer = modalButton("Okay"),
+                          "Responses have been submitted."))
+    
+  })
+  
+  
+  
+  selected_client_data<- eventReactive(input_submit_responses(), {
+    
+    selected_client_sql<- "SELECT *
+  FROM scale
+    WHERE client_id = ?client_id AND measure = ?measure;"
+    
+    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = psychlytx::gad7_info$measure)
+    
+    dbGetQuery(pool, selected_client_query)
+    
+  })
   
 
   #Write post-therapy analytics data to db

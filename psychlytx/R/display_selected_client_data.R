@@ -12,11 +12,6 @@ display_client_data_UI<- function(id) {
 
 tagList(
 
-actionButton(ns("retrieve_client_data"), "Retrieve Outcomes", class = "submit_data"),
-
-br(),
-br(),
-
 DT::dataTableOutput(ns("selected_client_data_out")),
 
 verbatimTextOutput(ns("client_data_availability_message"))
@@ -40,10 +35,10 @@ verbatimTextOutput(ns("client_data_availability_message"))
 #' @export
 
 
-display_client_data<- function(input, output, session, pool, selected_client, measure) {
+display_client_data<- function(input, output, session, pool, selected_client, measure, input_retrieve_client_data) {
 
 
-  selected_client_data<- eventReactive(input$retrieve_client_data, {
+  selected_client_data<- eventReactive(input_retrieve_client_data(), {
 
     selected_client_sql<- "SELECT *
   FROM scale
@@ -55,6 +50,8 @@ display_client_data<- function(input, output, session, pool, selected_client, me
 
 
   })
+
+
 
 
 

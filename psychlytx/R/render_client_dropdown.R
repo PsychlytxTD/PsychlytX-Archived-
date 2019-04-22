@@ -12,15 +12,14 @@ ns <- NS(id)
 
 tagList(
 
-titlePanel(span(tagList(icon("f07c", lib = "font-awesome", class = "far fa-folder-open"), h4("Please find your client then click"),
-                        h5(tags$code("Retrieve Outcomes", style = "color:black"))))),
-
-uiOutput(ns("client_dropdown")),
+titlePanel(span(tagList(icon("f07c", lib = "font-awesome", class = "far fa-folder-open"), h4("Find And Select Your Client")))),
 
 actionButton(ns("refresh"), "Refresh Client List", class = "submit_data_blue"),
 
 br(),
-br()
+
+uiOutput(ns("client_dropdown"))
+
 
 )
 

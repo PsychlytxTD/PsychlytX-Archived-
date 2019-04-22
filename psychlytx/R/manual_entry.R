@@ -28,17 +28,8 @@ fluidRow(
 
          dateInput(ns("date"), "Date", format = "dd/mm/yyyy")
 
-  )),
-
-fluidRow(
-
-  column(width = 4,
-
-         actionButton(ns("submit_scores"), "Submit", class = "submit_data"),
-
-         tags$head(tags$style(".submit_data{color:#d35400;}"))
-
   ))
+
 
 )
 
@@ -59,7 +50,7 @@ fluidRow(
 
 #The scale_entry_scores object refers to the item scores from the online scale (if completed)
 
-manual_data<- function(input, output, session, scale_entry) {
+manual_data<- function(input, output, session, scale_entry, input_submit_responses) {
 
   observe({
 
@@ -77,7 +68,7 @@ manual_data<- function(input, output, session, scale_entry) {
 
     item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
 
-     eventReactive(input$submit_scores, { list( date = date(), item_scores = item_scores() ) })
+     eventReactive(input_submit_responses, { list( date = date(), item_scores = item_scores() ) })
 
 
 

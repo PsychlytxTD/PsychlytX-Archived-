@@ -24,7 +24,7 @@ download_report_UI<- function(id) {
                             colour = "#d35400",
                             content = c("<b>Your report may not generate for two reasons:</b>",
                             "<b>1.</b> You have selected a client who has no outcomes recorded with a Psychlytx web application.",
-                            "<b>1.</b> When selecting your client, you forgot to click <code style='color:#d35400;'>Retrieve Outcomes</code>."),
+                            "<b>1.</b> When selecting your client, you forgot to click <code style='color:#d35400;'>Select Client</code>."),
                             size = "m")
 
                    ),
