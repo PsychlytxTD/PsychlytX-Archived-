@@ -1,9 +1,7 @@
-write_measure_data_to_db<- function(pool, measure_data, input_submit_responses) {
+write_measure_data_to_db<- function(pool, measure_data) {
 
 
   observe({
-
-    req(input_submit_responses())
 
     #pass the client_data_to_db dataframe in and append the scale table in db
 

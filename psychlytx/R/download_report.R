@@ -12,32 +12,32 @@ download_report_UI<- function(id) {
 
   tagList(
 
-   fluidPage(
+    fluidPage(
 
-     sidebarLayout( position = "right",
+      sidebarLayout( position = "right",
 
-       sidebarPanel(
+                     sidebarPanel(
 
-             downloadButton(ns("report"), "Report Download",
-                            class = "submit_data", lib = "font-awesome") %>%  helper(type = "inline",
-                            title = "Problems with report generation",
-                            colour = "#d35400",
-                            content = c("<b>Your report may not generate for two reasons:</b>",
-                            "<b>1.</b> You have selected a client who has no outcomes recorded with a Psychlytx web application.",
-                            "<b>1.</b> When selecting your client, you forgot to click <code style='color:#d35400;'>Select Client</code>."),
-                            size = "m")
+                       downloadButton(ns("report"), "Report Download",
+                                      class = "submit_data", lib = "font-awesome") %>%  helper(type = "inline",
+                                                                                               title = "Problems with report generation",
+                                                                                               colour = "#d35400",
+                                                                                               content = c("<b>Your report may not generate for two reasons:</b>",
+                                                                                                           "<b>1.</b> You have selected a client who has no outcomes recorded with a Psychlytx web application.",
+                                                                                                           "<b>1.</b> When selecting your client, you forgot to click <code style='color:#d35400;'>Retrieve Outcomes</code>."),
+                                                                                               size = "m")
 
-                   ),
+                     ),
 
 
-      mainPanel(tags$b("This report will display outcomes across all measures completed by the client using
-                       PsychlytX web applications."),
+                     mainPanel(tags$b("This report will display outcomes across all measures completed by the client using
+                                      PsychlytX web applications."),
 
-                       br(),
+                               br(),
 
-                      "*Report generation may take a few moments.")
+                               "*Report generation may take a few moments.")
 
-                 )))
+                     )))
 
 }
 
@@ -197,7 +197,7 @@ download_report<- function(input, output, session, selected_client_data, selecte
     client_name<- dbGetQuery( pool, client_name_query )
 
 
-    })
+  })
 
   output$report <- downloadHandler(
 
@@ -236,11 +236,3 @@ download_report<- function(input, output, session, selected_client_data, selecte
                         ))})
 
 }
-
-
-
-
-
-
-
-

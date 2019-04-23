@@ -13,25 +13,34 @@ manual_data_UI<- function(id) {
 
 
 
-tagList(
+  tagList(
 
 
-fluidRow(
+    fluidRow(
 
-  column(width = 4,
+      column(width = 4,
 
-         textInput(ns('item_scores'), 'Inputted Item Scores', "0,1,2,etc")),
-
-
-
-  column(width = 4,
-
-         dateInput(ns("date"), "Date", format = "dd/mm/yyyy")
-
-  ))
+             textInput(ns('item_scores'), 'Inputted Item Scores', "0,1,2,etc")),
 
 
-)
+
+      column(width = 4,
+
+             dateInput(ns("date"), "Date", format = "dd/mm/yyyy")
+
+      )),
+
+    fluidRow(
+
+      column(width = 4,
+
+             actionButton(ns("submit_scores"), "Submit", class = "submit_data"),
+
+             tags$head(tags$style(".submit_data{color:#d35400;}"))
+
+      ))
+
+  )
 
 
 
@@ -50,13 +59,13 @@ fluidRow(
 
 #The scale_entry_scores object refers to the item scores from the online scale (if completed)
 
-manual_data<- function(input, output, session, scale_entry, input_submit_responses) {
+manual_data<- function(input, output, session, scale_entry) {
 
   observe({
 
     updateTextInput(session, "item_scores", value = scale_entry()) #If the online scale was completed, pass these item scores directly into
-                                                                     #the manually-entry field. Thus, item scores always come from one place
-                                                                     #when used for subsequent processing.
+    #the manually-entry field. Thus, item scores always come from one place
+    #when used for subsequent processing.
 
   })
 
@@ -64,13 +73,12 @@ manual_data<- function(input, output, session, scale_entry, input_submit_respons
 
 
 
-    date<- reactive({ input$date })
+  date<- reactive({ input$date })
 
-    item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
+  item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
 
-     eventReactive(input_submit_responses(), { list( date = date(), item_scores = item_scores() ) })
+  eventReactive(input$submit_scores, { list( date = date(), item_scores = item_scores() ) })
 
 
 
 }
-
