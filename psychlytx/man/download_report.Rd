@@ -4,11 +4,15 @@
 \alias{download_report}
 \title{Submit Nested Data to Report}
 \usage{
-download_report(input, output, session, selected_client_data,
-  selected_client, pool)
+download_report(input, output, session, pool, selected_client, measure,
+  manual_entry)
 }
 \arguments{
-\item{selected_client_data}{An unnested dataframe pulled from the database containing all timepoint scores for an individual on a specific measure.}
+\item{pool}{The pooled db connection.}
+
+\item{selected_client}{A string indicating the unique id of the selected client.}
+
+\item{measure}{The name of the psychological measure.}
 }
 \description{
 Wrangle selected_client_data pulled from database and pass it to an R Markdown report

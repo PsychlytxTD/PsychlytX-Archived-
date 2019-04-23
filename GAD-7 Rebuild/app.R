@@ -290,7 +290,7 @@ server <- function(input, output, session) {
   
   input_retrieve_client_data<- reactive({input$retrieve_client_data})
   
-  selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
+  callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
   
   
   
@@ -304,7 +304,7 @@ server <- function(input, output, session) {
   
   #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
-  callModule( psychlytx::download_report, "download_report", selected_client_data, selected_client, pool)
+  callModule( psychlytx::download_report, "download_report", pool, selected_client, psychlytx::gad7_info$measure, manual_entry)
   
   
 }

@@ -93,8 +93,4 @@ display_client_data<- function(input, output, session, pool, selected_client, me
 
   })
 
-
-
-  reactive({ selected_client_data() })
-
 }

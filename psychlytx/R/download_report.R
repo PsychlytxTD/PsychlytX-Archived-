@@ -48,20 +48,36 @@ download_report_UI<- function(id) {
 #'
 #' Wrangle selected_client_data pulled from database and pass it to an R Markdown report
 #'
-#' @param selected_client_data An unnested dataframe pulled from the database containing all timepoint scores for an individual on a specific measure.
+#' @param pool The pooled db connection.
+#'
+#' @param selected_client A string indicating the unique id of the selected client.
+#'
+#' @param measure The name of the psychological measure.
 #'
 #' @export
 
 
-download_report<- function(input, output, session, selected_client_data, selected_client, pool) {
+download_report<- function(input, output, session, pool, selected_client, measure, manual_entry) {
 
 
-  report_data <- reactive({
+
+   report_data <- reactive({
+
+    manual_entry()[["submit_scores_button_value"]]
+
+    most_recent_client_sql<- "SELECT *
+    FROM scale
+    WHERE client_id = ?client_id AND measure = ?measure;"
+
+    most_recent_client_query<- sqlInterpolate(pool, most_recent_client_sql, client_id = selected_client(), measure = measure)
+
+    most_recent_client_data<- dbGetQuery(pool, most_recent_client_query)
+
 
     #Nest the dataframe: create a list column of dataframes - one per each subscale.
     #We want to group the scores by subscale. So GAD7 should have its own df, PHQ9 should have its own df etc.
 
-    subscale_df <- selected_client_data() %>%
+    subscale_df <- most_recent_client_data %>%
       dplyr::group_by(subscale) %>%
       tidyr::nest() %>%
       dplyr::mutate(
