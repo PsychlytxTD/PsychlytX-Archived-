@@ -118,6 +118,8 @@ ui<- function(request) {
                                       
                                )),
                              
+                             psychlytx::refresh_scale_query_UI("refresh_scale_query"),
+                             
                              psychlytx::calculate_subscale_UI("calculate_subscales"), #Calculate all aggregate subscale scores for the measure
                              
                              psychlytx::collect_input_UI("collect_input_1"), #Collect all input for a subscale
@@ -250,6 +252,7 @@ server <- function(input, output, session) {
   
   input_submit_responses<- reactive({ input$submit_scores })
   
+  
   manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry, input_submit_responses ) #Raw item scores are stored in manual_entry for use by other modules
   
   
@@ -292,10 +295,6 @@ server <- function(input, output, session) {
   
   measure_data<- callModule(psychlytx::combine_all_input, "combine_all_input", input_list)  #Generate a dataframe with all necessary scale data (date, score, pts, se,
                                                                                             #ci etc.). This dataframe will be sent to the db
-  
-  
-
-  
 
   
   selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
@@ -304,30 +303,12 @@ server <- function(input, output, session) {
   
   input_retrieve_client_data<- reactive({input$retrieve_client_data})
   
+  
   selected_client_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
   
   
-  observeEvent(input_submit_responses(), {
-    
-    dbWriteTable(pool, "scale",  data.frame(measure_data()), row.names = FALSE, append = TRUE) ;
-    showModal(modalDialog(title = "Successful Completion", footer = modalButton("Okay"),
-                          "Responses have been submitted."))
-    
-  })
-  
-  
-  
-  selected_client_data<- eventReactive(input_submit_responses(), {
-    
-    selected_client_sql<- "SELECT *
-  FROM scale
-    WHERE client_id = ?client_id AND measure = ?measure;"
-    
-    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = psychlytx::gad7_info$measure)
-    
-    dbGetQuery(pool, selected_client_query)
-    
-  })
+  selected_client_data<- callModule(psychlytx::refresh_scale_query, "refresh_scale_query", pool, input_submit_responses,
+                                    measure_data, psychlytx::gad7_info$measure, selected_client)
   
 
   #Write post-therapy analytics data to db

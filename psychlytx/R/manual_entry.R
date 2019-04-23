@@ -68,7 +68,7 @@ manual_data<- function(input, output, session, scale_entry, input_submit_respons
 
     item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
 
-     eventReactive(input_submit_responses, { list( date = date(), item_scores = item_scores() ) })
+     eventReactive(input_submit_responses(), { list( date = date(), item_scores = item_scores() ) })
 
 
 
