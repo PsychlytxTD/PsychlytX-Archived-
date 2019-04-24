@@ -116,7 +116,9 @@ ui<- function(request) {
                                   
                          ),
                          
-                         tabPanel(tags$strong("Print Clinical Report"), value = "report_panel",
+                         useShinyjs(),
+                         
+                         tabPanel(tags$strong("Print Clinical Report", id = "trigger_most_recent_data"), value = "report_panel",
                                   
                                   psychlytx::select_population_UI("select_population"),
                                   
@@ -294,6 +296,22 @@ server <- function(input, output, session) {
   
   
   
+  onclick("trigger_most_recent_data",
+          
+          most_recent_client_data<- reactive({ most_recent_client_sql<- "SELECT *
+          FROM scale
+          WHERE client_id = ?client_id AND measure = ?measure;"
+          
+          most_recent_client_query<- sqlInterpolate(pool, most_recent_client_sql, client_id = selected_client(), measure = psychlytx::gad7_info$measure)
+          
+          dbGetQuery(pool, most_recent_client_query)
+          
+          })
+          
+          )
+  
+  
+  
   #Write post-therapy analytics data to db
   
   analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client) #Collect posttherapy info
@@ -304,7 +322,7 @@ server <- function(input, output, session) {
   
   #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
-  callModule( psychlytx::download_report, "download_report", pool, selected_client, psychlytx::gad7_info$measure, manual_entry)
+  callModule( psychlytx::download_report, "download_report", pool, selected_client, psychlytx::gad7_info$measure, most_recent_client_data)
   
   
 }

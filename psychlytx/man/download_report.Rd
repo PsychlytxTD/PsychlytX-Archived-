@@ -5,7 +5,7 @@
 \title{Submit Nested Data to Report}
 \usage{
 download_report(input, output, session, pool, selected_client, measure,
-  manual_entry)
+  most_recent_client_data)
 }
 \arguments{
 \item{pool}{The pooled db connection.}
