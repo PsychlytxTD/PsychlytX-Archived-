@@ -22,9 +22,10 @@ download_report_UI<- function(id) {
                                       class = "submit_data", lib = "font-awesome") %>%  helper(type = "inline",
                                                                                                title = "Problems with report generation",
                                                                                                colour = "#d35400",
-                                                                                               content = c("<b>Your report may not generate for two reasons:</b>",
-                                                                                                           "<b>1.</b> You have selected a client who has no outcomes recorded with a Psychlytx web application.",
-                                                                                                           "<b>1.</b> When selecting your client, you forgot to click <code style='color:#d35400;'>Retrieve Outcomes</code>."),
+                                                                                               content = c("<b>Your report may fail to generate for three reasons:</b>",
+                                                                                                           "<b>1.</b> You have selected a client with no recorded outcomes.",
+                                                                                                           "<b>2.</b> When finding your client in the dropdown menu, you forgot to click <code style='color:#d35400;'>Select Client</code>.",
+                                                                                                           "<b>3.</b> When completing the questionnaire, you forgot to click <code style='color:#d35400;'>Submit</code>."),
                                                                                                size = "m")
 
                      ),
@@ -65,7 +66,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
     #Nest the dataframe: create a list column of dataframes - one per each subscale.
     #We want to group the scores by subscale. So GAD7 should have its own df, PHQ9 should have its own df etc.
 
-    subscale_df <- most_recent_client_data() %>%
+    subscale_df <- most_recent_client_data$value %>%
       dplyr::group_by(subscale) %>%
       tidyr::nest() %>%
       dplyr::mutate(

@@ -61,7 +61,7 @@ generate_sd_widget_UI <- function(id) {
 
 #Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
-generate_sd_widget <- function(input, output, session, title, measure, subscale, population_quantity, populations, input_population, sds,means,
+generate_sd_widget <- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, input_population, sds,means,
            mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items,
            max_score, min_score, description) {
 

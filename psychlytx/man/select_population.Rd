@@ -4,11 +4,11 @@
 \alias{select_population}
 \title{Update Population}
 \usage{
-select_population(input, output, session, title, measure, subscale,
-  population_quantity, populations, sds, means, mean_sd_references,
-  reliabilities, reliability_references, cutoff_values, cutoff_labels,
-  cutoff_references, cutoff_quantity, items, max_score, min_score,
-  description)
+select_population(input, output, session, title, brief_title, measure,
+  subscale, population_quantity, populations, sds, means,
+  mean_sd_references, reliabilities, reliability_references, cutoff_values,
+  cutoff_labels, cutoff_references, cutoff_quantity, items, max_score,
+  min_score, description)
 }
 \arguments{
 \item{selected_client_data}{Data for the selected patient pulled from the db. The required value is selected_client_data()$population}

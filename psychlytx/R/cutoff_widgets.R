@@ -62,7 +62,7 @@ generate_cutoff_widget_UI <- function(id) {
 
 #Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
-generate_cutoff_widget <-function(input, output, session, title, measure, subscale, population_quantity, populations, input_population, sds,means,
+generate_cutoff_widget <-function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, input_population, sds,means,
                                   mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references,
                                   cutoff_quantity, items, max_score, min_score, description) {
 
@@ -77,6 +77,30 @@ generate_cutoff_widget <-function(input, output, session, title, measure, subsca
       )))
 
 
+      arr_list<- params_list_maker(
+        title = title,
+        measure = measure,
+        subscale = subscale,
+        population_quantity = population_quantity,
+        populations = populations,
+        input_population = input_population(),
+        means = means,
+        sds = sds,
+        mean_sd_references = mean_sd_references,
+        reliabilities = reliabilities,
+        reliability_references = reliability_references,
+        cutoff_values = cutoff_values,
+        cutoff_labels = cutoff_labels,
+        cutoff_references = cutoff_references,
+        cutoff_quantity = cutoff_quantity
+      )[c(8, 9, 10, 11, 12, 14)]
+
+
+      index<- order(arr_list$cutoff_values)
+      arr_list$cutoff_values<- arr_list$cutoff_values[index]
+      arr_list$cutoff_labels<- arr_list$cutoff_labels[index]
+      arr_list$cutoff_references<- arr_list$cutoff_references[index]
+
      #Widgets will be stored in this list before being called in do.call()
 
       cutoff_widget_list <-
@@ -84,27 +108,13 @@ generate_cutoff_widget <-function(input, output, session, title, measure, subsca
         #Params_list_maker() creates a list of lists, each containing parameters corresponding to a different population
          #It will return a single list matching the population selected by the user
 
-        purrr::pmap(params_list_maker(
-          title = title,
-          measure = measure,
-          subscale = subscale,
-          population_quantity = population_quantity,
-          populations = populations,
-          input_population = input_population(),
-          means = means,
-          sds = sds,
-          mean_sd_references = mean_sd_references,
-          reliabilities = reliabilities,
-          reliability_references = reliability_references,
-          cutoff_values = cutoff_values,
-          cutoff_labels = cutoff_labels,
-          cutoff_references = cutoff_references,
-          cutoff_quantity = cutoff_quantity
-        )[c(8, 9, 10, 11, 12, 14)],
+        purrr::pmap(arr_list,
 
        #Set these relevant parameters as function arguments (need to do this or the code won't run).
 
         function(cutoff_value_ids, cutoff_label_ids, cutoff_values, cutoff_labels, cutoff_references, cutoff_reference_ids) {
+
+
           div(
           column(width = 2,
 

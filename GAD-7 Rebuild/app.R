@@ -116,19 +116,7 @@ ui<- function(request) {
                                   
                          ),
                          
-                         useShinyjs(),
-                         
-                         tabPanel(tags$strong("Print Clinical Report", id = "trigger_most_recent_data"), value = "report_panel",
-                                  
-                                  psychlytx::select_population_UI("select_population"),
-                                  
-                                  br(),
-                                  
-                                  psychlytx::download_report_UI("download_report") #Report download
-                                  
-                         ),
-                         
-                         tabPanel(tags$strong("Customisation (Optional)"),
+                         tabPanel(tags$strong("Custom Settings (Optional)"),
                                   
                                   fluidPage(
                                     
@@ -180,7 +168,21 @@ ui<- function(request) {
                                       verbatimTextOutput("reference_sample")
                                       
                                       
-                                    ))))),
+                                    ))),
+                         
+                         useShinyjs(),
+                         
+                         tabPanel(tags$strong("Print Clinical Report", id = "trigger_most_recent_data"), value = "report_panel",
+                                  
+                                  psychlytx::select_population_UI("select_population"),
+                                  
+                                  br(),
+                                  
+                                  psychlytx::download_report_UI("download_report") #Report download
+                                  
+                         )
+                         
+                      )),
                 
                 column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)),
         
@@ -295,22 +297,26 @@ server <- function(input, output, session) {
   callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
   
   
+  most_recent_client_data<- reactiveValues()
   
   onclick("trigger_most_recent_data",
           
-          most_recent_client_data<- reactive({ most_recent_client_sql<- "SELECT *
+          observe({ 
+            
+          most_recent_client_sql<- "SELECT *
           FROM scale
           WHERE client_id = ?client_id AND measure = ?measure;"
           
           most_recent_client_query<- sqlInterpolate(pool, most_recent_client_sql, client_id = selected_client(), measure = psychlytx::gad7_info$measure)
           
-          dbGetQuery(pool, most_recent_client_query)
+          most_recent_client_data$value<- dbGetQuery(pool, most_recent_client_query)
           
           })
           
           )
   
   
+
   
   #Write post-therapy analytics data to db
   

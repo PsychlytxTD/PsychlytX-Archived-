@@ -39,7 +39,7 @@
 
 #The paramaters from the subscale list (some of which are themselves lists) are passed as arguments.
 
-params_list_maker<- function(title, measure, subscale, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities, reliability_references,
+params_list_maker<- function(title, brief_title, measure, subscale, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities, reliability_references,
                              cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score, description) {
 
   req(input_population)

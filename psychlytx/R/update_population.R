@@ -45,7 +45,7 @@ select_population_UI<- function(id) {
 #'
 #' @export
 
-select_population<- function(input, output, session, title, measure, subscale, population_quantity, populations, sds, means,
+select_population<- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, sds, means,
                              mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity,
                              items, max_score, min_score, description) {
 

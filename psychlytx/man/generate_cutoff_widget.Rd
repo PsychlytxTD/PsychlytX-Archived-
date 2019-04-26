@@ -4,8 +4,8 @@
 \alias{generate_cutoff_widget}
 \title{Cutoff widget module}
 \usage{
-generate_cutoff_widget(input, output, session, title, measure, subscale,
-  population_quantity, populations, input_population, sds, means,
+generate_cutoff_widget(input, output, session, title, brief_title, measure,
+  subscale, population_quantity, populations, input_population, sds, means,
   mean_sd_references, reliabilities, reliability_references, cutoff_values,
   cutoff_labels, cutoff_references, cutoff_quantity, items, max_score,
   min_score, description)

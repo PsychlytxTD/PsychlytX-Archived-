@@ -4,11 +4,11 @@
 \alias{params_list_maker}
 \title{List generator for population paramaters for a subscale}
 \usage{
-params_list_maker(title, measure, subscale, population_quantity,
-  populations, input_population, sds, means, mean_sd_references,
-  reliabilities, reliability_references, cutoff_values, cutoff_labels,
-  cutoff_references, cutoff_quantity, items, max_score, min_score,
-  description)
+params_list_maker(title, brief_title, measure, subscale,
+  population_quantity, populations, input_population, sds, means,
+  mean_sd_references, reliabilities, reliability_references, cutoff_values,
+  cutoff_labels, cutoff_references, cutoff_quantity, items, max_score,
+  min_score, description)
 }
 \arguments{
 \item{population_quantity}{A numeric value of possible populations from which the user can select.}

@@ -55,7 +55,17 @@ plot_subscale <- function(subscale_df, subscale_info) {
 
   #Need to increase space between 0 and first tick on x-axis to make space for cutoff labels
 
+  if(nrow(subscale_df) == 1) {
+
   x_axis_lower_expansion <- subscale_df$date[1] - 30
+
+  } else {
+
+    x_axis_expansion_factor<- (subscale_df$date[length(subscale_df$date)] - subscale_df$date[1]) * 0.3
+
+    x_axis_lower_expansion<- subscale_df$date[1] - x_axis_expansion_factor
+
+  }
 
 
   #Plot breaks & break labs - need to replace this with the minimum and maximum possible scores on the scale
@@ -140,12 +150,12 @@ plot_subscale <- function(subscale_df, subscale_info) {
         angle = 70,
         hjust = 1,
         #Style x-axis labels
-        size = 12,
+        size = 11,
         family = "Linux Libertine",
         colour = "black"
       ),
       axis.text.y = element_text(
-        size = 12,
+        size = 11,
         #Style y-axis labels
         family = "Linux Libertine",
         colour = "black"
@@ -163,7 +173,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
     scale_x_chron(breaks = subscale_df$date, #Customise x-axis date breaks and labels to be the same as the data
                   format = "%d/%m/%Y") +
     xlab(NULL) +
-    ylab(paste(subscale_info$title, "Score")) #Make x and y plot labels sentence case
+    ylab(paste(subscale_info$brief_title, "Score")) #Make x and y plot labels sentence case
 
 
   #Position cutoff labels
@@ -179,7 +189,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       hjust = 0,
       nudge_y = 0.7,
       family = "Linux Libertine",
-      size = 5
+      size = 4
     ) + geom_text(
       aes(
         label = cutoff_label_2,
@@ -190,7 +200,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       hjust = 0,
       nudge_y = 0.7,
       family = "Linux Libertine",
-      size = 5
+      size = 4
     ) + geom_text(
       aes(
         label = cutoff_label_3,
@@ -201,7 +211,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       hjust = 0,
       nudge_y = 0.7,
       family = "Linux Libertine",
-      size = 5
+      size = 4
     ) + geom_text(
       aes(
         label = cutoff_label_4,
@@ -212,7 +222,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       hjust = 0,
       nudge_y = 0.7,
       family = "Linux Libertine",
-      size = 5
+      size = 4
     ) + geom_text(
       aes(
         label = cutoff_label_5,
@@ -223,7 +233,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       hjust = 0,
       nudge_y = 0.7,
       family = "Linux Libertine",
-      size = 5
+      size = 4
     )
 
   plot #Print plot
