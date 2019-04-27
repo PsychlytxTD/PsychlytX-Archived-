@@ -112,8 +112,8 @@ download_report<- function(input, output, session, pool, selected_client, measur
             Date = date,
             Score = score,
             Change = change,
-            `CI Upper Limit` = ci_upper,
-            `CI Lower Limit` = ci_lower,
+            `CI Upper` = ci_upper,
+            `CI Lower` = ci_lower,
             `Predicted True Score` = pts,
             `Standard Error` = se
           ) %>%
@@ -125,11 +125,11 @@ download_report<- function(input, output, session, pool, selected_client, measur
             kableExtra::kable(
               format = "latex",
               booktabs = T,
-              escape = F
+              caption = "Outcomes",
+              escape = F,
+              linesep = ""
             ) %>%
-            kableExtra::kable_styling(full_width = F) %>%
-            kableExtra::add_header_above(c("Outcome Data" = 7)) %>%
-            kableExtra::add_header_above(c("Table 1" = 7))
+            kableExtra::kable_styling(latex_options = c("HOLD_position"), full_width = F) %>% kableExtra::row_spec(0, bold = TRUE)
         )
       )
 
@@ -144,8 +144,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
             `Reference Population` = population,
             Mean = mean,
             Sd = sd,
-            `Mean Reference` = mean_reference,
-            `Sd Reference` = sd_reference
+            `Mean & Sd Reference` = mean_reference
           ) %>%
             dplyr::mutate(
               date2 = as.Date(Date, "%m/%d/%Y")
@@ -153,11 +152,10 @@ download_report<- function(input, output, session, pool, selected_client, measur
             dplyr::arrange(desc(date2)) %>%
             dplyr::slice(1) %>%
             dplyr::select(-date2) %>%
-            kableExtra::kable(format = "latex", booktabs = T) %>%
-            kableExtra::kable_styling(full_width = F) %>%
-            kableExtra::column_spec(c(2, 5, 6), width = "3cm") %>%
-            kableExtra::add_header_above(c("Data & References" = 6)) %>%
-            kableExtra::add_header_above(c("Table 2" = 6))
+            kableExtra::kable(format = "latex", booktabs = T, caption = "Statistics Employed In Analyses") %>% kableExtra::row_spec(0, bold = TRUE) %>%
+            kableExtra::kable_styling(latex_options = c("HOLD_position"), full_width = F) %>%
+            kableExtra::column_spec(c(2), width = "4cm") %>%
+            kableExtra::column_spec(c(5), width = "7cm")
         )
       )
 
@@ -181,11 +179,11 @@ download_report<- function(input, output, session, pool, selected_client, measur
             dplyr::arrange(desc(date2)) %>%
             dplyr::slice(1) %>%
             dplyr::select(-date2) %>%
-            kableExtra::kable(format = "latex", booktabs = T) %>%
-            kableExtra::kable_styling(full_width = F) %>%
-            kableExtra::column_spec(c(3, 5), width = "3cm") %>%
-            kableExtra::add_header_above(c("Data & References" = 5)) %>%
-            kableExtra::add_header_above(c("Table 2" = 5))
+            kableExtra::kable(format = "latex", booktabs = T, caption = "Statistics Employed In Analyses") %>% kableExtra::row_spec(0, bold = TRUE) %>%
+            kableExtra::kable_styling(latex_options = c("HOLD_position"), full_width = F) %>%
+            kableExtra::column_spec(c(2), width = "2cm") %>%
+            kableExtra::column_spec(c(3), width = "6cm") %>%
+            kableExtra::column_spec(c(5), width = "3cm")
         )
       )
   })

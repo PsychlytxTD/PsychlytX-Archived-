@@ -60,7 +60,7 @@ data<- data.frame(scale, date, score, pts, se, ci, ci_upper, ci_lower, mean, mea
 
 #Nest the dataframe: create a list column of dataframes - one per each subscale.
 
-subscale_df<- data %>% dplyr::group_by(scale) %>% tidyr::nest() %>% dplyr::mutate(subscale_info = list(psychlytx::gad7_params, psychlytx::phq9_params))
+subscale_df<- data %>% dplyr::group_by(scale) %>% tidyr::nest() %>% dplyr::mutate(subscale_info = list(psychlytx::gad7_info))
 
 
 #Add a 'change' variable to each dataframe showing statistically reliable change in scores 
@@ -86,7 +86,7 @@ subscale_df<- subscale_df %>% dplyr::mutate(scores_table = purrr::map(data, ~ dp
               `CI Upper Limit` = ci_upper, `CI Lower Limit` = ci_lower, `Predicted True Score` = pts, 
               `Standard Error` = se) %>% dplyr::mutate(Change = kableExtra::cell_spec(Change, "html", color = 
                if_else(is.na(Change), "gray", if_else(grepl("\\*", Change), "red", "gray")))) %>% kableExtra::kable(., format = "html", 
-              booktabs = T, escape = F) %>% kableExtra::kable_styling(full_width = F) %>% add_header_above(c("Outcome Data" = 7)) %>% add_header_above(c("Table 1" = 7))))
+              booktabs = T, escape = F, caption "hello") %>% kableExtra::kable_styling(full_width = F)))
 
 #Make a statistical info table for each subscale and store the tables in a list column
 

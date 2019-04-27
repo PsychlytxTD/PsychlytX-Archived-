@@ -21,9 +21,9 @@ anxiety disorders when an individual's responses fall above the recommended cut-
 screening instruments used to assess generalized anxiety (for systematic reviews, see Kroenke,
 Spitzer, Williams & Löwe, 2010; Plummer, Manea, Trepel & McMillan, 2015; van Ballegooijen,
 Riper, Cuijpers, Oppen & Smit, 2016).
-#Scale Structure:
-* 7 items.
 
+##Scale Structure:
+* 7 items.
 * 4-point Likert scale.
 * Respondents indicate how frequently (0 = "Not at all"; 3 = "Nearly every day") they have been
 bothered by the problems listed in each item (e.g. "Feeling nervous, anxious or on edge").

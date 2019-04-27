@@ -12,6 +12,7 @@ output:
     logo: "logo.png"
     logo_height: 2cm
     libertine: TRUE
+    fancy_captions: FALSE
 always_allow_html: yes
 params:
   report_data: 'NULL'
