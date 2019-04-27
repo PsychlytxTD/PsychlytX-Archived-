@@ -13,6 +13,8 @@ change_population_UI<- function(id) {
 
   tagList(
 
+    br(),
+
     fluidRow(
       column(width = 10, offset = 2,
              htmlOutput(ns("selected_population_message"))
@@ -25,23 +27,9 @@ change_population_UI<- function(id) {
              actionButton(ns("update_population"), "Update Population", class = "submit_data")
       )),
 
-
-    fluidRow(
-
-      titlePanel(span(tagList(icon("calculator", lib = "font-awesome")),
-                      h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))),
-
-      br(),
-
-      column(width = 8, offset = 3, HTML('&nbsp;'),HTML('&nbsp;'), HTML('&nbsp;'), tags$code(a("Learn more about customisation",
-                                                                                               href = "https:://psychlytx.com.au", style = "color:#d35400")) )
-
-    ),
-
     br()
 
-
-  )
+    )
 
 }
 
@@ -62,7 +50,7 @@ change_population<- function(input, output, session, input_population, tabsetpan
 
   observeEvent(input$update_population, {
     updateTabsetPanel(session = parent_session, tabsetpanel_id,
-                      selected = paste("report_panel"))
+                      selected = paste("update_population"))
   })
 
 

@@ -86,10 +86,8 @@ ui<- function(request) {
                                       br(),
                                       br(),
                                       
-                                      
-                                      tags$code(tags$a(href = "https:://psychlytx.com.au", "Edit exising client records.", style = "color:#d35400"))
-                                      
-                                      
+                                      tags$a(href = "https:://psychlytx.com.au", "Edit client records here.", style = "color:#d35400")
+
                                     ),
                                     
                                     mainPanel(
@@ -105,6 +103,8 @@ ui<- function(request) {
                                   
                                   psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
                                   
+                                  psychlytx::change_population_UI("change_population"),
+                                  
                                   psychlytx::manual_data_UI("manual_data"), #Items of the specific measure are passed here as a string of numbers
                                   
                                   psychlytx::calculate_subscale_UI("calculate_subscales"), #Calculate all aggregate subscale scores for the measure
@@ -116,11 +116,26 @@ ui<- function(request) {
                                   
                          ),
                          
-                         tabPanel(tags$strong("Custom Settings (Optional)"),
+                         tabPanel(tags$strong("Custom Settings (Optional)"), value = "update_population",
                                   
                                   fluidPage(
                                     
-                                    psychlytx::change_population_UI("change_population"),
+                                    
+                                    fluidRow(
+                                      
+                                      titlePanel(span(tagList(icon("calculator", lib = "font-awesome")),
+                                                      h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))),
+                                      
+                                      br(),
+                                      
+                                      column(width = 8, offset = 3, HTML('&nbsp;'), tags$code(a("Learn more about customisation",
+                                                                                   href = "https:://psychlytx.com.au", style = "color:#d35400")) )
+                                      
+                                    ),
+                                    
+                                    br(),
+                                    
+                                    psychlytx::select_population_UI("select_population"), 
                                     
                                     fluidRow(
                                       
@@ -172,11 +187,7 @@ ui<- function(request) {
                          
                          useShinyjs(),
                          
-                         tabPanel(tags$strong("Print Clinical Report", id = "trigger_most_recent_data"), value = "report_panel",
-                                  
-                                  psychlytx::select_population_UI("select_population"),
-                                  
-                                  br(),
+                         tabPanel(tags$strong("Print Clinical Report", id = "trigger_most_recent_data"), 
                                   
                                   psychlytx::download_report_UI("download_report") #Report download
                                   

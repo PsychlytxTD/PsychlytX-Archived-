@@ -14,6 +14,11 @@ download_report_UI<- function(id) {
 
     fluidPage(
 
+      column(width = 7, titlePanel(span(tagList(icon("file-pdf-o", lib = "font-awesome")),
+                                        h3(tags$b("Download Your Client's Clinical Report"))))),
+
+      br(),
+
       sidebarLayout( position = "right",
 
                      sidebarPanel(
