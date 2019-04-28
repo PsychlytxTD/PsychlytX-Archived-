@@ -68,7 +68,7 @@ generate_reliability_widget_UI <- function(id) {
 #Subscale list parameters (mostly lists themselves) are arguments to the module function.
 
 generate_reliability_widget <- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, input_population, sds, means, mean_sd_references, reliabilities,
-           reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score, description) {
+           reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score, description, existing_data) {
 
 
 
@@ -127,6 +127,15 @@ generate_reliability_widget <- function(input, output, session, title, brief_tit
           ))
 
         })
+
+
+       if(length(existing_data()$reliability) >= 1) {
+
+         updateNumericInput(session, "mean_sd_rel_value_id", "Test-Retest Reliability", value = existing_data()$reliability[1])
+
+         updateTextInput(session, "mean_sd_rel_reference_id", "Reference", value = existing_data()$reliability_reference[1])
+
+       }
 
 
       do.call(tagList, list(subscale_title, reliability_widget_list))

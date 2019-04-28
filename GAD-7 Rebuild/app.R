@@ -237,13 +237,15 @@ server <- function(input, output, session) {
   callModule(psychlytx::reliability_calc, "reliability_derivation")  #If selected, derive reliability value from statistics
   
   
-  confidence<- callModule(psychlytx::confidence_level, "confidence_widget")  #Confidence level for intervals
+  selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
   
   
-  method<- callModule(psychlytx::method_widget, "method_widget") #Reliable change method (a string)
+  input_retrieve_client_data<- reactive({input$retrieve_client_data})
+  
+  existing_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
   
   
-  input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info)) #Store the selected population for downstream use in other modules
+  input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info, existing_data)) #Store the selected population for downstream use in other modules
   
   
   callModule(psychlytx::change_population, "change_population", input_population)
@@ -260,15 +262,21 @@ server <- function(input, output, session) {
                                 aggregation_method = "sum")                                #Make a list of aggregate scores across subscales 
   #(in this case there is only one subscale)
   
+
+  confidence<- callModule(psychlytx::confidence_level, "confidence_widget", existing_data)  #Confidence level for intervals
+  
+  
+  method<- callModule(psychlytx::method_widget, "method_widget", existing_data) #Reliable change method (a string)
+  
   
   ################################## 
   
   #For each subscale individually, collect the values from widgets and store them in a list 
   
-  mean_input_1<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_1", input_population, psychlytx::gad7_info))
-  sd_input_1<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_1", input_population, psychlytx::gad7_info))
-  reliability_input_1<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_1", input_population, psychlytx::gad7_info))
-  cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::gad7_info))
+  mean_input_1<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_1", input_population, psychlytx::gad7_info, existing_data))
+  sd_input_1<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_1", input_population, psychlytx::gad7_info, existing_data))
+  reliability_input_1<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_1", input_population, psychlytx::gad7_info, existing_data))
+  cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::gad7_info, existing_data))
   
   #Create list of input values for a subscale 
   
@@ -299,13 +307,11 @@ server <- function(input, output, session) {
   
   psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
   
+
+ 
   
-  selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
   
   
-  input_retrieve_client_data<- reactive({input$retrieve_client_data})
-  
-  callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
   
   
   most_recent_client_data<- reactiveValues()
@@ -326,8 +332,6 @@ server <- function(input, output, session) {
           
           )
   
-  
-
   
   #Write post-therapy analytics data to db
   

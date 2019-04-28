@@ -4,7 +4,7 @@
 \alias{method_widget}
 \title{Reliable Change Method & Custom Confidence Intervals}
 \usage{
-method_widget(input, output, session)
+method_widget(input, output, session, existing_data)
 }
 \description{
 Generates widgets to select reliable change method and custom confidence interval width (if custom intervals are selected)

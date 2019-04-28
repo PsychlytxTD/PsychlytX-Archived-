@@ -30,10 +30,27 @@ method_widget_UI<- function(id) {
 
 
 
-method_widget<- function(input, output, session) { #In the parent app, need to pass a character vector of subscale names
+method_widget<- function(input, output, session, existing_data) { #In the parent app, need to pass a character vector of subscale names
                                                                       #(underscore replacing white space) in callModule()
 
-  reactive({ list( req(input$reliable_change_method) ) })
+
+  observe({
+
+    if(length(existing_data()$method) >= 1) {
+
+      updateRadioButtons(session, "reliable_change_method", selected = existing_data()$method[1])
+
+    }
+
+  })
+
+
+
+  reactive({
+
+    return(req(input$reliable_change_method))
+
+    })
 
 
 }

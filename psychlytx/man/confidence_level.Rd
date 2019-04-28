@@ -4,7 +4,7 @@
 \alias{confidence_level}
 \title{Confidence Level}
 \usage{
-confidence_level(input, output, session)
+confidence_level(input, output, session, existing_data)
 }
 \description{
 Generates a confidence interval widget

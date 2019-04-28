@@ -28,28 +28,24 @@ confidence_level_UI <- function(id) {
 #'
 #' @export
 
-confidence_level<- function(input, output, session) {
+confidence_level<- function(input, output, session, existing_data) {
+
+ observe({
+
+   if(length(existing_data()$confidence) >= 1 ) {
+
+     updateRadioButtons(session, "confidence", selected = existing_data()$confidence[1], inline = TRUE)
+
+   }
+
+ })
+
+
 
   reactive({
 
-    req(input$confidence)
-
-  if(input$confidence == "1") {
-
-     1.645
-
-  } else if(input$confidence == "2") {
-
-    1.96
-
-  } else {
-
-    2.575
-  }
-
-
+    return( req(as.numeric(input$confidence)) )
 
 })
 
 }
-

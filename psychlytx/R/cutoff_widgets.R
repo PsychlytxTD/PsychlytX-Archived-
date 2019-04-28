@@ -64,7 +64,7 @@ generate_cutoff_widget_UI <- function(id) {
 
 generate_cutoff_widget <-function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, input_population, sds,means,
                                   mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references,
-                                  cutoff_quantity, items, max_score, min_score, description) {
+                                  cutoff_quantity, items, max_score, min_score, description, existing_data) {
 
     cutoff_widget_reac <- reactive({
 
@@ -130,6 +130,31 @@ generate_cutoff_widget <-function(input, output, session, title, brief_title, me
 
 
         })
+
+
+      if(length(existing_data()$cutoff_value_1) >= 1) {
+
+        updateNumericInput(session, "cutoff_value_id_1", "Value", value = existing_data()$cutoff_value_1[1])
+        updateNumericInput(session, "cutoff_value_id_2", "Value", value = existing_data()$cutoff_value_2[1])
+        updateNumericInput(session, "cutoff_value_id_3", "Value", value = existing_data()$cutoff_value_3[1])
+        updateNumericInput(session, "cutoff_value_id_4", "Value", value = existing_data()$cutoff_value_4[1])
+        updateNumericInput(session, "cutoff_value_id_5", "Value", value = existing_data()$cutoff_value_5[1])
+
+        updateNumericInput(session, "cutoff_label_id_1", "Description", value = existing_data()$cutoff_label_1[1])
+        updateNumericInput(session, "cutoff_label_id_2", "Description", value = existing_data()$cutoff_label_2[1])
+        updateNumericInput(session, "cutoff_label_id_3", "Description", value = existing_data()$cutoff_label_3[1])
+        updateNumericInput(session, "cutoff_label_id_4", "Description", value = existing_data()$cutoff_label_4[1])
+        updateNumericInput(session, "cutoff_label_id_5", "Description", value = existing_data()$cutoff_label_5[1])
+
+        updateTextInput(session, "cutoff_reference_id_1", "Reference", value = existing_data()$cutoff_reference_1[1])
+        updateTextInput(session, "cutoff_reference_id_2", "Reference", value = existing_data()$cutoff_reference_2[1])
+        updateTextInput(session, "cutoff_reference_id_3", "Reference", value = existing_data()$cutoff_reference_3[1])
+        updateTextInput(session, "cutoff_reference_id_4", "Reference", value = existing_data()$cutoff_reference_4[1])
+        updateTextInput(session, "cutoff_reference_id_5", "Reference", value = existing_data()$cutoff_reference_5[1])
+
+      }
+
+
 
       #Call the the subscale name (to appear as heading) and call the div containing the widgets
 

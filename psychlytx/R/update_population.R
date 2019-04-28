@@ -53,7 +53,7 @@ fluidRow(
 
 select_population<- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, sds, means,
                              mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity,
-                             items, max_score, min_score, description) {
+                             items, max_score, min_score, description, existing_data) {
 
 
 
@@ -67,11 +67,19 @@ select_population<- function(input, output, session, title, brief_title, measure
 
 
     selectInput(ns("population"), h4("Reference Population"),
-                choices = population_list, width = "35%")
+                choices = population_list, width = "60%")
 
   })
 
   outputOptions(output, "select_population", suspendWhenHidden = FALSE)
+
+
+
+  observe({
+
+    updateSelectInput(session, "population", selected = existing_data()$population)
+
+  })
 
 
 reactive({  input$population  })

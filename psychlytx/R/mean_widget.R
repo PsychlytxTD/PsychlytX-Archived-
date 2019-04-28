@@ -11,7 +11,9 @@ generate_mean_widget_UI <- function(id) {
 
   ns <- NS(id) #Set namespace
 
+
   fluidRow(uiOutput(ns("mean_widget_out")))
+
 
 }
 
@@ -62,7 +64,7 @@ generate_mean_widget_UI <- function(id) {
 
 generate_mean_widget <-function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, input_population, sds, means,
                                 mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items, max_score, min_score,
-                                description) {
+                                description, existing_data) {
 
 
     mean_widget_reac <- reactive({
@@ -102,7 +104,7 @@ generate_mean_widget <-function(input, output, session, title, brief_title, meas
 
        #Set these relevant parameters as function arguments (need to do this or the code won't run)
 
-        function(mean_sd_rel_ids, means, mean_sd_references, mean_sd_rel_reference_ids) {
+        function(mean_sd_rel_ids, means, mean_sd_references, mean_sd_rel_reference_ids, existing_data) {
 
          #Create a div containing the dynamically generated widgets
 
@@ -119,6 +121,15 @@ generate_mean_widget <-function(input, output, session, title, brief_title, meas
         }
 
        )
+
+
+      if(length(existing_data()$mean) >= 1) {
+
+      updateNumericInput(session, "mean_sd_rel_value_id", "Mean", value = existing_data()$mean[1])
+
+      updateTextInput(session, "mean_sd_rel_reference_id", "Reference", value = existing_data()$mean_reference[1])
+
+      }
 
       do.call(tagList, list(subscale_title, mean_widget_list))
 
@@ -141,6 +152,7 @@ generate_mean_widget <-function(input, output, session, title, brief_title, meas
 
     #Need to finish the module with reactive value list containing id of value widget & reference widget - so these can be accessed by another module.
     #Add req() so the input values aren't NULL initially
+
 
     reactive({ list( req(input$mean_sd_rel_value_id), req(input$mean_sd_rel_reference_id) ) })
 

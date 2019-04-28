@@ -63,7 +63,7 @@ generate_sd_widget_UI <- function(id) {
 
 generate_sd_widget <- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, input_population, sds,means,
            mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity, items,
-           max_score, min_score, description) {
+           max_score, min_score, description, existing_data) {
 
     sd_widget_reac <- reactive({
 
@@ -117,6 +117,16 @@ generate_sd_widget <- function(input, output, session, title, brief_title, measu
                      ))
 
         })
+
+      if(length(existing_data()$sd) >= 1) {
+
+        updateNumericInput(session, "mean_sd_rel_value_id", "Sd", value = existing_data()$sd[1])
+
+        updateTextInput(session, "mean_sd_rel_reference_id", "Reference", value = existing_data()$sd_reference[1])
+
+      }
+
+
 
       do.call(tagList, list(subscale_title, sd_widget_list))
 
