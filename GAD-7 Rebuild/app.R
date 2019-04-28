@@ -97,14 +97,14 @@ ui<- function(request) {
                                       
                                     ))),
                          
-                         tabPanel(tags$strong("Complete Scale Items"),
+                         tabPanel(tags$strong("Complete Questionnaire"),
+                                  
+                                  psychlytx::initiate_settings_UI("initiate_settings"),
                                   
                                   psychlytx::analytics_posttherapy_UI("analytics_posttherapy"), #End-of-therapy clinical outcomes panel
                                   
                                   psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
-                                  
-                                  psychlytx::change_population_UI("change_population"),
-                                  
+                                
                                   psychlytx::manual_data_UI("manual_data"), #Items of the specific measure are passed here as a string of numbers
                                   
                                   psychlytx::calculate_subscale_UI("calculate_subscales"), #Calculate all aggregate subscale scores for the measure
@@ -116,7 +116,7 @@ ui<- function(request) {
                                   
                          ),
                          
-                         tabPanel(tags$strong("Custom Settings (Optional)"), value = "update_population",
+                         tabPanel(tags$strong("Analysis Settings"), value = "update_population",
                                   
                                   fluidPage(
                                     
@@ -187,7 +187,7 @@ ui<- function(request) {
                          
                          useShinyjs(),
                          
-                         tabPanel(tags$strong("Print Clinical Report", id = "trigger_most_recent_data"), 
+                         tabPanel(tags$strong("Download Clinical Report", id = "trigger_most_recent_data"), 
                                   
                                   psychlytx::download_report_UI("download_report") #Report download
                                   
@@ -248,7 +248,7 @@ server <- function(input, output, session) {
   input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info, existing_data)) #Store the selected population for downstream use in other modules
   
   
-  callModule(psychlytx::change_population, "change_population", input_population)
+  callModule(psychlytx::initiate_settings, "initiate_settings", input_population)
   
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
@@ -305,7 +305,7 @@ server <- function(input, output, session) {
   
   
   
-  psychlytx::write_measure_data_to_db(pool, measure_data)  #Write newly entered item responses from measure to db
+  psychlytx::write_measure_data_to_db(pool, measure_data, manual_entry)  #Write newly entered item responses from measure to db
   
 
  

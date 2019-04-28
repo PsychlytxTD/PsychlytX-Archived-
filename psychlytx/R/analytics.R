@@ -141,12 +141,8 @@ analytics_posttherapy_UI<- function(id) {
 
   tagList(
 
-    titlePanel(span(tagList(icon("edit", lib = "font-awesome", class = "far fa-edit"),
-                            h4(tags$b("Please complete the questions and and click"),
-                               tags$code("Submit.", style = "color:#d35400"))))),
-
-    checkboxGroupInput(ns("last_assessment"), "", choices = c("I am administering a measure to this client
-                                                                               for the last time" = "last")),
+    column(width = 12, checkboxGroupInput(ns("last_assessment"), "",
+                                          choices = c("My client is completing a questionnaire with PsychlytX for the last time." = "last"), width = "100%")),
 
     conditionalPanel(condition = "input.last_assessment == 'last'", ns = ns,
 

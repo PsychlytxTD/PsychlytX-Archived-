@@ -1,7 +1,7 @@
-write_measure_data_to_db<- function(pool, measure_data) {
+write_measure_data_to_db<- function(pool, measure_data, manual_entry) {
 
 
-  observe({
+  observeEvent(manual_entry()$submit_scores_button_value, {
 
     #pass the client_data_to_db dataframe in and append the scale table in db
 
