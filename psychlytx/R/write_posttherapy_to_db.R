@@ -1,3 +1,15 @@
+#' Write post-therapy analytics
+#'
+#' Write post-therapy analytics data to the db
+#'
+#' @param pool A pooled db connection.
+#'
+#' @param  analytics_posttherapy A dataframe containing post-therapy analytics data.
+#'
+#' @export
+
+
+
 write_posttherapy_to_db<- function(pool, analytics_posttherapy) {
 
   observe({

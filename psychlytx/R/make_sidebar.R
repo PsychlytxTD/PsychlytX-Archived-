@@ -10,7 +10,7 @@
 make_sidebar_UI<- function(id) {
 
 
-  dashboardSidebar(
+  dashboardSidebar(  #Menu items are hyperlinks to website pages
     sidebarMenu(
       br(),
       menuItem("Home", icon = icon("line-chart"), tabName = "Home", selected = TRUE),

@@ -7,7 +7,7 @@
 combine_all_input_UI(id)
 }
 \arguments{
-\item{id}{A string to create the namespace}
+\item{id}{A string to create the namespace.}
 }
 \description{
 Combine all lists of widget input values

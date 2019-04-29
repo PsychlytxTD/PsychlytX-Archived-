@@ -32,13 +32,15 @@ display_client_data_UI<- function(id) {
 #'
 #' @param measure A string indiating name of the measure
 #'
+#' @param input_retrieve_client_data A numeric value indicating the value of the action button - used to trigger a database query.
+#'
 #' @export
 
 
 display_client_data<- function(input, output, session, pool, selected_client, measure, input_retrieve_client_data) {
 
 
-  selected_client_data<- eventReactive(input_retrieve_client_data(), {
+  selected_client_data<- eventReactive(input_retrieve_client_data(), { #Pull in the selected client's data (for this measure only) from the db.
 
     selected_client_sql<- "SELECT *
     FROM scale
@@ -55,7 +57,7 @@ display_client_data<- function(input, output, session, pool, selected_client, me
 
 
 
-  output$selected_client_data_out<- DT::renderDataTable({
+  output$selected_client_data_out<- DT::renderDataTable({ #Show a snapshot of the data in a table so that the user can see how many assessments have been completed.
 
     req( selected_client_data() )
 
@@ -77,7 +79,7 @@ display_client_data<- function(input, output, session, pool, selected_client, me
   })
 
 
-  output$client_data_availability_message<- renderText({
+  output$client_data_availability_message<- renderText({ #Show user whether client has been selected and whether data has previously been inputted.
 
     req( selected_client_data() )
 
@@ -87,12 +89,12 @@ display_client_data<- function(input, output, session, pool, selected_client, me
 
     } else {
 
-      "No data to show yet for this client"
+      "Client selected. No data to show yet."
 
     }
 
   })
 
-  reactive({ selected_client_data() })
+  reactive({ selected_client_data() }) #Return the client's existing scale data
 
 }

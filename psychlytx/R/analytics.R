@@ -15,10 +15,12 @@ analytics_pretherapy_UI<- function(id) {
                       sidebarPanel(width = 10,
                      titlePanel(span(tagList(icon("clipboard", lib = "font-awesome")), h3(tags$b("Please Complete Client Registration.")))),
                      br(),
-                     column(width = 7, offset = 3, tags$code(a("We take privacy seriously. View our policy here.",
-                                                    href = "https:://psychlytx.com.au", style = "color:#d35400")) ),
                      br(),
-                     textInput(ns("first_name"), "First Name", width = '50%'),
+                     column(width = 7, a(tags$strong("We take privacy seriously. View our policy here."),
+                                                    href = "https:://psychlytx.com.au", style = "color:#d35400") ),
+                     br(),
+                     br(),
+                     textInput(ns("first_name"), "First Name", width = '50%'), #Create the widgets for pretherapy analytics
                      textInput(ns("last_name"), "Last Name", width = '50%'),
                      selectInput(ns("sex"), "Sex", c("", "Male", "Female", "Other"), width = '20%'),
                      dateInput(ns("birth_date"), "Date of Birth", startview = "year", format = "dd-mm-yyyy", width = '20%'),
@@ -56,11 +58,13 @@ analytics_pretherapy_UI<- function(id) {
 #'
 #' @param id String to create a unique namespace.
 #'
+#' @param clinician_id String indicating clinician's unique identifier.
+#'
 #' @export
 
 analytics_pretherapy<- function(input, output, session, clinician_id) {
 
-  output$pretherapy_data_entry_message<- renderText({
+  output$pretherapy_data_entry_message<- renderText({ #Send message to ensure that fields for first and last name are filled out by user
 
 
     if(input$first_name == "" | input$last_name == "") {
@@ -201,6 +205,10 @@ analytics_posttherapy_UI<- function(id) {
 #' Module generates client status widget and headings.
 #'
 #' @param id String to create a unique namespace.
+#'
+#' @param clinician_id String indicating clinician's unique identifier.
+#'
+#' @param selected_client String indicating client's unique identifier.
 #'
 #' @export
 

@@ -24,6 +24,8 @@ generate_mean_widget_UI <- function(id) {
 #'
 #' @param title A string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
+#' @param brief_title An abbreviated title or acronym.
+#'
 #' @param measure A string indicating the global measure.
 #'
 #' @param subscale A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
@@ -31,6 +33,8 @@ generate_mean_widget_UI <- function(id) {
 #' @param population_quantity A numeric value of possible populations from which the user can select.
 #'
 #' @param populations A list of strings (underscores should replace white space) indicating the possible range of populations.
+#'
+#' @param input_population A string (reactive value) representing the name of the selected population.
 #'
 #' @param sds A list of numeric values representing the standard deviations for all populations on that subscale.
 #'
@@ -57,6 +61,8 @@ generate_mean_widget_UI <- function(id) {
 #' @param min_score A numeric value indicating minimum possible score on the subscale.
 #'
 #' @param description A description of subscale's properties, to display in report.
+#'
+#' @param existing_data A dataframe representing the client's existing available data for this measure.
 #'
 #' @export
 
@@ -123,7 +129,7 @@ generate_mean_widget <-function(input, output, session, title, brief_title, meas
        )
 
 
-      if(length(existing_data()$mean) >= 1) {
+      if(length(existing_data()$mean) >= 1) { #Pull in the settings (if existing data is available) to prepopulate widgets with client's settings
 
       updateNumericInput(session, "mean_sd_rel_value_id", "Mean", value = existing_data()$mean[1])
 

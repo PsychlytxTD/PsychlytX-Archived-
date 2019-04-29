@@ -1,3 +1,14 @@
+#' Write pre-therapy analytics
+#'
+#' Write pre-therapy analytics data to the db
+#'
+#' @param pool A pooled db connection
+#'
+#' @param analytics_pretherapy A dataframe containing the pretherapy data to send to the db
+#'
+#' @export
+
+
 write_pretherapy_analytics_to_db<- function(pool, analytics_pretherapy) {
 
 
@@ -21,7 +32,7 @@ write_pretherapy_analytics_to_db<- function(pool, analytics_pretherapy) {
 
     } else(showModal(modalDialog(title = "Registration Unsuccessful", footer = modalButton("Okay"),
                                  "An entry already exists for this client. Please check the client details
-                                 you have inputted and resubmit.")))
+                                 you have inputted and resubmit."))) #Client registration details cannot be written to db ifan identical entry has already been created
 
   })
 

@@ -1,3 +1,16 @@
+#' Write client's measure data to db
+#'
+#' Write the client's new scores and associated statistics to the db
+#'
+#' @param measure_data A dataframe indicating the dataframe to send to the db
+#'
+#' @param manual_entry A list of values returned when clinician submits new scale responses. Of list items, only accessing the button value, to trigger the query.
+#'
+#' @export
+
+
+
+
 write_measure_data_to_db<- function(pool, measure_data, manual_entry) {
 
 

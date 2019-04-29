@@ -6,6 +6,9 @@
 \usage{
 confidence_level(input, output, session, existing_data)
 }
+\arguments{
+\item{existing_data}{A dataframe representing the client's existing available data for this measure.}
+}
 \description{
 Generates a confidence interval widget
 }

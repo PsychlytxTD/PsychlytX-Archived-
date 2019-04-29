@@ -23,6 +23,8 @@ generate_cutoff_widget_UI <- function(id) {
 #'
 #' @param title A string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
+#' @param brief_title An abbreviated title or acronym.
+#'
 #' @param measure A string indicating the global measure.
 #'
 #' @param subscale A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
@@ -30,6 +32,8 @@ generate_cutoff_widget_UI <- function(id) {
 #' @param population_quantity A numeric value of possible populations from which the user can select.
 #'
 #' @param populations A list of strings (underscores should replace white space) indicating the possible range of populations.
+#'
+#' @param input_population A string (reactive value) representing the name of the selected population.
 #'
 #' @param sds A list of numeric values representing the standard deviations for all populations on that subscale.
 #'
@@ -56,6 +60,8 @@ generate_cutoff_widget_UI <- function(id) {
 #' @param min_score A numeric value indicating minimum possible score on the subscale.
 #'
 #' @param description A description of subscale's properties, to display in report.
+#'
+#' @param existing_data A dataframe representing the client's existing available data for this measure.
 #'
 #' @export
 
@@ -93,10 +99,10 @@ generate_cutoff_widget <-function(input, output, session, title, brief_title, me
         cutoff_labels = cutoff_labels,
         cutoff_references = cutoff_references,
         cutoff_quantity = cutoff_quantity
-      )[c(8, 9, 10, 11, 12, 14)]
+      )[c(8, 9, 10, 11, 12, 14)] #Return the correct list of paramaters corresponding to the selected population
 
 
-      index<- order(arr_list$cutoff_values)
+      index<- order(arr_list$cutoff_values)                 #Ensure that cutoff values are ordered (smallest to largest) to prevent errors in plotting.
       arr_list$cutoff_values<- arr_list$cutoff_values[index]
       arr_list$cutoff_labels<- arr_list$cutoff_labels[index]
       arr_list$cutoff_references<- arr_list$cutoff_references[index]
@@ -132,7 +138,8 @@ generate_cutoff_widget <-function(input, output, session, title, brief_title, me
         })
 
 
-      if(length(existing_data()$cutoff_value_1) >= 1) {
+      if(length(existing_data()$cutoff_value_1) >= 1) {    #If the client has existing data, pull in the cutoff-related info and use it to prepopulate cutoff widgets
+                                                           #This allows the user to save their settings
 
         updateNumericInput(session, "cutoff_value_id_1", "Value", value = existing_data()$cutoff_value_1[1])
         updateNumericInput(session, "cutoff_value_id_2", "Value", value = existing_data()$cutoff_value_2[1])

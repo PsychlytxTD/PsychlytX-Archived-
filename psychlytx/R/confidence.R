@@ -26,6 +26,8 @@ confidence_level_UI <- function(id) {
 #'
 #' Generates a confidence interval widget
 #'
+#' @param existing_data A dataframe representing the client's existing available data for this measure.
+#'
 #' @export
 
 confidence_level<- function(input, output, session, existing_data) {

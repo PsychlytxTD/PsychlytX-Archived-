@@ -51,7 +51,7 @@ manual_data_UI<- function(id) {
 #'
 #' Creates layout and widgets for manual data entry
 #'
-#' @param scale_entry_scores The item scores passed from the online scale (if completed).
+#' @param scale_entry The item scores passed from the online scale (if completed).
 #'
 #' @export
 
@@ -78,7 +78,7 @@ manual_data<- function(input, output, session, scale_entry) {
   item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
 
   eventReactive(input$submit_scores, { list( date = date(), item_scores = item_scores(), submit_scores_button_value = input$submit_scores ) })
-
+  #On click of 'submit' questionnaire scores, return list of date, item scores and the value of the submit button (to use to trigger db writing.)
 
 
 }

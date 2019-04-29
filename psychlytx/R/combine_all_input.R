@@ -2,7 +2,7 @@
 #'
 #' Combine all lists of widget input values
 #'
-#' @param id A string to create the namespace
+#' @param id A string to create the namespace.
 
 combine_all_input_UI<- function(id) {
 
@@ -19,7 +19,7 @@ combine_all_input_UI<- function(id) {
 #'
 #' Combine all lists of widget input values
 #'
-#' @param input_list A list of input lists (one for each subscale)
+#' @param input_list A list of input lists (one for each subscale).
 #'
 #' @export
 

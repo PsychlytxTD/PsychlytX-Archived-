@@ -6,6 +6,9 @@
 \usage{
 method_widget(input, output, session, existing_data)
 }
+\arguments{
+\item{existing_data}{A dataframe indicating the client's existing available data for this measure.}
+}
 \description{
 Generates widgets to select reliable change method and custom confidence interval width (if custom intervals are selected)
 }

@@ -10,25 +10,33 @@ collect_input(input, output, session, clinician_id, client_id, measure,
   subscale_number)
 }
 \arguments{
-\item{client_id}{A string indicating the client's unique id}
+\item{clinician_id}{A string indicating the clinician's unique identifier}
 
-\item{manual_entry}{A list containing the date and original item scores.}
+\item{client_id}{A string indicating the client's unique identifier}
 
-\item{aggregate_scores}{A list of aggregated subscale scores}
+\item{measure}{A string indicating the name of the measure.}
 
-\item{mean_input}{A list containing the mean value and reference (widget inputs)}
+\item{subscale}{A string indicating the name of the subscale.}
 
-\item{sd_input}{A list containing the sd value and reference (widget inputs)}
+\item{manual_entry}{A list containing the date and raw item scores.}
 
-\item{reliability_input}{A list containing the test-retest value and reference (widget inputs)}
+\item{aggregate_scores}{A list of aggregated subscale scores.}
 
-\item{confidence}{A numeric value indicating the level of confidence selected for intervals (widget input)}
+\item{mean_input}{A list containing the mean value and reference (widget inputs).}
 
-\item{method}{A string value indicating the reliable change method selected (widget value)}
+\item{sd_input}{A list containing the sd value and reference (widget inputs).}
 
-\item{input_population}{A string value indicating the reference population selected by the user}
+\item{reliability_input}{A list containing the test-retest value and reference (widget inputs).}
 
-\item{cutoff_input}{A list containing the cutoff values, labels and references (widget inputs)}
+\item{confidence}{A numeric value indicating the level of confidence selected for intervals (widget input).}
+
+\item{method}{A string value indicating the reliable change method selected (widget value).}
+
+\item{input_population}{A string value indicating the reference population selected by the user.}
+
+\item{cutoff_input}{A list containing the cutoff values, labels and references (widget inputs).}
+
+\item{subscale_number}{A numeric value representing which index (i.e. which subscale) to select from the list of indices.}
 }
 \description{
 Store subscale widget input values in a list

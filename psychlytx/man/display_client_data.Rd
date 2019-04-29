@@ -13,6 +13,8 @@ display_client_data(input, output, session, pool, selected_client, measure,
 \item{selected_client}{A string indicating selected client's unique identifier}
 
 \item{measure}{A string indiating name of the measure}
+
+\item{input_retrieve_client_data}{A numeric value indicating the value of the action button - used to trigger a database query.}
 }
 \description{
 Select client and display his/her data in abbreviated form.

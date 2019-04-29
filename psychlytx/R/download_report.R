@@ -60,6 +60,8 @@ download_report_UI<- function(id) {
 #'
 #' @param measure The name of the psychological measure.
 #'
+#' @param most_recent_client_data A dataframe representing the most recently queried data (across all measures) for this patient.
+#'
 #' @export
 
 
@@ -194,7 +196,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
   })
 
 
-  client_name<- reactive({
+  client_name<- reactive({ #Pull in the client's first name, last name and birth date from the db, to display in the report.
 
     client_name_sql<- "SELECT first_name, last_name, birth_date
     FROM client
@@ -207,7 +209,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
 
   })
 
-  output$report <- downloadHandler(
+  output$report <- downloadHandler( #Create report download functionality
 
     filename = paste0("Clinical Report", format(Sys.time(), '%d/%m/%y'),".pdf"),
     content = function(file) {
@@ -238,7 +240,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
                                                      detail = 'Please wait a moment...', value = 0, {
                                                        for (i in 1:25) {
                                                          incProgress(1/25)
-                                                         # Sys.sleep(0.25)
+
                                                        }
                                                      })
                         ))})

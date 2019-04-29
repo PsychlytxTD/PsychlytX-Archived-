@@ -3,11 +3,19 @@
 #' Outputs the correct list of parameters for the population selected by the user (parameters are then available for default values.
 #' of widgets).
 #'
-#' @param subscale_name A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
+#' @param title A string indicating the title of the measure.
+#'
+#' @param brief_title A string indicating the abbreviated title of the measure.
+#'
+#' @param measure A string indicating the measure (no white space).
+#'
+#' @param subscale A string indicating the subscale (no white space).
 #'
 #' @param population_quantity A numeric value of possible populations from which the user can select.
 #'
 #' @param populations A list of strings (underscores should replace white space) indicating the possible range of populations.
+#'
+#' @param input_population A string indicating the population selected by the user.
 #'
 #' @param sds A list of numeric values representing the standard deviations for all populations on that subscale.
 #'

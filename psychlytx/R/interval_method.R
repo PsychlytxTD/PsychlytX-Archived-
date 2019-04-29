@@ -26,6 +26,8 @@ method_widget_UI<- function(id) {
 #'
 #' Generates widgets to select reliable change method and custom confidence interval width (if custom intervals are selected)
 #'
+#'@param existing_data A dataframe indicating the client's existing available data for this measure.
+#'
 #' @export
 
 
@@ -38,7 +40,8 @@ method_widget<- function(input, output, session, existing_data) { #In the parent
 
     if(length(existing_data()$method) >= 1) {
 
-      updateRadioButtons(session, "reliable_change_method", selected = existing_data()$method[1])
+      updateRadioButtons(session, "reliable_change_method", selected = existing_data()$method[1]) #If there is existing data, use the existing value for reliable change method
+                                                                                                  #to preopulate widget
 
     }
 
@@ -48,7 +51,7 @@ method_widget<- function(input, output, session, existing_data) { #In the parent
 
   reactive({
 
-    return(req(input$reliable_change_method))
+    return(req(input$reliable_change_method)) #Return the reliable change method
 
     })
 

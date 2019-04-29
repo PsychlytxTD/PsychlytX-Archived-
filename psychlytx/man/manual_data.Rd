@@ -7,7 +7,7 @@
 manual_data(input, output, session, scale_entry)
 }
 \arguments{
-\item{scale_entry_scores}{The item scores passed from the online scale (if completed).}
+\item{scale_entry}{The item scores passed from the online scale (if completed).}
 }
 \description{
 Creates layout and widgets for manual data entry

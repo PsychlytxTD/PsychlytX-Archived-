@@ -7,7 +7,7 @@
 combine_all_input(input, output, session, input_list)
 }
 \arguments{
-\item{input_list}{A list of input lists (one for each subscale)}
+\item{input_list}{A list of input lists (one for each subscale).}
 }
 \description{
 Combine all lists of widget input values

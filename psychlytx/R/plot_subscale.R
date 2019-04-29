@@ -237,5 +237,5 @@ plot_subscale <- function(subscale_df, subscale_info) {
     )
 
   plot #Print plot
-  # save(subscale_df, subscale_info, file = "plot_test_data.RData")
+
 }

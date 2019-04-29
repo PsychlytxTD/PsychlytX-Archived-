@@ -36,7 +36,7 @@ onStop(function() {
 })
 
 
-clinician_id<- "a71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of client and clinician id
+clinician_id<- "a71c6d9c-10e2-4247-b704-50d72ad14783" #Temp storage of clinician id
 
 
 
@@ -233,48 +233,52 @@ server <- function(input, output, session) {
   #creates unique client id. Need clinician id needs to be available 
   #to module so pass it in.
   
-  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) 
+  analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) #Return the pretherapy analytics responses
   
   
-  psychlytx::write_pretherapy_analytics_to_db(pool, analytics_pretherapy) #Write pre-therapy analytics data to db
+  psychlytx::write_pretherapy_analytics_to_db(pool, analytics_pretherapy) #Write pre-therapy analytics responses data to db
   
   
   callModule(psychlytx::reliability_calc, "reliability_derivation")  #If selected, derive reliability value from statistics
   
   
-  selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id)
+  selected_client<- callModule(psychlytx::render_client_dropdown, "client_dropdown", pool, clinician_id) #Create client selection dropdown & return selection
   
   
-  input_retrieve_client_data<- reactive({input$retrieve_client_data})
-  
-  existing_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, psychlytx::gad7_info$measure, input_retrieve_client_data)
+  input_retrieve_client_data<- reactive({input$retrieve_client_data}) #Store the value of the client selection button
   
   
-  input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", psychlytx::gad7_info, existing_data)) #Store the selected population for downstream use in other modules
+  existing_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, 
+                             measure = psychlytx::gad7_info$measure, input_retrieve_client_data) #Return the selected client's previous scores on this measure
   
   
-  callModule(psychlytx::initiate_settings, "initiate_settings", input_population)
+  input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", 
+                                           psychlytx::gad7_info, existing_data)) #Store the selected population for downstream use in other modules
   
   
-  scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Store the responses to the online scale and pass them to the manul entry module
+  callModule(psychlytx::initiate_settings, "initiate_settings", input_population) #Prompt user to select a population to generate settings for this client
   
   
-  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored in manual_entry for use by other modules
+  scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Return the raw responses to the online scale
   
   
-  aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  
-                                manual_entry = manual_entry, item_index = list( psychlytx::gad7_info$items ), 
-                                aggregation_method = "sum")                                #Make a list of aggregate scores across subscales 
-  #(in this case there is only one subscale)
+  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored as vector manual_entry to be used downstream
+  
+  
+  aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  manual_entry = manual_entry, item_index = list( psychlytx::gad7_info$items ), 
+                                aggregation_method = "sum")   #Make a list of aggregate scores across subscales (in this case there is only one subscale)
   
 
-  confidence<- callModule(psychlytx::confidence_level, "confidence_widget", existing_data)  #Confidence level for intervals
+  confidence<- callModule(psychlytx::confidence_level, "confidence_widget", existing_data)  #Return confidence level for intervals. Existing data passed in order to 
+                                                                                            #access & pull in the client's settings from db & prepopulate settings
+                                                                                            #widgets with these settings. Do same things for method, mean, sd, 
+                                                                                            #reliability and cutoffs
   
   
-  method<- callModule(psychlytx::method_widget, "method_widget", existing_data) #Reliable change method (a string)
+  method<- callModule(psychlytx::method_widget, "method_widget", existing_data) #Return reliable change method (a string)
   
   
-  ################################## 
+#_________________________________________________________________________________________________
   
   #For each subscale individually, collect the values from widgets and store them in a list 
   
@@ -285,14 +289,14 @@ server <- function(input, output, session) {
   
   #Create list of input values for a subscale 
   
-  input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, psychlytx::gad7_info$measure, psychlytx::gad7_info$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, 
-                            reliability_input_1, confidence, method, input_population, cutoff_input_1, 1)
+  input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, measure = psychlytx::gad7_info$measure, 
+                            subscale = psychlytx::gad7_info$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, reliability_input_1, confidence, 
+                            method, input_population, cutoff_input_1, subscale_number = 1)
   
   
-  #Currently, the code in between hashes must be written for each subscale 
+#_______________________________________________________________________________Currently, the code in between hashes must be written for each subscale 
   
-  ##################################
-  
+
   
   #Have to store the list of sublists as a reactive object
   
@@ -312,16 +316,10 @@ server <- function(input, output, session) {
   
   psychlytx::write_measure_data_to_db(pool, measure_data, manual_entry)  #Write newly entered item responses from measure to db
   
-
- 
-  
-  
-  
-  
   
   most_recent_client_data<- reactiveValues()
   
-  onclick("trigger_most_recent_data",
+onclick("trigger_most_recent_data",  #Query database when user clicks report tab to make sure that the most recent data is pulled in before report generation
           
           observe({ 
             
@@ -348,7 +346,7 @@ server <- function(input, output, session) {
   
   #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
-  callModule( psychlytx::download_report, "download_report", pool, selected_client, psychlytx::gad7_info$measure, most_recent_client_data)
+  callModule( psychlytx::download_report, "download_report", pool, selected_client, measure = psychlytx::gad7_info$measure, most_recent_client_data)
   
   
 }
