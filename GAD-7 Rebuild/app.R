@@ -119,23 +119,28 @@ ui<- function(request) {
                          tabPanel(tags$strong("Analysis Settings"), value = "update_population",
                                   
                                   fluidPage(
-                                    
+                                      
+                                    psychlytx::select_population_UI("select_population"),
                                     
                                     fluidRow(
                                       
+                                      column(width = 11, offset = 1,
                                       titlePanel(span(tagList(icon("calculator", lib = "font-awesome")),
-                                                      h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))),
-                                      
-                                      br(),
-                                      
-                                      column(width = 8, offset = 3, HTML('&nbsp;'), tags$code(a("Learn more about customisation",
-                                                                                   href = "https:://psychlytx.com.au", style = "color:#d35400")) )
+                                                      h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))))
+  
                                       
                                     ),
                                     
                                     br(),
                                     
-                                    psychlytx::select_population_UI("select_population"), 
+                                    fluidRow(
+                                      
+                                      column(width = 7, offset = 4, HTML('&nbsp;'), a(tags$strong("Learn more about customisation"),
+                                                                                      href = "https:://psychlytx.com.au", style = "color:#d35400") )
+                                      
+                                    ),
+                                    
+                                    br(),
                                     
                                     fluidRow(
                                       

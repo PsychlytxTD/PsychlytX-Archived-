@@ -17,18 +17,17 @@ select_population_UI<- function(id) {
 
   fluidRow(
 
-  column(width = 8, offset = 1,
+  column(width = 8, offset = 2,
 
-  h4("Select A Population With Similar Characteristics To Your Client") %>%  helper(type = "inline",
+         HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'), h4("Select A Group With Similar Characteristics To Your Client") %>%  helper(type = "inline",
                                                                                     title = "Why select a reference population?",
                                                                                     colour = "#d35400",
-                                                                                    content = c("<b>Choosing a reference population is required so that:</b>",
+                                                                                    content = c("<b>Choosing a client group is required so that:</b>",
                                                                                                 "<b>1.</b> Appropriate research statistics can be automatically applied in reliable change
-                                                                    calculations. Of course, you are free to alter/customise these statistics yourself by
-                                                                    navigating to <code style='color:#d35400;'>Custom Settings</code>.",
+                                                                    calculations. You can also define a new client group (specific to your client) and add suitable statistical values below.",
                                                                                                 "<b>2.</b> Comparisons can easily be made between your client's score on a questionnaire
                                                                     and scores that are normative within the population to which he or she belongs. Comparison
-                                                                    scores (also known as cutoff scores) are displayed on plots in clinical reports."),
+                                                                    scores are displayed in your client's clinical report."),
                                                                                     size = "m"))),
 fluidRow(
 
@@ -36,7 +35,8 @@ fluidRow(
 
    uiOutput(ns("select_population"))
 
-))
+  )
+)
 
   ))
 
@@ -66,7 +66,7 @@ select_population<- function(input, output, session, title, brief_title, measure
     population_list<- purrr::set_names(populations, population_labels)
 
 
-    selectInput(ns("population"), h4("Reference Population"),
+    selectInput(ns("population"), "",
                 choices = population_list, width = "60%")
 
   })
