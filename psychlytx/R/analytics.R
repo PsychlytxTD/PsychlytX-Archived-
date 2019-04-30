@@ -145,14 +145,16 @@ analytics_posttherapy_UI<- function(id) {
 
   tagList(
 
+    fluidPage(
+
     column(width = 12, checkboxGroupInput(ns("last_assessment"), "",
-                                          choices = c("My client is completing a questionnaire with PsychlytX for the last time." = "last"), width = "100%")),
+                                          choices = c("Please indicate if your client is completing their final assessment on any questionnaire." = "last"), width = "100%")),
 
     conditionalPanel(condition = "input.last_assessment == 'last'", ns = ns,
 
                      tagList(
                        sidebarLayout(
-                         sidebarPanel(width = 9,
+                         sidebarPanel(width = 11,
                                       tagList(
                                         titlePanel(span(tagList(icon("chart-bar", lib = "font-awesome")),
                                                         h3(tags$b("Please provide important information about clinical outcomes.")))),
@@ -193,7 +195,7 @@ analytics_posttherapy_UI<- function(id) {
 
                          mainPanel()
 
-                       ))))
+                       )))))
 
 
 }

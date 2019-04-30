@@ -11,9 +11,19 @@ params_list_maker(title, brief_title, measure, subscale,
   min_score, description)
 }
 \arguments{
+\item{title}{A string indicating the title of the measure.}
+
+\item{brief_title}{A string indicating the abbreviated title of the measure.}
+
+\item{measure}{A string indicating the measure (no white space).}
+
+\item{subscale}{A string indicating the subscale (no white space).}
+
 \item{population_quantity}{A numeric value of possible populations from which the user can select.}
 
 \item{populations}{A list of strings (underscores should replace white space) indicating the possible range of populations.}
+
+\item{input_population}{A string indicating the population selected by the user.}
 
 \item{sds}{A list of numeric values representing the standard deviations for all populations on that subscale.}
 
@@ -36,8 +46,6 @@ params_list_maker(title, brief_title, measure, subscale,
 \item{min_score}{A numeric value indicating minimum possible score on the subscale.}
 
 \item{description}{A description of subscale's properties, to display in report.}
-
-\item{subscale_name}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
 
 \item{cutoffs}{A list of concatenated numeric values representing the cutoff values on this subscale for each population.}
 

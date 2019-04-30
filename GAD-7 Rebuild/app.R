@@ -99,7 +99,7 @@ ui<- function(request) {
                          
                          tabPanel(tags$strong("Complete Questionnaire"),
                                   
-                                  psychlytx::initiate_settings_UI("initiate_settings"),
+                                  psychlytx::apply_initial_population_UI("apply_population"),
                                   
                                   psychlytx::analytics_posttherapy_UI("analytics_posttherapy"), #End-of-therapy clinical outcomes panel
                                   
@@ -116,31 +116,12 @@ ui<- function(request) {
                                   
                          ),
                          
-                         tabPanel(tags$strong("Analysis Settings"), value = "update_population",
+                         tabPanel(tags$strong("Client Settings"), value = "go_custom_settings",
                                   
                                   fluidPage(
                                       
-                                    psychlytx::select_population_UI("select_population"),
+                                    psychlytx::show_population_message_UI("show_population_message"),
                                     
-                                    fluidRow(
-                                      
-                                      column(width = 11, offset = 1,
-                                      titlePanel(span(tagList(icon("calculator", lib = "font-awesome")),
-                                                      h4(tags$b("Modify the default values that are used to assess reliable change and symptom severity.")))))
-  
-                                      
-                                    ),
-                                    
-                                    br(),
-                                    
-                                    fluidRow(
-                                      
-                                      column(width = 7, offset = 4, HTML('&nbsp;'), a(tags$strong("Learn more about customisation"),
-                                                                                      href = "https:://psychlytx.com.au", style = "color:#d35400") )
-                                      
-                                    ),
-                                    
-                                    br(),
                                     
                                     fluidRow(
                                       
@@ -252,17 +233,17 @@ server <- function(input, output, session) {
                              measure = psychlytx::gad7_info$measure, input_retrieve_client_data) #Return the selected client's previous scores on this measure
   
   
-  input_population<- do.call(callModule, c(psychlytx::select_population, "select_population", 
+  input_population<- do.call(callModule, c(psychlytx::apply_initial_population, "apply_population", 
                                            psychlytx::gad7_info, existing_data)) #Store the selected population for downstream use in other modules
   
   
-  callModule(psychlytx::initiate_settings, "initiate_settings", input_population) #Prompt user to select a population to generate settings for this client
+  callModule(psychlytx::show_population_message, "show_population_message", input_population) #Prompt user to select a population to generate settings for this client
   
   
   scale_entry<- callModule(psychlytx::gad7_scale, "gad7_scale") #Return the raw responses to the online scale
   
   
-  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item scores are stored as vector manual_entry to be used downstream
+  manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item responses are stored as vector manual_entry to be used downstream
   
   
   aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  manual_entry = manual_entry, item_index = list( psychlytx::gad7_info$items ), 

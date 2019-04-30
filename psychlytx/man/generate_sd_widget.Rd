@@ -13,6 +13,8 @@ generate_sd_widget(input, output, session, title, brief_title, measure,
 \arguments{
 \item{title}{A string (white space allowed) indicating the name of the subscale, to be used as a panel title.}
 
+\item{brief_title}{An abbreviated title or acronym.}
+
 \item{measure}{A string indicating the global measure.}
 
 \item{subscale}{A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").}
@@ -20,6 +22,8 @@ generate_sd_widget(input, output, session, title, brief_title, measure,
 \item{population_quantity}{A numeric value of possible populations from which the user can select.}
 
 \item{populations}{A list of strings (underscores should replace white space) indicating the possible range of populations.}
+
+\item{input_population}{A string (reactive value) representing the name of the selected population.}
 
 \item{sds}{A list of numeric values representing the standard deviations for all populations on that subscale.}
 
@@ -46,6 +50,8 @@ generate_sd_widget(input, output, session, title, brief_title, measure,
 \item{min_score}{A numeric value indicating minimum possible score on the subscale.}
 
 \item{description}{A description of subscale's properties, to display in report.}
+
+\item{existing_data}{A dataframe representing the client's existing available data for this measure.}
 }
 \description{
 Generates the widget with correct default values for the sd widget and references.
