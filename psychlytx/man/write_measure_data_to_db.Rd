@@ -4,9 +4,12 @@
 \alias{write_measure_data_to_db}
 \title{Write client's measure data to db}
 \usage{
-write_measure_data_to_db(pool, measure_data, manual_entry)
+write_measure_data_to_db(input, ouput, session, pool, measure_data,
+  manual_entry)
 }
 \arguments{
+\item{pool}{A pooled db connection}
+
 \item{measure_data}{A dataframe indicating the dataframe to send to the db}
 
 \item{manual_entry}{A list of values returned when clinician submits new scale responses. Of list items, only accessing the button value, to trigger the query.}

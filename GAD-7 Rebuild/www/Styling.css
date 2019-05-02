@@ -79,7 +79,9 @@
                                 .submit_data {color:#d35400;}
                                 .submit_data_blue {color:#283747;}
                                 
-                                #large .selectize-input { line-height: 60px; }
-                                #large .selectize-dropdown { line-height: 50px; }"
+                                .selectize-input { line-height: 30px; }
+                                .selectize-dropdown { line-height: 30px; }"
+                                
+                                .sweet-alert button {background-color: green;}
                                 
                                 )

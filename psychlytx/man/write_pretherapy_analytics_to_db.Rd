@@ -4,7 +4,8 @@
 \alias{write_pretherapy_analytics_to_db}
 \title{Write pre-therapy analytics}
 \usage{
-write_pretherapy_analytics_to_db(pool, analytics_pretherapy)
+write_pretherapy_analytics_to_db(input, output, session, pool,
+  analytics_pretherapy)
 }
 \arguments{
 \item{pool}{A pooled db connection}

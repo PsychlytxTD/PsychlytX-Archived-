@@ -2,6 +2,22 @@
 #'
 #' Write pre-therapy analytics data to the db
 #'
+#' @param id A string to create the namespace
+#'
+#' @export
+
+write_pretherapy_analytics_to_db_UI<- function(id) {
+
+  return(NULL)
+
+}
+
+
+
+#' Write pre-therapy analytics
+#'
+#' Write pre-therapy analytics data to the db
+#'
 #' @param pool A pooled db connection
 #'
 #' @param analytics_pretherapy A dataframe containing the pretherapy data to send to the db
@@ -9,7 +25,7 @@
 #' @export
 
 
-write_pretherapy_analytics_to_db<- function(pool, analytics_pretherapy) {
+write_pretherapy_analytics_to_db<- function(input, output, session, pool, analytics_pretherapy) {
 
 
   observe({
@@ -26,13 +42,24 @@ write_pretherapy_analytics_to_db<- function(pool, analytics_pretherapy) {
     if(length(client_check_data) == 0) {
 
       #pass the pretherapy analytics dataframe in and append the client table in db
-      dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE) ; showModal(modalDialog(title = "Registration Successful",
-                                                                                                                                  footer = modalButton("Okay"), "The client can now complete a questionnaire
-                                                                                                                                  using any PsychlytX web application."))
+      dbWriteTable(pool, "client",  data.frame(analytics_pretherapy()), row.names = FALSE, append = TRUE) ;
+      sendSweetAlert(
+        session = session,
+        title = "Registration Successful!!",
+        text = "Your client can now complete any PsychlytX questionnaire to which you are subscribed.",
+        type = "success"
+      )
 
-    } else(showModal(modalDialog(title = "Registration Unsuccessful", footer = modalButton("Okay"),
-                                 "An entry already exists for this client. Please check the client details
-                                 you have inputted and resubmit."))) #Client registration details cannot be written to db ifan identical entry has already been created
+    } else(
+
+           sendSweetAlert(
+             session = session,
+             title = "Registration Problem!!",
+             text = "An entry already exists for this client. Please check the client details you have inputted and resubmit.",
+             type = "error"
+           )
+
+           ) #Client registration details cannot be written to db ifan identical entry has already been created
 
   })
 

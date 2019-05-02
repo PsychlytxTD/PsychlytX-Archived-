@@ -19,7 +19,7 @@ make_sidebar_UI<- function(id) {
            HTML('&nbsp;'), tags$a("References", href = "https:://psychlytx.com.au", style = "color:white")),
       br(),
       div( HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'), icon("info"), HTML('&nbsp;'), HTML('&nbsp;'),
-            HTML('&nbsp;'), tags$a("About Psychlytx", href = "https:://psychlytx.com.au", style = "color:white")),
+            HTML('&nbsp;'), HTML('&nbsp;'), tags$a("About Psychlytx", href = "https:://psychlytx.com.au", style = "color:white")),
       br(),
       div( HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'), icon("user-cog"), HTML('&nbsp;'),
             HTML('&nbsp;'), tags$a("Update Account Details", href = "https:://psychlytx.com.au", style = "color:white")),

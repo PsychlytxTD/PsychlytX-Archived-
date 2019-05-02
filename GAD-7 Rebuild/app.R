@@ -17,6 +17,7 @@ library(memor)
 library(extrafont)
 library(extrafontdb)
 library(shinyhelper)
+library(shinyWidgets)
 
 
 
@@ -67,8 +68,9 @@ ui<- function(request) {
                          
                          tabPanel(tags$strong("Register A New Client "),
                                   
-                                  psychlytx::analytics_pretherapy_UI("analytics_pretherapy") #Make the client registration panel
+                                  psychlytx::analytics_pretherapy_UI("analytics_pretherapy"), #Make the client registration panel
                                   
+                                  psychlytx::write_pretherapy_analytics_to_db_UI("write_pretherapy_to_db")
                                   
                          ),
                          
@@ -103,6 +105,8 @@ ui<- function(request) {
                                   
                                   psychlytx::analytics_posttherapy_UI("analytics_posttherapy"), #End-of-therapy clinical outcomes panel
                                   
+                                  psychlytx::write_posttherapy_to_db_UI("write_posttherapy_to_db"),
+                                  
                                   psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
                                 
                                   psychlytx::manual_data_UI("manual_data"), #Items of the specific measure are passed here as a string of numbers
@@ -111,9 +115,9 @@ ui<- function(request) {
                                   
                                   psychlytx::collect_input_UI("collect_input_1"), #Collect all input for a subscale
                                   
-                                  psychlytx::combine_all_input_UI("combine_all_input") #Combine collected inputs from all subscales
+                                  psychlytx::combine_all_input_UI("combine_all_input"), #Combine collected inputs from all subscales
                                   
-                                  
+                                  psychlytx::write_measure_data_to_db_UI("write_measure_data")
                          ),
                          
                          tabPanel(tags$strong("Client Settings"), value = "go_custom_settings",
@@ -217,7 +221,7 @@ server <- function(input, output, session) {
   analytics_pretherapy<- callModule(psychlytx::analytics_pretherapy, "analytics_pretherapy", clinician_id) #Return the pretherapy analytics responses
   
   
-  psychlytx::write_pretherapy_analytics_to_db(pool, analytics_pretherapy) #Write pre-therapy analytics responses data to db
+  callModule(psychlytx::write_pretherapy_analytics_to_db, "write_pretherapy_to_db", pool, analytics_pretherapy) #Write pre-therapy analytics responses data to db
   
   
   callModule(psychlytx::reliability_calc, "reliability_derivation")  #If selected, derive reliability value from statistics
@@ -295,7 +299,7 @@ server <- function(input, output, session) {
   
   
   
-  psychlytx::write_measure_data_to_db(pool, measure_data, manual_entry)  #Write newly entered item responses from measure to db
+  callModule(psychlytx::write_measure_data_to_db, "write_measure_data", pool, measure_data, manual_entry)  #Write newly entered item responses from measure to db
   
   
   most_recent_client_data<- reactiveValues()
@@ -321,7 +325,7 @@ onclick("trigger_most_recent_data",  #Query database when user clicks report tab
   
   analytics_posttherapy<- callModule(psychlytx::analytics_posttherapy, "analytics_posttherapy", clinician_id, selected_client) #Collect posttherapy info
   
-  psychlytx::write_posttherapy_to_db(pool, analytics_posttherapy) #Write posttherapy info to db
+  callModule(psychlytx::write_posttherapy_to_db, "write_posttherapy_to_db", pool, analytics_posttherapy) #Write posttherapy info to db
   
   
   

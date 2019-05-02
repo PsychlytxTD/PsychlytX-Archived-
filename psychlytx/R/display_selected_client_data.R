@@ -62,7 +62,9 @@ display_client_data<- function(input, output, session, pool, selected_client, me
     req( selected_client_data() )
 
     snapshot_selected_client_data<- if(length( selected_client_data() )  < 1) {
-      return(NULL) } else {selected_client_data() %>% dplyr::select(date, measure, subscale, score) %>% dplyr::rename_all(toupper) }
+      return(NULL) } else {selected_client_data() %>% dplyr::select(date, measure, subscale, score) %>%
+          dplyr::rename_all(toupper) %>% dplyr::mutate(MEASURE = gsub("_", " ", MEASURE),
+                                                       SUBSCALE = gsub("_", " ", SUBSCALE))}
 
 
     DT::datatable(
