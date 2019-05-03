@@ -18,6 +18,7 @@ library(extrafont)
 library(extrafontdb)
 library(shinyhelper)
 library(shinyWidgets)
+library(shinycssloaders)
 
 
 

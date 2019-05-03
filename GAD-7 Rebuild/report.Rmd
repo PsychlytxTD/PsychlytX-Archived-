@@ -1,12 +1,12 @@
 ---
 title: "Clinical Report"
 author: "`r params$client_name`"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "Current Date: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
   memor::pdf_memo:
     company: 
       name: PsychlytX
-      address: 7 Stanley Street, Collingwood 3066
+      address: 18 Stanley Street, Collingwood 3066
       phone: 03 9787 9313
       email: info@psychlytx.com.au
     logo: "logo.png"

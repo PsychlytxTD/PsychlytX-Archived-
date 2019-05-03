@@ -12,7 +12,8 @@ display_client_data_UI<- function(id) {
 
   tagList(
 
-    DT::dataTableOutput(ns("selected_client_data_out")),
+    shinycssloaders::withSpinner( DT::dataTableOutput(ns("selected_client_data_out")), type = getOption("spinner.type", default = 7),
+                                  color = getOption("spinner.color", default = "#d35400") ),
 
     verbatimTextOutput(ns("client_data_availability_message"))
 
@@ -67,7 +68,7 @@ display_client_data<- function(input, output, session, pool, selected_client, me
                                                        SUBSCALE = gsub("_", " ", SUBSCALE))}
 
 
-    DT::datatable(
+     DT::datatable(
 
       snapshot_selected_client_data,
       extensions = 'Scroller', rownames = FALSE,

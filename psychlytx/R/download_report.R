@@ -198,7 +198,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
 
   client_name<- reactive({ #Pull in the client's first name, last name and birth date from the db, to display in the report.
 
-    client_name_sql<- "SELECT first_name, last_name, birth_date
+    client_name_sql<- "SELECT last_name, first_name, CONCAT('D.O.B:', ' ', birth_date)
     FROM client
     WHERE client_id = ?client_id;"
 
