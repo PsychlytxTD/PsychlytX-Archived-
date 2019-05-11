@@ -55,7 +55,7 @@ ui<- function(request) {
       
       tags$head( 
         
-        tags$link(rel = "stylesheet", type = "text/css", href = "Styling.css") #Link to the css style sheet
+        tags$link(rel = "stylesheet", type = "text/css", href = "Styling.css") #Link to the css style sheet,
         
       ),
       
@@ -89,7 +89,7 @@ ui<- function(request) {
                                       br(),
                                       br(),
                                       
-                                      tags$a(href = "https:://psychlytx.com.au", "Edit client records here.", style = "color:#d35400")
+                                      tags$a(href = "https:://psychlytx.com.au", "Edit client records here.", style = "color:#d35400; text-decoration: underline;")
 
                                     ),
                                     

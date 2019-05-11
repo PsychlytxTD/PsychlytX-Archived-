@@ -13,8 +13,8 @@ confidence_level_UI <- function(id) {
   #Create a widget allowing the user to select the level of confidence for intervals
 
   tagList(fluidRow(column(width = 12, offset = 4,
-                          radioButtons(ns("confidence"), label = h4(tags$strong("Interval Confidence Level")), choices = list("99%" = 1,
-                          "95%" = 2, "90%" = 3), selected = 2, inline = T)
+                          radioButtons(ns("confidence"), label = h4(tags$strong("Interval Confidence Level")), choices = list("99%" = 1.645,
+                          "95%" = 1.96, "90%" = 2.575), selected = 1.96, inline = T)
 
   )))
 

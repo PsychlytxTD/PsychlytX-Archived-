@@ -17,7 +17,7 @@ analytics_pretherapy_UI<- function(id) {
                      br(),
                      br(),
                      column(width = 7, a(tags$strong("We take privacy seriously. View our policy here."),
-                                                    href = "https:://psychlytx.com.au", style = "color:#d35400") ),
+                                                    href = "https:://psychlytx.com.au", style = "color:#d35400; text-decoration: underline;") ),
                      br(),
                      br(),
                      textInput(ns("first_name"), "First Name", width = '50%'), #Create the widgets for pretherapy analytics
@@ -32,7 +32,7 @@ analytics_pretherapy_UI<- function(id) {
                      checkboxInput(ns("indigenous"), "Identifies as Being of Aboriginal or Torres Strait Islander Descent", width = '20%'),
                      numericInput(ns("children"), "Number of Dependent Children", value = "", width = '20%'),
                      selectInput(ns("workforce_status"), "Primary Workforce Status", c("", "Working Full-Time", "Working Part-Time", "Working Casual Hours", "Studying", "Unemployed", "Retired"), width = '30%'),
-                     selectInput(ns("education"), "Highest Education Level", c("", "No education", "Primary Education", "Secondary Education", "Post-Secondary/Tertiary Education",
+                     selectInput(ns("education"), "Highest Education Level", c("", "No Education", "Primary Education", "Secondary Education", "Post-Secondary/Tertiary Education",
                                                                                "Bachelor or Equivalent", "Master or Equivalent", "Doctoral or Equivalent"), width = '30%'),
 
                      htmlOutput(ns("pretherapy_data_entry_message")),

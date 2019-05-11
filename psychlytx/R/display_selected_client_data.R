@@ -15,7 +15,8 @@ display_client_data_UI<- function(id) {
     shinycssloaders::withSpinner( DT::dataTableOutput(ns("selected_client_data_out")), type = getOption("spinner.type", default = 7),
                                   color = getOption("spinner.color", default = "#d35400") ),
 
-    verbatimTextOutput(ns("client_data_availability_message"))
+    shinycssloaders::withSpinner( verbatimTextOutput(ns("client_data_availability_message")), type = getOption("spinner.type", default = 7),
+                                  color = getOption("spinner.color", default = "#d35400") )
 
   )
 

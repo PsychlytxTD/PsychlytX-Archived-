@@ -52,6 +52,12 @@ params_list_maker<- function(title, brief_title, measure, subscale, population_q
 
   req(input_population)
 
+  if( !(input_population %in% populations )) {
+
+    input_population<- "Other"
+
+  }
+
 #Loop over each list stored in the subscale list
 
   params_list<- purrr::pmap(list(

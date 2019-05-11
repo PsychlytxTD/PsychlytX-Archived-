@@ -43,9 +43,11 @@ apply_initial_population_UI<- function(id) {
     )),
 
     fluidRow(
-      column(width = 8,
+      column(width = 7,
 
-             h4(tags$strong("You can create a new client group and/or customise settings for analyses."))
+             uiOutput(ns("other_population")),
+
+             h4(tags$strong("If required, create a new client group and customise client settings for analyses."))
 
              ),
 
@@ -103,13 +105,45 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
   observe({
 
-    updateSelectInput(session, "population", selected = existing_data()$population) #Update the population widget based on user's existing data to reinstill their settings
+    updateSelectInput(session, "population", selected = existing_data()$population, choices = existing_data()$population) #Update the population widget based on user's existing data to reinstill their settings
 
   })
 
+ #Return the selected value of the population widget
 
-  reactive({  input$population  }) #Return the selected value of the population widget
+
+  output$other_population<- renderUI({
+
+    ns <- session$ns
+
+    req(input$population)
+
+    if(input$population == "Other") {
+
+      textInput(ns("other_population_widget"), "Create A New Client Group")
+
+    }
+
+
+  })
+
+  outputOptions(output, "other_population", suspendWhenHidden = FALSE)
+
+
+
+  reactive({
+
+    if(input$population == "Other") {
+
+      return(input$other_population_widget)
+
+    } else {
+
+     return(input$population)
+
+    }
+
+    })
 
 }
-
 
