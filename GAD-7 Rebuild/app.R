@@ -103,12 +103,12 @@ ui<- function(request) {
                          tabPanel(tags$strong("Complete Questionnaire"),
                                   
                                   psychlytx::apply_initial_population_UI("apply_population"),
+
+                                  psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
                                   
                                   psychlytx::analytics_posttherapy_UI("analytics_posttherapy"), #End-of-therapy clinical outcomes panel
                                   
                                   psychlytx::write_posttherapy_to_db_UI("write_posttherapy_to_db"),
-                                  
-                                  psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
                                 
                                   psychlytx::manual_data_UI("manual_data"), #Items of the specific measure are passed here as a string of numbers
                                   

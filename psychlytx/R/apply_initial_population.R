@@ -30,9 +30,10 @@ apply_initial_population_UI<- function(id) {
                            column(width = 8, offset = 2, HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),h4(tags$strong("Select A Group With Similar Characteristics To Your Client")) %>%
                                     helper( type = "inline", title = "Why select a client group?", colour = "#d35400",
                                             content = c("<b>Choosing a client group ensures that:</b>",
-          "<b>1.</b> Appropriate research statistics (e.g. means, standard deviations) are used to estimate
-          measurement error when calculating changes in scores over time.",
-          "<b>2.</b> Suitable symptom severity classifications appear in your client's clinical report. "), size = "m"
+          "<b>1.</b> Appropriate research statistics (e.g. means and standard deviations) are used to estimate
+          measurement error when calculating change in scores over time.",
+          "<b>2.</b> Suitable classifications of symptom severity appear in your client's clinical report. ",
+          "<b>3.</b> You can change the statistics that are used for analyses by defining custom settings."), size = "m"
                                     ))),
 
     fluidRow(
@@ -43,17 +44,11 @@ apply_initial_population_UI<- function(id) {
     )),
 
     fluidRow(
-      column(width = 7,
+      column(width = 8, offset = 3,
 
              uiOutput(ns("other_population")),
 
-             h4(tags$strong("If required, create a new client group and customise client settings for analyses."))
-
-             ),
-
-      column(width = 4,
-
-             actionButton(ns("go_custom_settings"), "Go To Client Settings", class = "submit_data")
+             actionButton(ns("go_custom_settings"), "Define Custom Settings", class = "submit_data")
 
              ))))))
 
@@ -89,6 +84,8 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     ns <- session$ns
 
+    existing_data()
+
     population_labels<- purrr::map(populations, ~ gsub("_", " ", .x)) #The population choices that are visible to users should have no white space
 
     population_list<- purrr::set_names(populations, population_labels)
@@ -105,7 +102,8 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
   observe({
 
-    updateSelectInput(session, "population", selected = existing_data()$population, choices = existing_data()$population) #Update the population widget based on user's existing data to reinstill their settings
+    updateSelectInput(session, "population", selected = existing_data()$population[1], choices =  existing_data()$population[1]) #Update the population widget based on user's existing data to reinstill their settings
+
 
   })
 
@@ -120,7 +118,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     if(input$population == "Other") {
 
-      textInput(ns("other_population_widget"), "Create A New Client Group")
+      textInput(ns("other_population_widget"), h5("Enter a new client group. You must then define custom settings for that group before questionnaire completion."))
 
     }
 
