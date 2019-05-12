@@ -21,7 +21,7 @@ apply_initial_population_UI<- function(id) {
 
 
     column(width = 12, checkboxGroupInput(ns("first_time_scale_completion"), "", width = "100%", #Checking the 'first' box should trigger prompt to select a population
-                                          choices = c("*Please indicate if your client is completing this questionnaire for the first time." = "first"))),
+                                          choices = c("*Please tick if your client is completing this questionnaire for the first time." = "first"))),
 
     conditionalPanel(condition = "input.first_time_scale_completion == 'first'", ns = ns,
 
@@ -30,10 +30,13 @@ apply_initial_population_UI<- function(id) {
                            column(width = 8, offset = 2, HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),h4(tags$strong("Select A Group With Similar Characteristics To Your Client")) %>%
                                     helper( type = "inline", title = "Why select a client group?", colour = "#d35400",
                                             content = c("<b>Choosing a client group ensures that:</b>",
+          "",
           "<b>1.</b> Appropriate research statistics (e.g. means and standard deviations) are used to estimate
           measurement error when calculating change in scores over time.",
+          "",
           "<b>2.</b> Suitable classifications of symptom severity appear in your client's clinical report. ",
-          "<b>3.</b> You can change the statistics that are used for analyses by defining custom settings."), size = "m"
+          "",
+          "<b>3.</b> By clicking below, you can change the client settings that are used in analyses and which appear in the clinical report."), size = "m"
                                     ))),
 
     fluidRow(
@@ -48,7 +51,7 @@ apply_initial_population_UI<- function(id) {
 
              uiOutput(ns("other_population")),
 
-             actionButton(ns("go_custom_settings"), "Define Custom Settings", class = "submit_data")
+             actionButton(ns("go_custom_settings"), " (Optional) Change Client Settings", class = "submit_data")
 
              ))))))
 
@@ -84,7 +87,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     ns <- session$ns
 
-    existing_data()
+    existing_data() #Need to take a dependency on existing data so that original population choices reinstate if client with no data is selected.
 
     population_labels<- purrr::map(populations, ~ gsub("_", " ", .x)) #The population choices that are visible to users should have no white space
 
@@ -118,7 +121,9 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     if(input$population == "Other") {
 
-      textInput(ns("other_population_widget"), h5("Enter a new client group. You must then define custom settings for that group before questionnaire completion."))
+      textInput(ns("other_population_widget"), h5("Enter the name of a new client group. Then specifiy group-appropriate statistics
+                                                  and references by clicking below. The values you define will be used in
+                                                  analyses and will appear in the clinical report."))
 
     }
 
@@ -133,7 +138,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     if(input$population == "Other") {
 
-      return(input$other_population_widget)
+      return(input$other_population_widget) #Return the name of the custom-defined population, if selected.
 
     } else {
 

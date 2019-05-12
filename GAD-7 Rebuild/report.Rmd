@@ -1,7 +1,7 @@
 ---
 title: "Clinical Report"
 author: "`r params$client_name`"
-date: "Current Date: `r format(Sys.time(), '%d %B, %Y')`"
+date: "Today's Date: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
   memor::pdf_memo:
     company: 

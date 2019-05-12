@@ -235,7 +235,7 @@ server <- function(input, output, session) {
   
   
   existing_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, 
-                             measure = psychlytx::gad7_info$measure, input_retrieve_client_data) #Return the selected client's previous scores on this measure
+                             input_retrieve_client_data) #Return the selected client's previous scores on this measure
   
   
   input_population<- do.call(callModule, c(psychlytx::apply_initial_population, "apply_population", 
@@ -311,9 +311,9 @@ onclick("trigger_most_recent_data",  #Query database when user clicks report tab
             
           most_recent_client_sql<- "SELECT *
           FROM scale
-          WHERE client_id = ?client_id AND measure = ?measure;"
+          WHERE client_id = ?client_id;"
           
-          most_recent_client_query<- sqlInterpolate(pool, most_recent_client_sql, client_id = selected_client(), measure = psychlytx::gad7_info$measure)
+          most_recent_client_query<- sqlInterpolate(pool, most_recent_client_sql, client_id = selected_client())
           
           most_recent_client_data$value<- dbGetQuery(pool, most_recent_client_query)
           
@@ -332,7 +332,7 @@ onclick("trigger_most_recent_data",  #Query database when user clicks report tab
   
   #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
-  callModule( psychlytx::download_report, "download_report", pool, selected_client, measure = psychlytx::gad7_info$measure, most_recent_client_data)
+  callModule( psychlytx::download_report, "download_report", pool, selected_client, measure_list = list(psychlytx::gad7_info), most_recent_client_data)
   
   
 }

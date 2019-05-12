@@ -4,7 +4,7 @@
 \alias{display_client_data}
 \title{Select Client}
 \usage{
-display_client_data(input, output, session, pool, selected_client, measure,
+display_client_data(input, output, session, pool, selected_client,
   input_retrieve_client_data)
 }
 \arguments{
@@ -12,9 +12,9 @@ display_client_data(input, output, session, pool, selected_client, measure,
 
 \item{selected_client}{A string indicating selected client's unique identifier}
 
-\item{measure}{A string indiating name of the measure}
-
 \item{input_retrieve_client_data}{A numeric value indicating the value of the action button - used to trigger a database query.}
+
+\item{measure}{A string indiating name of the measure}
 }
 \description{
 Select client and display his/her data in abbreviated form.

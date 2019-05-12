@@ -28,8 +28,11 @@ download_report_UI<- function(id) {
                                                                                                title = "Problems with report generation",
                                                                                                colour = "#d35400",
                                                                                                content = c("<b>Your report may fail to generate for three reasons:</b>",
+                                                                                                           "",
                                                                                                            "<b>1.</b> You have selected a client with no recorded outcomes.",
+                                                                                                           "",
                                                                                                            "<b>2.</b> When finding your client in the dropdown menu, you forgot to click <code style='color:#d35400;'>Select Client</code>.",
+                                                                                                           "",
                                                                                                            "<b>3.</b> When completing the questionnaire, you forgot to click <code style='color:#d35400;'>Submit</code>."),
                                                                                                size = "m")
 
@@ -65,7 +68,7 @@ download_report_UI<- function(id) {
 #' @export
 
 
-download_report<- function(input, output, session, pool, selected_client, measure, most_recent_client_data) {
+download_report<- function(input, output, session, pool, selected_client, measure_list, most_recent_client_data) {
 
 
    report_data <- reactive({
@@ -77,7 +80,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
       dplyr::group_by(subscale) %>%
       tidyr::nest() %>%
       dplyr::mutate(
-        subscale_info = list(psychlytx::gad7_info)
+        subscale_info = measure_list
       ) #Each subscale needs its own info list (containing params that will be used for plotting)
     #So we make another list column containing subscale info lists
 
