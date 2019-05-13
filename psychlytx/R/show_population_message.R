@@ -59,7 +59,7 @@ show_population_message<- function(input, output, session, input_population) {
 
   output$selected_population_message<- renderText({           #Send message about population selection
 
-    paste(h4("Values below are specific to the population you selected:", tags$strong(gsub("_", " ", input_population()))))
+    paste(h4("Means and standard deviations apply to the client group you selected:", tags$strong(gsub("_", " ", input_population()))))
 
   })
 

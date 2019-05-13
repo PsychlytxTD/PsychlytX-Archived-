@@ -181,7 +181,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
   plot <-
     plot + geom_text(
       aes(
-        label = cutoff_label_1,
+        label = paste(cutoff_label_1, ":", cutoff_value_1),
         x = as.Date(x_axis_lower_expansion),
         y = cutoff_value_1
       ),
@@ -192,7 +192,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       size = 4
     ) + geom_text(
       aes(
-        label = cutoff_label_2,
+        label = paste(cutoff_label_2, ":", cutoff_value_2),
         x = as.Date(x_axis_lower_expansion),
         y = cutoff_value_2
       ),
@@ -203,7 +203,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       size = 4
     ) + geom_text(
       aes(
-        label = cutoff_label_3,
+        label = paste(cutoff_label_3, ":", cutoff_value_3),
         x = as.Date(x_axis_lower_expansion),
         y = cutoff_value_3
       ),
@@ -214,7 +214,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       size = 4
     ) + geom_text(
       aes(
-        label = cutoff_label_4,
+        label = paste(cutoff_label_4, ":", cutoff_value_4),
         x = as.Date(x_axis_lower_expansion),
         y = cutoff_value_4
       ),
@@ -225,7 +225,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       size = 4
     ) + geom_text(
       aes(
-        label = cutoff_label_5,
+        label = paste(cutoff_label_5, ":", cutoff_value_5),
         x = as.Date(x_axis_lower_expansion),
         y = cutoff_value_5
       ),
@@ -236,6 +236,10 @@ plot_subscale <- function(subscale_df, subscale_info) {
       size = 4
     )
 
-  plot #Print plot
+
+  m_sd_sample_caption<- grobTree(textGrob(paste("Mean & sd apply to the following client group:", subscale_df$population), x=0.05,  y=0.95, hjust=0,
+                            gp=gpar(col = "white", fontsize=11, fontfamily = "Linux Libertine")))
+
+  plot + annotation_custom(m_sd_sample_caption) #Print plot
 
 }

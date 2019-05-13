@@ -151,7 +151,7 @@ download_report<- function(input, output, session, pool, selected_client, measur
           data, ~ dplyr::select(
             .,
             Date = date,
-            `Reference Population` = population,
+            `Comparison Sample` = population,
             Mean = mean,
             Sd = sd,
             `Mean & Sd Reference` = mean_reference

@@ -19,7 +19,7 @@ library(extrafontdb)
 library(shinyhelper)
 library(shinyWidgets)
 library(shinycssloaders)
-
+library(grid)
 
 
 pool <- dbPool( #Set up the pool connection management
