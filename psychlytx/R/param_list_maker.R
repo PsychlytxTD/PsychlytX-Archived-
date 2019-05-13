@@ -52,7 +52,7 @@ params_list_maker<- function(title, brief_title, measure, subscale, population_q
 
   req(input_population)
 
-  if( !(input_population %in% populations )) {
+  if( !(input_population %in% populations )) {    #Need to make sure that stored settings for 'Other' are retrieved.
 
     input_population<- "Other"
 

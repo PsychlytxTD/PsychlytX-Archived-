@@ -136,6 +136,8 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
   reactive({
 
+    validate(need(length(input$population) >= 1, "Please select a client."))
+
     if(input$population == "Other") {
 
       return(input$other_population_widget) #Return the name of the custom-defined population, if selected.
