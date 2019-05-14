@@ -55,4 +55,19 @@ gad7_info<- list(  title = "Generalized Anxiety Disorder 7-Item Scale (GAD-7)", 
                    min_score = 0,
                    description = readr::read_file(
                      "gad7.md"
-                   ))
+                   ),
+                   sample_overview = list(c("4615 German males drawn from the general population (Hinz, Klein, Brähler, Glaesmer et al., 2017)"),
+                                           c("5106 German females drawn from the general population (Hinz, Klein, Brähler, Glaesmer et al., 2017)"),
+                                           c("438 older German participants aged 58-82 (Wild, Eckl, Herzog, Niehoff et al., 2012)"),
+                                           c("3404 German primary care patients (Jordan, Shedden-Mora & Löwe, 2017)"),
+                                           c("1082 American patients with heterogeneous diagnoses who undertook treatment at a psychiatric hospital (Beard & Björgvinsson, 2014)"),
+                                           c("125 Australian adults with Generalised Anxiety Disorder at baseline of an RCT (Dear, Titov, Sunderland, McMillan, Anderson et al., 2011)"),
+                                           c("271 American adults with musculoskeletal pain of the low back, hip or knee & nil depression or anxiety (Bair, Wu, Damush, Sutherland & Kroenke, 2008)"),
+                                           c("196 English participants with diabetes and/or coronary heart disase with a PHQ-9 score of 10 or greater (Conventry, Lovell, Dickens, Bower et al., 2015)"),
+                                           c("693 Australian participants with Type 1 diabetes (Fenwick, Rees, Homes-Truscott, Browne, Pouwer et al., 2016)"),
+                                           c("1012 Australian participants with Type 2 diabetes (Fenwick, Rees, Homes-Truscott, Browne, Pouwer et al., 2016)"),
+                                           c("77 participants with chronic stroke, > 6 months post-stroke (Schmid, Arnold, Jones, Ritter, Sapp et al., 2015)"),
+                                           c("No sample information to provide.")
+                                           )
+
+                   )

@@ -36,22 +36,33 @@ apply_initial_population_UI<- function(id) {
           "",
           "<b>2.</b> Suitable classifications of symptom severity appear in your client's clinical report. ",
           "",
-          "<b>3.</b> By clicking below, you can change the client settings that are used in analyses and which appear in the clinical report."), size = "m"
+          "",
+          "You may customise your client's settings if desired."), size = "m"
                                     ))),
 
     fluidRow(
-      column(width = 8, offset = 3,
+      column(width = 6, offset = 3,
 
       uiOutput(ns("select_population"))
 
     )),
 
     fluidRow(
-      column(width = 8, offset = 3,
+      column(width = 5, offset = 3,
+
+             uiOutput(ns("sample_description"))
+      )),
+
+    br(),
+    br(),
+    br(),
+
+    fluidRow(
+      column(width = 3, offset = 8,
 
              uiOutput(ns("other_population")),
 
-             actionButton(ns("go_custom_settings"), " (Optional) Change Client Settings", class = "submit_data")
+             actionButton(ns("go_custom_settings"), "Customise Client Settings (Optional) ", class = "submit_data")
 
              ))))))
 
@@ -70,7 +81,7 @@ apply_initial_population_UI<- function(id) {
 
 apply_initial_population<- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, sds, means,
                                     mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity,
-                                    items, max_score, min_score, description, existing_data, tabsetpanel_id = "tabset") {
+                                    items, max_score, min_score, description, sample_overview, existing_data, tabsetpanel_id = "tabset") {
 
   parent_session <- get("session", envir = parent.frame(2)) #Need to ensure correct scoping - want R to look in the parent app not the module
 
@@ -131,6 +142,59 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
   })
 
   outputOptions(output, "other_population", suspendWhenHidden = FALSE)
+
+
+  output$sample_description <- renderUI({
+
+    ns <- session$ns
+
+    sample_info_params<- purrr::pmap(list(
+
+      populations = populations,
+      mean_sd_references = mean_sd_references,
+      sample_overview = sample_overview
+
+    ),
+
+    function(populations, mean_sd_references, sample_overview) {
+
+
+      #Create a list of paramaters for each unique population
+
+      list( populations = populations, mean_sd_references = mean_sd_references, sample_overview = sample_overview )
+
+    }
+
+    )
+
+
+    #Set the names of each list to be the population names (underscores replacing white space)
+
+    names(sample_info_params)<- populations
+
+
+    #Use the population_selected object to return the correct list (i.e. the one containing the values of the population selected by the user)
+
+    selected_sample_info<- sample_info_params[[input$population]]
+
+
+    h4("Learn more about this client group") %>%
+      helper(
+             colour = "#283747",
+             size = "m",
+             type = "inline",
+             title = paste(gsub("_", " ", selected_sample_info$populations)),
+             content = c("Below is information about the research sample that was employed to provide the mean and standard deviation for this client group. Means and standard deviations are used in reliable change calculations and to show how severe your client's symptoms are relative to others in his or her group.",
+                         "",
+                         paste("<b>Sample Characteristics:</b>", " ", selected_sample_info$sample_overview),
+                         "",
+                         paste("<b>Reference:</b>", " ", selected_sample_info$mean_sd_references)
+                         ))
+  })
+
+
+
+
 
 
 
