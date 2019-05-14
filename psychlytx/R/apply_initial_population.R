@@ -81,7 +81,7 @@ apply_initial_population_UI<- function(id) {
 
 apply_initial_population<- function(input, output, session, title, brief_title, measure, subscale, population_quantity, populations, sds, means,
                                     mean_sd_references, reliabilities, reliability_references, cutoff_values, cutoff_labels, cutoff_references, cutoff_quantity,
-                                    items, max_score, min_score, description, sample_overview, existing_data, tabsetpanel_id = "tabset") {
+                                    items, max_score, min_score, description, sample_overview, journal_references, existing_data, tabsetpanel_id = "tabset") {
 
   parent_session <- get("session", envir = parent.frame(2)) #Need to ensure correct scoping - want R to look in the parent app not the module
 
@@ -151,17 +151,17 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
     sample_info_params<- purrr::pmap(list(
 
       populations = populations,
-      mean_sd_references = mean_sd_references,
+      journal_references = journal_references,
       sample_overview = sample_overview
 
     ),
 
-    function(populations, mean_sd_references, sample_overview) {
+    function(populations, journal_references, sample_overview) {
 
 
       #Create a list of paramaters for each unique population
 
-      list( populations = populations, mean_sd_references = mean_sd_references, sample_overview = sample_overview )
+      list( populations = populations, journal_references = journal_references, sample_overview = sample_overview )
 
     }
 
@@ -188,7 +188,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
                          "",
                          paste("<b>Sample Characteristics:</b>", " ", selected_sample_info$sample_overview),
                          "",
-                         paste("<b>Reference:</b>", " ", selected_sample_info$mean_sd_references)
+                         paste("<b>Reference:</b>", " ", selected_sample_info$journal_references)
                          ))
   })
 

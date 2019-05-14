@@ -8,8 +8,8 @@ apply_initial_population(input, output, session, title, brief_title,
   measure, subscale, population_quantity, populations, sds, means,
   mean_sd_references, reliabilities, reliability_references, cutoff_values,
   cutoff_labels, cutoff_references, cutoff_quantity, items, max_score,
-  min_score, description, sample_overview, existing_data,
-  tabsetpanel_id = "tabset")
+  min_score, description, sample_overview, journal_references,
+  existing_data, tabsetpanel_id = "tabset")
 }
 \arguments{
 \item{id}{String to create the namespace}

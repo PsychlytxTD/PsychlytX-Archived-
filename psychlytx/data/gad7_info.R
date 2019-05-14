@@ -56,18 +56,48 @@ gad7_info<- list(  title = "Generalized Anxiety Disorder 7-Item Scale (GAD-7)", 
                    description = readr::read_file(
                      "gad7.md"
                    ),
-                   sample_overview = list(c("4615 German males drawn from the general population (Hinz, Klein, Brähler, Glaesmer et al., 2017)"),
-                                           c("5106 German females drawn from the general population (Hinz, Klein, Brähler, Glaesmer et al., 2017)"),
-                                           c("438 older German participants aged 58-82 (Wild, Eckl, Herzog, Niehoff et al., 2012)"),
-                                           c("3404 German primary care patients (Jordan, Shedden-Mora & Löwe, 2017)"),
-                                           c("1082 American patients with heterogeneous diagnoses who undertook treatment at a psychiatric hospital (Beard & Björgvinsson, 2014)"),
-                                           c("125 Australian adults with Generalised Anxiety Disorder at baseline of an RCT (Dear, Titov, Sunderland, McMillan, Anderson et al., 2011)"),
-                                           c("271 American adults with musculoskeletal pain of the low back, hip or knee & nil depression or anxiety (Bair, Wu, Damush, Sutherland & Kroenke, 2008)"),
-                                           c("196 English participants with diabetes and/or coronary heart disase with a PHQ-9 score of 10 or greater (Conventry, Lovell, Dickens, Bower et al., 2015)"),
-                                           c("693 Australian participants with Type 1 diabetes (Fenwick, Rees, Homes-Truscott, Browne, Pouwer et al., 2016)"),
-                                           c("1012 Australian participants with Type 2 diabetes (Fenwick, Rees, Homes-Truscott, Browne, Pouwer et al., 2016)"),
-                                           c("77 participants with chronic stroke, > 6 months post-stroke (Schmid, Arnold, Jones, Ritter, Sapp et al., 2015)"),
+                   sample_overview = list(c("4615 German males drawn from the general population."),
+                                           c("5106 German females drawn from the general population."),
+                                           c("438 older German participants aged 58-82."),
+                                           c("3404 German primary care patients."),
+                                           c("1082 American patients with heterogeneous diagnoses who undertook treatment at a psychiatric hospital."),
+                                           c("125 Australian adults with Generalised Anxiety Disorder at baseline of an RCT."),
+                                           c("271 American adults with musculoskeletal pain of the low back, hip or knee & nil depression or anxiety."),
+                                           c("196 English participants with diabetes and/or coronary heart disase with a PHQ-9 score of 10 or greater."),
+                                           c("693 Australian participants with Type 1 diabetes."),
+                                           c("1012 Australian participants with Type 2 diabetes."),
+                                           c("77 participants with chronic stroke, > 6 months post-stroke."),
                                            c("No sample information to provide.")
-                                           )
+                                           ),
+                   journal_references = list(c("Hinz, A., Klein, A. M., Brähler, E., Glaesmer, H., Luck, T., Riedel-Heller, S. G., . . . Hilbert, A. (2017). Psychometric
+                                               evaluation of the generalized anxiety disorder screener GAD-7, based on a large german general population sample.
+                                               Journal of Affective Disorders, 210, 338-344."),
+                                             c("Hinz, A., Klein, A. M., Brähler, E., Glaesmer, H., Luck, T., Riedel-Heller, S. G., . . . Hilbert, A. (2017). Psychometric
+                                               evaluation of the generalized anxiety disorder screener GAD-7, based on a large german general population sample. Journal of
+                                               Affective Disorders, 210, 338-344."),
+                                             c("Wild, B., Eckl, A., Herzog, W., Niehoff, D., Lechner, S., Maatouk, I., . . . Löwe, B. (2014). Assessing generalized anxiety disorder
+                                               in elderly people using the GAD-7 and GAD-2 scales: Results of a validation study. The American Journal of Geriatric Psychiatry, 22(10),
+                                               1029-1038."),
+                                             c("Jordan, P., Shedden-Mora, M. C., & Löwe, B. (2017). Psychometric analysis of the generalized anxiety disorder scale (GAD-7) in primary care using modern
+                                               item response theory. PloS One, 12(8), e0182162."),
+                                             c("Beard, C., & Björgvinsson, T. (2014). Beyond generalized anxiety disorder: Psychometric properties of the GAD-7 in a heterogeneous psychiatric sample.
+                                               Journal of Anxiety Disorders, 28(6), 547-552."),
+                                             c("Dear, B. F., Titov, N., Sunderland, M., McMillan, D., Anderson, T., Lorian, C., & Robinson, E. (2011). Psychometric comparison of the
+                                               generalized anxiety disorder scale-7 and the penn state worry questionnaire for measuring response during treatment of generalised
+                                               anxiety disorder. Cognitive Behaviour Therapy, 40(3), 216-227."),
+                                             c("Bair, M. J., Wu, J., Damush, T. M., Sutherland, J. M., & Kroenke, K. (2008). Association of depression and anxiety alone and in combination with chronic
+                                               musculoskeletal pain in primary care patients. Psychosomatic Medicine, 70(8), 890-897."),
+                                             c("Coventry, P., Lovell, K., Dickens, C., Bower, P., Chew-Graham, C., McElvenny, D., . . . Gask, L. (2015). Integrated primary care
+                                               for patients with mental and physical multimorbidity: Cluster randomised controlled trial of collaborative care for
+                                               patients with depression comorbid with diabetes or cardiovascular disease. BMJ (Clinical Research Ed.), 350, h638."),
+                                             c("Fenwick, E. K., Rees, G., Holmes-Truscott, E., Browne, J. L., Pouwer, F., & Speight, J. (2016). What is the best measure for
+                                               assessing diabetes distress? A comparison of the problem areas in diabetes and diabetes distress scale: Results from
+                                               diabetes MILES–Australia. Journal of Health Psychology"),
+                                             c("Fenwick, E. K., Rees, G., Holmes-Truscott, E., Browne, J. L., Pouwer, F., & Speight, J. (2016). What is the best measure for
+                                               assessing diabetes distress? A comparison of the problem areas in diabetes and diabetes distress scale: Results from
+                                               diabetes MILES–Australia. Journal of Health Psychology"),
+                                             c("Schmid, A. A., Arnold, S. E., Jones, V. A., Ritter, M. J., Sapp, S. A., & Van Puymbroeck, M. (2015). Fear of falling in people
+                                               with chronic stroke. American Journal of Occupational Therapy, 69(3), 6903350020p1-6903350020p5."),
+                                             c("No sample information to provide."))
 
                    )
