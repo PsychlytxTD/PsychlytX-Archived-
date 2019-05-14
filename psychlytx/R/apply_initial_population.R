@@ -148,6 +148,8 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     ns <- session$ns
 
+    req(input$population)
+
     sample_info_params<- purrr::pmap(list(
 
       populations = populations,
@@ -173,10 +175,18 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
     names(sample_info_params)<- populations
 
 
+    if( !(input$population %in% populations )) {    #Need to make sure that stored settings for 'Other' are retrieved.
+
+      selected_sample_info<- sample_info_params[["Other"]]
+
+    } else {
+
+
     #Use the population_selected object to return the correct list (i.e. the one containing the values of the population selected by the user)
 
     selected_sample_info<- sample_info_params[[input$population]]
 
+    }
 
     h4("Learn more about this client group") %>%
       helper(
