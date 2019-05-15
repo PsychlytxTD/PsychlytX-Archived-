@@ -3,8 +3,8 @@ gad7_info<- list(  title = "Generalized Anxiety Disorder 7-Item Scale (GAD-7)", 
                    measure = "GAD_7", #The overal measure (which may contain subscales)
                    subscale = "GAD_7", #The specific subscale of the measure.
                    population_quantity = 11,
-                   populations = list("male_general_population", "female_general_population", "older_adult", "primary_care", "psychiatric", "Generalized_Anxiety_Disorder",
-                                      "chronic_musculoskeletal_pain", "coronary_heart_disease", "type_1_diabetes", "type_2_diabetes", "stroke", "Other"),
+                   populations = list("Male_General_Population", "Female_General_Population", "Older_Adult", "Primary_Care", "Psychiatric", "Generalized_Anxiety_Disorder",
+                                      "Chronic_Musculoskeletal_Pain", "Coronary_Heart_Disease", "Type_1_Diabetes", "Type_2_Diabetes", "Stroke", "Other"),
                    means = list(3.01, 4.07, 2, 5.75, 10.86, 12.59, 2.6, 11.9, 4.7, 4.5, 3.87, 0),
                    sds = list(3.12, 3.53, 2.88, 4.76, 5.62, 3.96, 2.3, 5.3, 4.6, 4.9, 5.2, 0),
                    mean_sd_references = list("Hinz, Klein, Brähler, Glaesmer et al (2017)", "Hinz, Klein, Brähler, Glaesmer et al (2017)", "Wild, Eckl, Herzog, Niehoff et al (2012)",
