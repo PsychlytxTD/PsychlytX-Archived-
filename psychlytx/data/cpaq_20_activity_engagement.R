@@ -1,7 +1,7 @@
-cpaq_20_activity_engagement_info<- list(  title = "Activity Engagement Subscale", #Title can contain white space. For insertion into widget headings, plot titles etc.
+CPAQ_20_Activity_Engagement<- list(  title = "Activity Engagement Subscale", #Title can contain white space. For insertion into widget headings, plot titles etc.
                       brief_title = "Activity Engagement",
                       measure = "CPAQ_20", #The overal measure (which may contain subscales)
-                      subscale = "CPAQ_20_activity_engagement", #The specific subscale of the measure.
+                      subscale = "CPAQ_20_Activity_Engagement", #The specific subscale of the measure.
                       population_quantity = 2,
                       populations = list("Chronic Pain", "Other"),
                       means = list(30.12, 0),

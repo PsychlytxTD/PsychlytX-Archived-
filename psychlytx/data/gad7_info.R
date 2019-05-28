@@ -1,4 +1,4 @@
-gad7_info<- list(  title = "Generalized Anxiety Disorder 7-Item Scale (GAD-7)", #Title can contain white space. For insertion into widget headings, plot titles etc.
+GAD_7<- list(  title = "Generalized Anxiety Disorder 7-Item Scale (GAD-7)", #Title can contain white space. For insertion into widget headings, plot titles etc.
                    brief_title = "GAD-7",
                    measure = "GAD_7", #The overal measure (which may contain subscales)
                    subscale = "GAD_7", #The specific subscale of the measure.

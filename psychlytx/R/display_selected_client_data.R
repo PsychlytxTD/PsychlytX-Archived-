@@ -39,16 +39,16 @@ display_client_data_UI<- function(id) {
 #' @export
 
 
-display_client_data<- function(input, output, session, pool, selected_client, input_retrieve_client_data) {
+display_client_data<- function(input, output, session, pool, selected_client, measure, input_retrieve_client_data) {
 
 
   selected_client_data<- eventReactive(input_retrieve_client_data(), { #Pull in the selected client's data (for this measure only) from the db.
 
     selected_client_sql<- "SELECT *
     FROM scale
-    WHERE client_id = ?client_id;"
+    WHERE client_id = ?client_id AND measure = ?measure;"
 
-    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client())
+    selected_client_query<- sqlInterpolate(pool, selected_client_sql, client_id = selected_client(), measure = measure)
 
     dbGetQuery(pool, selected_client_query)
 

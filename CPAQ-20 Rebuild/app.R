@@ -47,7 +47,7 @@ ui<- function(request) {
   
   dashboardPage(
     
-    header<- psychlytx::make_header_UI("header"), #Make the header
+    header<- psychlytx::make_header_UI("header", header_text = psychlytx::cpaq_20), #Make the header
     
     sidebar <- psychlytx::make_sidebar_UI("sidebar"), #Make the sidebar
     
@@ -209,9 +209,8 @@ ui<- function(request) {
                 column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)),
         
         
-        about_tab<- psychlytx::make_about_tab_UI("about_tab"), #Make the 'About Psychlytx' tab
+        about_tab<- psychlytx::make_about_tab_UI("about_tab") #Make the 'About Psychlytx' tab
         
-        references_tab<- psychlytx::make_references_tab_UI("references_tab") #Make the references tab
         
       )))
   
@@ -231,8 +230,6 @@ server <- function(input, output, session) {
   callModule(psychlytx::make_header, "header") #Make header
   
   callModule(psychlytx::make_about_tab, "about_tab") #Make 'About' tab
-  
-  callModule(psychlytx::make_references_tab, "references_tab") #Make references tab
   
   
   #Register a new client with pretherapy analytics data. Module 
@@ -254,12 +251,12 @@ server <- function(input, output, session) {
   input_retrieve_client_data<- reactive({input$retrieve_client_data}) #Store the value of the client selection button
   
   
-  existing_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, 
+  existing_data<- callModule(psychlytx::display_client_data, "display_client_data", pool, selected_client, measure = psychlytx::cpaq_20$measure,
                              input_retrieve_client_data) #Return the selected client's previous scores on this measure
   
   
   input_population<- do.call(callModule, c(psychlytx::apply_initial_population, "apply_population", 
-                                           psychlytx::cpaq_20_info, existing_data)) #Store the selected population for downstream use in other modules
+                                           psychlytx::cpaq_20, existing_data)) #Store the selected population for downstream use in other modules
   
   
   callModule(psychlytx::show_population_message, "show_population_message", input_population) #Prompt user to select a population to generate settings for this client
@@ -272,7 +269,7 @@ server <- function(input, output, session) {
   
   
   aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  manual_entry = manual_entry, 
-                                item_index = list( psychlytx::cpaq_20_info$items, psychlytx::cpaq_20_activity_engagement_info$items, psychlytx::cpaq_20_pain_willingness_info$items ), 
+                                item_index = list( psychlytx::cpaq_20$items, psychlytx::cpaq_20_activity_engagement$items, psychlytx::cpaq_20_pain_willingness$items ), 
                                 aggregation_method = "sum")   #Make a list of aggregate scores across subscales (in this case there is only one subscale)
   
 
@@ -289,15 +286,15 @@ server <- function(input, output, session) {
   
   #For each subscale individually, collect the values from widgets and store them in a list 
   
-  mean_input_1<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_1", input_population, psychlytx::cpaq_20_info, existing_data))
-  sd_input_1<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_1", input_population, psychlytx::cpaq_20_info, existing_data))
-  reliability_input_1<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_1", input_population, psychlytx::cpaq_20_info, existing_data))
-  cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::cpaq_20_info, existing_data))
+  mean_input_1<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_1", input_population, psychlytx::cpaq_20, existing_data))
+  sd_input_1<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_1", input_population, psychlytx::cpaq_20, existing_data))
+  reliability_input_1<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_1", input_population, psychlytx::cpaq_20, existing_data))
+  cutoff_input_1<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_1", input_population, psychlytx::cpaq_20, existing_data))
   
   #Create list of input values for a subscale 
   
-  input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, measure = psychlytx::cpaq_20_info$measure, 
-                            subscale = psychlytx::cpaq_20_info$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, reliability_input_1, confidence, 
+  input_list_1<- callModule(psychlytx::collect_input, "collect_input_1", clinician_id, client_id = selected_client, measure = psychlytx::cpaq_20$measure, 
+                            subscale = psychlytx::cpaq_20$subscale, manual_entry, aggregate_scores, mean_input_1, sd_input_1, reliability_input_1, confidence, 
                             method, input_population, cutoff_input_1, subscale_number = 1)
   
   
@@ -308,15 +305,15 @@ server <- function(input, output, session) {
   
   #For each subscale individually, collect the values from widgets and store them in a list 
   
-  mean_input_2<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_2", input_population, psychlytx::cpaq_20_activity_engagement_info, existing_data))
-  sd_input_2<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_2", input_population, psychlytx::cpaq_20_activity_engagement_info, existing_data))
-  reliability_input_2<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_2", input_population, psychlytx::cpaq_20_activity_engagement_info, existing_data))
-  cutoff_input_2<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_2", input_population, psychlytx::cpaq_20_activity_engagement_info, existing_data))
+  mean_input_2<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_2", input_population, psychlytx::cpaq_20_activity_engagement, existing_data))
+  sd_input_2<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_2", input_population, psychlytx::cpaq_20_activity_engagement, existing_data))
+  reliability_input_2<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_2", input_population, psychlytx::cpaq_20_activity_engagement, existing_data))
+  cutoff_input_2<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_2", input_population, psychlytx::cpaq_20_activity_engagement, existing_data))
   
   #Create list of input values for a subscale 
   
-  input_list_2<- callModule(psychlytx::collect_input, "collect_input_2", clinician_id, client_id = selected_client, measure = psychlytx::cpaq_20_activity_engagement_info$measure, 
-                            subscale = psychlytx::cpaq_20_activity_engagement_info$subscale, manual_entry, aggregate_scores, mean_input_2, sd_input_2, reliability_input_2, confidence, 
+  input_list_2<- callModule(psychlytx::collect_input, "collect_input_2", clinician_id, client_id = selected_client, measure = psychlytx::cpaq_20_activity_engagement$measure, 
+                            subscale = psychlytx::cpaq_20_activity_engagement$subscale, manual_entry, aggregate_scores, mean_input_2, sd_input_2, reliability_input_2, confidence, 
                             method, input_population, cutoff_input_2, subscale_number = 2)
   
   
@@ -327,15 +324,15 @@ server <- function(input, output, session) {
   
   #For each subscale individually, collect the values from widgets and store them in a list 
   
-  mean_input_3<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_3", input_population, psychlytx::cpaq_20_pain_willingness_info, existing_data))
-  sd_input_3<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_3", input_population, psychlytx::cpaq_20_pain_willingness_info, existing_data))
-  reliability_input_3<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_3", input_population, psychlytx::cpaq_20_pain_willingness_info, existing_data))
-  cutoff_input_3<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_3", input_population, psychlytx::cpaq_20_pain_willingness_info, existing_data))
+  mean_input_3<- do.call(callModule, c(psychlytx::generate_mean_widget, "mean_widget_3", input_population, psychlytx::cpaq_20_pain_willingness, existing_data))
+  sd_input_3<- do.call(callModule, c(psychlytx::generate_sd_widget, "sd_widget_3", input_population, psychlytx::cpaq_20_pain_willingness, existing_data))
+  reliability_input_3<- do.call(callModule, c(psychlytx::generate_reliability_widget, "reliability_widget_3", input_population, psychlytx::cpaq_20_pain_willingness, existing_data))
+  cutoff_input_3<- do.call(callModule, c(psychlytx::generate_cutoff_widget, "cutoff_widget_3", input_population, psychlytx::cpaq_20_pain_willingness, existing_data))
   
   #Create list of input values for a subscale 
   
-  input_list_3<- callModule(psychlytx::collect_input, "collect_input_3", clinician_id, client_id = selected_client, measure = psychlytx::cpaq_20_pain_willingness_info$measure, 
-                            subscale = psychlytx::cpaq_20_pain_willingness_info$subscale, manual_entry, aggregate_scores, mean_input_3, sd_input_3, reliability_input_3, confidence, 
+  input_list_3<- callModule(psychlytx::collect_input, "collect_input_3", clinician_id, client_id = selected_client, measure = psychlytx::cpaq_20_pain_willingness$measure, 
+                            subscale = psychlytx::cpaq_20_pain_willingness$subscale, manual_entry, aggregate_scores, mean_input_3, sd_input_3, reliability_input_3, confidence, 
                             method, input_population, cutoff_input_3, subscale_number = 3)
   
   
@@ -393,8 +390,7 @@ onclick("trigger_most_recent_data",  #Query database when user clicks report tab
   
   #Pull selected client's data from db, create a nested df containing all necessary info for report (plots and tables) and send to R Markdown doc.
   
-  callModule( psychlytx::download_report, "download_report", pool, selected_client, 
-              measure_list = list(psychlytx::cpaq_20_info, psychlytx::cpaq_20_activity_engagement_info, psychlytx::cpaq_20_pain_willingness_info), most_recent_client_data)
+  callModule( psychlytx::download_report, "download_report", pool, selected_client, psychlytx::global_subscale_info, most_recent_client_data)
   
   
 }

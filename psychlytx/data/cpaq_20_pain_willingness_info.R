@@ -1,7 +1,7 @@
-cpaq_20_pain_willingness_info<- list(  title = "Pain Willingness Subscale", #Title can contain white space. For insertion into widget headings, plot titles etc.
+CPAQ_20_Pain_Willingness<- list(  title = "Pain Willingness Subscale", #Title can contain white space. For insertion into widget headings, plot titles etc.
                                           brief_title = "Pain Willingness",
                                           measure = "CPAQ_20", #The overal measure (which may contain subscales)
-                                          subscale = "CPAQ_20_pain_willingness", #The specific subscale of the measure.
+                                          subscale = "CPAQ_20_Pain_Willingness", #The specific subscale of the measure.
                                           population_quantity = 2,
                                           populations = list("Chronic Pain", "Other"),
                                           means = list(18.73, 0),

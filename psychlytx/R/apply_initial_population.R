@@ -116,7 +116,9 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
   observe({
 
+
     updateSelectInput(session, "population", selected = existing_data()$population[1], choices =  existing_data()$population[1]) #Update the population widget based on user's existing data to reinstill their settings
+
 
 
   })

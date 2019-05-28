@@ -4,7 +4,7 @@
 \alias{make_header_UI}
 \title{Make Header}
 \usage{
-make_header_UI(id)
+make_header_UI(id, header_text)
 }
 \arguments{
 \item{id}{A string to create the namespace}

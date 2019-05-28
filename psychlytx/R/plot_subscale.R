@@ -26,19 +26,19 @@ plot_subscale <- function(subscale_df, subscale_info) {
 
   ymin_cutoff_1 <- subscale_df$cutoff_value_1[length( subscale_df$cutoff_value_1 )]
 
-  ymax_cutoff_1 <- subscale_df$cutoff_value_2[length( subscale_df$cutoff_value_1 )] - 0.1
+  ymax_cutoff_1 <- subscale_df$cutoff_value_2[length( subscale_df$cutoff_value_1 )] - 0.2
 
   ymin_cutoff_2 <- subscale_df$cutoff_value_2[length( subscale_df$cutoff_value_2 )]
 
-  ymax_cutoff_2 <- subscale_df$cutoff_value_3[length( subscale_df$cutoff_value_3 )] - 0.1
+  ymax_cutoff_2 <- subscale_df$cutoff_value_3[length( subscale_df$cutoff_value_3 )] - 0.2
 
   ymin_cutoff_3 <- subscale_df$cutoff_value_3[length( subscale_df$cutoff_value_3 )]
 
-  ymax_cutoff_3 <- subscale_df$cutoff_value_4[length( subscale_df$cutoff_value_4 )] - 0.1
+  ymax_cutoff_3 <- subscale_df$cutoff_value_4[length( subscale_df$cutoff_value_4 )] - 0.2
 
   ymin_cutoff_4 <- subscale_df$cutoff_value_4[length( subscale_df$cutoff_value_4 )]
 
-  ymax_cutoff_4 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )] - 0.1
+  ymax_cutoff_4 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )] - 0.2
 
   ymin_cutoff_5 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )]
 
@@ -183,7 +183,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       aes(
         label = paste(cutoff_label_1, ":", cutoff_value_1),
         x = as.Date(x_axis_lower_expansion),
-        y = cutoff_value_1
+        y = cutoff_value_1 + 0.2
       ),
       #Position cutoff label 1
       hjust = 0,
@@ -194,7 +194,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       aes(
         label = paste(cutoff_label_2, ":", cutoff_value_2),
         x = as.Date(x_axis_lower_expansion),
-        y = cutoff_value_2
+        y = cutoff_value_2 + 0.2
       ),
       #Position cutoff label 2
       hjust = 0,
@@ -205,7 +205,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       aes(
         label = paste(cutoff_label_3, ":", cutoff_value_3),
         x = as.Date(x_axis_lower_expansion),
-        y = cutoff_value_3
+        y = cutoff_value_3 + 0.2
       ),
       #Position cutoff label 3
       hjust = 0,
@@ -216,7 +216,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       aes(
         label = paste(cutoff_label_4, ":", cutoff_value_4),
         x = as.Date(x_axis_lower_expansion),
-        y = cutoff_value_4
+        y = cutoff_value_4 + 0.2
       ),
       #Position cutoff label 4
       hjust = 0,
@@ -227,7 +227,7 @@ plot_subscale <- function(subscale_df, subscale_info) {
       aes(
         label = paste(cutoff_label_5, ":", cutoff_value_5),
         x = as.Date(x_axis_lower_expansion),
-        y = cutoff_value_5
+        y = cutoff_value_5 + 0.2
       ),
       #Position cutoff label 5
       hjust = 0,

@@ -68,7 +68,7 @@ download_report_UI<- function(id) {
 #' @export
 
 
-download_report<- function(input, output, session, pool, selected_client, measure_list, most_recent_client_data) {
+download_report<- function(input, output, session, pool, selected_client, global_subscale_info, most_recent_client_data) {
 
 
    report_data <- reactive({
@@ -78,11 +78,15 @@ download_report<- function(input, output, session, pool, selected_client, measur
 
     subscale_df <- most_recent_client_data$value %>%
       dplyr::group_by(subscale) %>%
-      tidyr::nest() %>%
-      dplyr::mutate(
-        subscale_info = measure_list
-      ) #Each subscale needs its own info list (containing params that will be used for plotting)
-    #So we make another list column containing subscale info lists
+      tidyr::nest() %>% dplyr::arrange(subscale)
+
+    to_keep<- names(global_subscale_info) %in% subscale_df$subscale
+
+    retained_subscale_info<- purrr::keep(global_subscale_info, to_keep)
+
+
+    subscale_df<- subscale_df %>% dplyr::mutate(subscale_info = retained_subscale_info)
+
 
 
     #Add a 'change' variable for each subscale's dataframe showing statistically reliable change in scores. This is a custom function - see above.

@@ -1,4 +1,4 @@
-cpaq_20_info<- list(  title = "Chronic Pain Acceptance Questionnaire - 20 (CPAQ-20)", #Title can contain white space. For insertion into widget headings, plot titles etc.
+CPAQ_20<- list(  title = "Chronic Pain Acceptance Questionnaire - 20 (CPAQ-20)", #Title can contain white space. For insertion into widget headings, plot titles etc.
                    brief_title = "CPAQ-20",
                    measure = "CPAQ_20", #The overal measure (which may contain subscales)
                    subscale = "CPAQ_20", #The specific subscale of the measure.

@@ -7,11 +7,11 @@
 #' @export
 
 
-make_header_UI<- function(id) {
+make_header_UI<- function(id, header_text) {
 
 
  dashboardHeader(title = span(tagList(tags$a(href = "http://psychlytx.com.au", "PsychlytX", style = "color: white; font-size: 26px; letter-spacing:
-                                             7.8px;font-weight: bolder;"), tags$sup("®"), "| Generalized Anxiety Disorder - 7-Item Scale (GAD-7)"),
+                                             7.8px;font-weight: bolder;"), tags$sup("®"), "|", paste(header_text)),
                                             style = "color: white; letter-spacing: 1.8px;"), titleWidth = 820)
 
 }
