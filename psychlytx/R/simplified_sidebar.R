@@ -7,7 +7,7 @@
 #' @export
 
 
-make_sidebar_UI<- function(id) {
+make_simplified_sidebar_UI<- function(id) {
 
 
   dashboardSidebar(  #Menu items are hyperlinks to website pages
@@ -16,10 +16,7 @@ make_sidebar_UI<- function(id) {
       menuItem("Home", icon = icon("line-chart"), tabName = "Home", selected = TRUE),
       br(),
       div( HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'), icon("info"), HTML('&nbsp;'), HTML('&nbsp;'),
-            HTML('&nbsp;'), HTML('&nbsp;'), tags$a("About Psychlytx", href = "https:://psychlytx.com.au", style = "color:white")),
-      br(),
-      div( HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'), icon("user-cog"), HTML('&nbsp;'),
-            HTML('&nbsp;'), tags$a("Update Account Details", href = "https:://psychlytx.com.au", style = "color:white")),
+           HTML('&nbsp;'), HTML('&nbsp;'), tags$a("About Psychlytx", href = "https:://psychlytx.com.au", style = "color:white")),
       br(),
       br(),
       br(),
@@ -54,7 +51,7 @@ make_sidebar_UI<- function(id) {
 #' @export
 
 
-make_sidebar<- function(input, output, session) {
+make_simplified_sidebar<- function(input, output, session) {
 
   return(NULL)
 

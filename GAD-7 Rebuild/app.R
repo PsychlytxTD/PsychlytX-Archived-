@@ -192,10 +192,8 @@ ui<- function(request) {
                          
                       )),
                 
-                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12)),
+                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12))
         
-        
-        about_tab<- psychlytx::make_about_tab_UI("about_tab") #Make the 'About Psychlytx' tab
         
       )))
   
@@ -213,9 +211,6 @@ server <- function(input, output, session) {
   callModule(psychlytx::make_sidebar, "sidebar") #Make sidebar
   
   callModule(psychlytx::make_header, "header") #Make header
-  
-  callModule(psychlytx::make_about_tab, "about_tab") #Make 'About' tab
-  
   
   #Register a new client with pretherapy analytics data. Module 
   #creates unique client id. Need clinician id needs to be available 
