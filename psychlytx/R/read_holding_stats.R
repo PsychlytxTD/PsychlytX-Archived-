@@ -43,11 +43,14 @@ read_holding_stats_UI<- function(id) {
 #'
 #' @param measure A string indiating name of the measure.
 #'
+#' @param tabsetpanel_id A string to allow switching between panels.
+#'
 #' @export
 #'
 
-read_holding_stats<- function(input, output, session, pool, measure) {
+read_holding_stats<- function(input, output, session, pool, measure, tabsetpanel_id = "tabset") {
 
+  parent_session <- get("session", envir = parent.frame(2))
 
   holding_statistics<- eventReactive(input$submit_key, { #Pull in the selected client's data (for this measure only) from the db.
 
@@ -77,6 +80,10 @@ read_holding_stats<- function(input, output, session, pool, measure) {
       type = "success"
     )
 
+
+      updateTabsetPanel(session = parent_session, tabsetpanel_id,  #Direct user to new tab upon button click
+                        selected = paste("go_questionnaire"))
+
     } else {
 
       sendSweetAlert(
@@ -89,6 +96,7 @@ read_holding_stats<- function(input, output, session, pool, measure) {
     }
 
     })
+
 
 
   reactive({ holding_statistics() })

@@ -4,12 +4,15 @@
 \alias{read_holding_stats}
 \title{Select Client}
 \usage{
-read_holding_stats(input, output, session, pool, measure)
+read_holding_stats(input, output, session, pool, measure,
+  tabsetpanel_id = "tabset")
 }
 \arguments{
 \item{pool}{A pooled db object.}
 
 \item{measure}{A string indiating name of the measure.}
+
+\item{tabsetpanel_id}{A string to allow switching between panels.}
 }
 \description{
 Select client and display his/her data in abbreviated form.
