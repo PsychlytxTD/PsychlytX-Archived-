@@ -103,6 +103,12 @@ ui<- function(request) {
                          tabPanel(tags$strong("Complete Questionnaire"),
                                   
                                   psychlytx::apply_initial_population_UI("apply_population"),
+                                  
+                                  psychlytx::extract_holding_statistics_UI("extract_holding_statistics"),
+                                  
+                                  psychlytx::combine_all_holding_data_UI("combine_all_holding_data"),
+                                  
+                                  psychlytx::write_statistics_to_holding_UI("write_holding_statistics_to_db"),
 
                                   psychlytx::gad7_scale_UI("gad7_scale"), #Item of the specific measure
                                   
@@ -290,13 +296,27 @@ server <- function(input, output, session) {
   #So pass the input_list object to the combine_all_input module.
   
   
-  
   measure_data<- callModule(psychlytx::combine_all_input, "combine_all_input", input_list)  #Generate a dataframe with all necessary scale data (date, score, pts, se,
   #ci etc.). This dataframe will be sent to the db
   
   
   
   callModule(psychlytx::write_measure_data_to_db, "write_measure_data", pool, measure_data, manual_entry)  #Write newly entered item responses from measure to db
+  
+  
+  
+  holding_statistics_list_1<- callModule(psychlytx::extract_holding_statistics, "extract_holding_statistics", clinician_id, client_id = selected_client, 
+                                  measure = psychlytx::GAD_7$measure, subscale = psychlytx::GAD_7$subscale, mean_input_1, sd_input_1, reliability_input_1,
+                                  confidence, method, input_population, cutoff_input_1, subscale_number = 1)
+  
+  holding_statistics_list<- reactive({ list( holding_statistics_list_1() ) })
+  
+  holding_data<- callModule(psychlytx::combine_all_holding_data, "combine_all_holding_data", holding_statistics_list)
+  
+  
+  callModule(psychlytx::write_statistics_to_holding, "write_holding_statistics_to_db", pool, holding_data)
+  
+  
   
   
   most_recent_client_data<- reactiveValues()

@@ -102,6 +102,8 @@ combine_all_input<- function(input, output, session, input_list) {
 
     ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::select(clinician_id, client_id, measure, subscale, date, score, pts, se, ci, ci_upper, ci_lower, everything())
 
+
+
     return(scale_data)
 
     })
