@@ -50,10 +50,19 @@ generate_mean_widget(input, output, session, title, brief_title, measure,
 
 \item{min_score}{A numeric value indicating minimum possible score on the subscale.}
 
-\item{description}{A description of subscale's properties, to display in report.}
+\item{description}{A string indicating a description of subscale's properties, to display in report}
+
+\item{sample_overview}{A string indicating a description of each research sample (different for each population)}
+
+\item{journal_references}{The string indicating a full reference for each research sample for mean and sd.}
 
 \item{existing_data}{A dataframe representing the client's existing available data for this measure.}
 }
 \description{
 Generates the widget with correct default values for the mean widget and references.
+}
+\details{
+Apply Initial Settings Through Population Selection
+
+Select an initial population thereby applying settings for analyses
 }

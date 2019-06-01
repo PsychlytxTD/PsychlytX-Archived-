@@ -46,6 +46,12 @@ simplified_collect_holding_input<- function(input, output, session, holding_data
 
   reactive({
 
+    #Pull certain statistics from correct patient row in holding table in db: only the ones that haven't been used to update widgets.
+    #Where stats have been pulled in to update widget, we use the value returned by the updated widget, rather reading the
+    #value directly from the holding table itself.
+
+    #Return the list of data for a subscale.
+
 
     list( holding_data()$clinician_id[subscale_number], holding_data()$client_id[subscale_number], holding_data()$measure[subscale_number], holding_data()$subscale[subscale_number],
           manual_entry()[["date"]], aggregate_scores()[[subscale_number]], mean_input(), sd_input(), reliability_input(), confidence(), method(),

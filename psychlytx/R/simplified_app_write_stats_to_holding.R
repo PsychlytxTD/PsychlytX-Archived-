@@ -42,7 +42,7 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
   observeEvent(input$submit_holding_data, {
 
 
-    sendSweetAlert(
+    sendSweetAlert(                 #Holding stats are sent to the db and an email is sent to the client for questionnaire completion.
       session = session,
       title = "Success !!",
       text = "The questionnaire has been sent to your client for completion.",

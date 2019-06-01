@@ -39,7 +39,10 @@ generate_simplified_sd_widget<- function(input, output, session, holding_data, s
 
   output$simplified_sd_widget_out <- renderUI({
 
-    ns <- session$ns
+    ns <- session$ns           #Pull in the sd stats from holding table and use them to prepopulate the widgets. Accessing the stats via the widget output
+                               #is better because it allows us to retain the workflow of the parent app, which is especially important when the measure has
+                               #multiple subscales.
+
 
     div(
 

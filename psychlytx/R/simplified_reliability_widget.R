@@ -41,7 +41,9 @@ generate_simplified_reliability_widget<- function(input, output, session, holdin
 
     ns <- session$ns
 
-    div(
+    div(             #Pull in the reliability stats from holding table and use them to prepopulate the widgets. Accessing the stats via the widget output
+                     #is better because it allows us to retain the workflow of the parent app, which is especially important when the measure has
+                    #multiple subscales.
 
       numericInput(ns("reliability_value_id"), paste(statistic_type), value = holding_data()$reliability[subscale_number]),
 

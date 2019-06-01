@@ -22,6 +22,10 @@ generate_mean_widget_UI <- function(id) {
 #'
 #' Generates the widget with correct default values for the mean widget and references.
 #'
+#' Apply Initial Settings Through Population Selection
+#'
+#' Select an initial population thereby applying settings for analyses
+#'
 #' @param title A string (white space allowed) indicating the name of the subscale, to be used as a panel title.
 #'
 #' @param brief_title An abbreviated title or acronym.
@@ -60,7 +64,11 @@ generate_mean_widget_UI <- function(id) {
 #'
 #' @param min_score A numeric value indicating minimum possible score on the subscale.
 #'
-#' @param description A description of subscale's properties, to display in report.
+#' @param description A string indicating a description of subscale's properties, to display in report
+#'
+#' @param sample_overview A string indicating a description of each research sample (different for each population)
+#'
+#' @param journal_references The string indicating a full reference for each research sample for mean and sd.
 #'
 #' @param existing_data A dataframe representing the client's existing available data for this measure.
 #'

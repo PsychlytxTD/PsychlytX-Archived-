@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_holding_stats.R
 \name{read_holding_stats}
 \alias{read_holding_stats}
-\title{Select Client}
+\title{Simplified Application Statistics Read-In}
 \usage{
 read_holding_stats(input, output, session, pool, measure,
   tabsetpanel_id = "tabset")
@@ -12,8 +12,8 @@ read_holding_stats(input, output, session, pool, measure,
 
 \item{measure}{A string indiating name of the measure.}
 
-\item{tabsetpanel_id}{A string to allow switching between panels.}
+\item{tabsetpanel_id}{A string to allow automated switch from sign-in tabpanel to questionnaire tabpanel.}
 }
 \description{
-Select client and display his/her data in abbreviated form.
+Read in required statistics from holding table in DB, to be used when client completes simplified application measure.
 }

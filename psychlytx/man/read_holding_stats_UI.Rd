@@ -7,7 +7,7 @@
 read_holding_stats_UI(id)
 }
 \arguments{
-\item{id}{A string to creat the namespace.}
+\item{id}{A string to create the namespace.}
 }
 \description{
 Read in required statistics from holding table in DB, to be used when client completes simplified application measure.

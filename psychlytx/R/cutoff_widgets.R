@@ -59,7 +59,11 @@ generate_cutoff_widget_UI <- function(id) {
 #'
 #' @param min_score A numeric value indicating minimum possible score on the subscale.
 #'
-#' @param description A description of subscale's properties, to display in report.
+#' @param description A string indicating a description of subscale's properties, to display in report
+#'
+#' @param sample_overview A string indicating a description of each research sample (different for each population)
+#'
+#' @param journal_references The string indicating a full reference for each research sample for mean and sd.
 #'
 #' @param existing_data A dataframe representing the client's existing available data for this measure.
 #'
@@ -183,8 +187,6 @@ generate_cutoff_widget <-function(input, output, session, title, brief_title, me
 
     outputOptions(output, "cutoff_widget_out", suspendWhenHidden = FALSE)
 
-
-    #Need to finish the module with reactive value list containing id of value widget & reference widget - so these can be accessed by another module.
 
     reactive({    #use the param_list_maker() function to access all the needed cutoff widget ids (regardless)
                   #of how many there are

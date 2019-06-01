@@ -40,7 +40,8 @@ generate_simplified_cutoff_widget <-function(input, output, session, subscale_nu
     ns <- session$ns #Set the namespace
 
     div(
-      column(width = 2,
+      column(width = 2,              #Need to extract the statistics from the holding data and use them to pre-populate the cutoff widgets.
+
 
              textInput(inputId = ns("cutoff_label_id_1"), label = "Description", value = holding_data()$cutoff_label_1[subscale_number]),
 
@@ -108,10 +109,7 @@ generate_simplified_cutoff_widget <-function(input, output, session, subscale_nu
   outputOptions(output, "simplified_cutoff_widget_out", suspendWhenHidden = FALSE)
 
 
-  #Need to finish the module with reactive value list containing id of value widget & reference widget - so these can be accessed by another module.
-
-  reactive({    #use the param_list_maker() function to access all the needed cutoff widget ids (regardless)
-    #of how many there are
+  reactive({    #Return a list of the cutoff widget values
 
     list( req(input$cutoff_label_id_1), req(input$cutoff_label_id_2), req(input$cutoff_label_id_3), req(input$cutoff_label_id_4), req(input$cutoff_label_id_5),
           req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4), req(input$cutoff_value_id_5),

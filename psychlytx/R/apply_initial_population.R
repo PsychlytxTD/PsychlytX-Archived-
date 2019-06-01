@@ -74,7 +74,51 @@ apply_initial_population_UI<- function(id) {
 #'
 #' Select an initial population thereby applying settings for analyses
 #'
-#' @param id String to create the namespace
+#' @param title A string (white space allowed) indicating the name of the subscale, to be used as a panel title.
+#'
+#' @param brief_title An abbreviated title or acronym.
+#'
+#' @param measure A string indicating the global measure.
+#'
+#' @param subscale A string (underscores should replace white space) indicating the name of the subscale for which the function is being used (e.g. "Anxiety").
+#'
+#' @param population_quantity A numeric value of possible populations from which the user can select.
+#'
+#' @param populations A list of strings (underscores should replace white space) indicating the possible range of populations.
+#'
+#' @param input_population A string (reactive value) representing the name of the selected population.
+#'
+#' @param sds A list of numeric values representing the standard deviations for all populations on that subscale.
+#'
+#' @param means A list of numeric values representing the means for all populations on that subscale.
+#'
+#' @param mean_sd_references A list of strings indicating the references for each mean/standard deviation by population.
+#'
+#' @param reliabilities A list of numeric values representing the test-retest reliabilities for all populations on that subscale.
+#'
+#' @param reliability_references A list of strings indicating the references for each reliability value by population.
+#'
+#' @param cutoff_values A list of concatenated numeric values representing the cutoff values on this subscale for each population.
+#'
+#' @param cutoff_labels A list of concatenated strings indicating the cutoff value descriptors. Use rep() function to multiple by populations.
+#'
+#' @param cutoff_references A list of strings indicating the references for each reliability value by population.
+#'
+#' @param cutoff_quantity A numeric value indicating the number of cutoff scores for the subscale.
+#'
+#' @param items A numeric vector representing an item index for the subscale.
+#'
+#' @param max_score A numeric value indicating maximum possible score on the subscale.
+#'
+#' @param min_score A numeric value indicating minimum possible score on the subscale.
+#'
+#' @param description A string indicating a description of subscale's properties, to display in report
+#'
+#' @param sample_overview A string indicating a description of each research sample (different for each population)
+#'
+#' @param journal_references The string indicating a full reference for each research sample for mean and sd.
+#'
+#' @param tabsetpanel_id A string indicating a panel id to allow automatic switching between panels.
 #'
 #' @export
 

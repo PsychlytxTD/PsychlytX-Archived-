@@ -2,7 +2,7 @@
 #'
 #' Read in required statistics from holding table in DB, to be used when client completes simplified application measure.
 #'
-#' @param id A string to creat the namespace.
+#' @param id A string to create the namespace.
 #'
 #' @export
 #'
@@ -35,15 +35,15 @@ read_holding_stats_UI<- function(id) {
 }
 
 
-#' Select Client
+#' Simplified Application Statistics Read-In
 #'
-#' Select client and display his/her data in abbreviated form.
+#' Read in required statistics from holding table in DB, to be used when client completes simplified application measure.
 #'
 #' @param pool A pooled db object.
 #'
 #' @param measure A string indiating name of the measure.
 #'
-#' @param tabsetpanel_id A string to allow switching between panels.
+#' @param tabsetpanel_id A string to allow automated switch from sign-in tabpanel to questionnaire tabpanel.
 #'
 #' @export
 #'
@@ -54,7 +54,7 @@ read_holding_stats<- function(input, output, session, pool, measure, tabsetpanel
 
   holding_statistics<- eventReactive(input$submit_key, { #Pull in the selected client's data (for this measure only) from the db.
 
-    holding_stats_client_sql<- "SELECT h.*, c.first_name
+    holding_stats_client_sql<- "SELECT h.*, c.first_name, c.last_name
     FROM holding h
     LEFT JOIN client c
     ON h.client_id = c.client_id
@@ -70,7 +70,7 @@ read_holding_stats<- function(input, output, session, pool, measure, tabsetpanel
   observeEvent(input$submit_key, {
 
 
-    if(length(holding_statistics()) >= 1) {
+    if(length(holding_statistics()) >= 1) { #If client id matches on id in holding table send welcome message modal to client.
 
 
     sendSweetAlert(
@@ -81,12 +81,12 @@ read_holding_stats<- function(input, output, session, pool, measure, tabsetpanel
     )
 
 
-      updateTabsetPanel(session = parent_session, tabsetpanel_id,  #Direct user to new tab upon button click
+      updateTabsetPanel(session = parent_session, tabsetpanel_id,  #Direct user automatically to questionnaire tab upon button click.
                         selected = paste("go_questionnaire"))
 
     } else {
 
-      sendSweetAlert(
+      sendSweetAlert(             #If client id does not match on id in holding table send error message.
         session = session,
         title = "Key Not Recognised!",
         text = "Re-copy and paste the Psychlytx key that you received in the email from your clinician.",
@@ -99,7 +99,7 @@ read_holding_stats<- function(input, output, session, pool, measure, tabsetpanel
 
 
 
-  reactive({ holding_statistics() })
+  reactive({ holding_statistics() }) #Return the statistics to be used downstream in score processing.
 
 }
 

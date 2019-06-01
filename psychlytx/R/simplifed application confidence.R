@@ -32,7 +32,7 @@ simplified_confidence_level_UI <- function(id) {
 
 simplified_confidence_level<- function(input, output, session, holding_data) {
 
-  observe({
+  observe({   #Pull statistic from correct patient row in holding table in db.
 
       updateRadioButtons(session, "confidence", selected = holding_data()$confidence[1], inline = TRUE)
 
