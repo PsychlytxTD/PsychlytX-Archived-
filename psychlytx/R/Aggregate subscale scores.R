@@ -38,7 +38,7 @@ calculate_subscale<- function(input, output, session, manual_entry, item_index, 
 
      purrr::map(.x = item_index, ~ do.call(aggregation_method, list(manual_entry()$item_scores[.x], na.rm = TRUE)))
 
-  }) #Apply aggregation method to each index (ech representing vector of item numbers) to form the subscale scores
+  }) #Apply aggregation method to each index (each representing vector of item numbers) to form the subscale scores
 
 
 }

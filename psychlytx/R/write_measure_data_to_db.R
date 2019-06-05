@@ -48,6 +48,16 @@ write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, m
     dbWriteTable(pool, "scale",  data.frame(measure_data()), row.names = FALSE, append = TRUE)
 
 
+      items<- as.list( manual_entry()$item_scores)
+      item_names<- c(paste("item", "_", 1:length(items), sep = ""))
+      named_items<- items %>% purrr::set_names(item_names)
+      item_data<- list( date = manual_entry()$date, item_id = measure_data()$scale_id[1], measure = measure_data()$measure[1], clinician_id = measure_data()$clinician_id,
+                        client_id = measure_data()$client_id, named_items ) %>% purrr::flatten()
+
+      dbWriteTable(pool, "item",  as.data.frame(item_data), row.names = FALSE, append = TRUE)
+
+
+
   })
 
 
