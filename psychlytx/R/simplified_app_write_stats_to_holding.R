@@ -49,6 +49,16 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
       type = "success"
     )
 
+    headers = c(
+      `Authorization` = "bearer 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",
+      `Content-Type` = "application/json"
+    )
+
+    data = '{"personalizations": [{"to": [{"email": "tim@effectivepsych.com.au"}]}],"from": {"email": "timothydeitz@gmail.com"},"subject":
+    "Sending with SendGrid is Fun","content": [{"type": "text/plain","value": "Please click the button below to begin. Make sure to copy your client ID and paste into the app to begin."}],"c2a_link": "www.theage.com.au","c2a_button": "Complete Measure","template_id": "d-c102ab1090724b6a90a269479f37e943"}'
+
+    httr::POST(url = 'https://api.sendgrid.com/v3/mail/send', httr::add_headers(.headers=headers), body = data)
+
 
     #pass the client_data_to_db dataframe in and append the scale table in db
 
