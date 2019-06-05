@@ -53,6 +53,7 @@ collect_input_UI<-  function(id) {
 collect_input<- function(input, output, session, clinician_id, client_id, measure, subscale, manual_entry, aggregate_scores, mean_input, sd_input, reliability_input, confidence, method, input_population, cutoff_input, subscale_number) {
 
 
-reactive({ list( clinician_id, client_id(), measure, subscale, manual_entry()[["date"]], aggregate_scores()[[subscale_number]] , mean_input(), sd_input(), reliability_input(), confidence(), method(), input_population(), cutoff_input() ) })
+reactive({ list( clinician_id, client_id(), measure, subscale, manual_entry()[["date"]], aggregate_scores()[[subscale_number]],
+                 mean_input(), sd_input(), reliability_input(), confidence(), method(), input_population(), cutoff_input() ) })
 
 }

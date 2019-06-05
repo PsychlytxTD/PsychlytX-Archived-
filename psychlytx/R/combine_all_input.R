@@ -100,7 +100,7 @@ combine_all_input<- function(input, output, session, input_list) {
       #Round numeric variables
       #Arrange the order of columns in a logical way, with the most important variables coming first.
 
-    ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::select(clinician_id, client_id, measure, subscale, date, score, pts, se, ci, ci_upper, ci_lower, everything())
+    ) %>% dplyr::mutate_if(is.numeric, round, 2) %>% dplyr::mutate(scale_id = uuid::UUIDgenerate()) %>%  dplyr::select(clinician_id, client_id, measure, subscale, date, score, pts, se, ci, ci_upper, ci_lower, everything())
 
 
 
