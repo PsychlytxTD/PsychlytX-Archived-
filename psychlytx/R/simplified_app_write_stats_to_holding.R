@@ -49,15 +49,39 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
       type = "success"
     )
 
+    url <- c("https://api.sendgrid.com/v3/mail/send")
+
     headers = c(
       `Authorization` = "bearer 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",
       `Content-Type` = "application/json"
     )
 
-    data = '{"personalizations": [{"to": [{"email": "tim@effectivepsych.com.au"}]}],"from": {"email": "timothydeitz@gmail.com"},"subject":
-    "Sending with SendGrid is Fun","content": [{"type": "text/plain","value": "Please click the button below to begin. Make sure to copy your client ID and paste into the app to begin."}],"c2a_link": "www.theage.com.au","c2a_button": "Complete Measure","template_id": "d-c102ab1090724b6a90a269479f37e943"}'
 
-    httr::POST(url = 'https://api.sendgrid.com/v3/mail/send', httr::add_headers(.headers=headers), body = data)
+    body = sprintf('{"from": {"email":"psychlytx@gmail.com"},
+     "personalizations": [{"to": [{"email":"timothydeitz@gmail.com"}],
+"dynamic_template_data":{
+"header":"A measure is ready to be completed",
+"text": "Before you begin, please copy copy the following unique key to your clipboard: %s"
+"c2a_button":"Begin",
+"c2a_link":"www.psychlytx.com.au"}}],
+"template_id":"d-c102ab1090724b6a90a269479f37e943"}', holding_data()$client_id)
+
+
+
+    result <- httr::POST(url,
+                         add_headers(headers),
+                         body = body,
+                         encode="json",
+                         verbose())
+
+
+
+      result <- POST(url,
+                   add_headers(headers),
+                   body = body,
+                   encode="json",
+                   verbose())
+
 
 
     #pass the client_data_to_db dataframe in and append the scale table in db
