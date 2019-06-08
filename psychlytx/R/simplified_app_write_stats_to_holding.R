@@ -12,11 +12,32 @@ write_statistics_to_holding_UI<- function(id) {
 
   tagList(
 
-  h4(tags$strong("Send this questionnaire to your client via email.")),
+  fluidPage(
 
-  actionButton(ns("submit_holding_data"), "Send")
+  fluidRow(
 
-  )
+    column(width = 2,
+
+      h4(tags$strong("OR"))
+
+    )),
+
+  fluidRow(
+
+  column(width = 5,
+
+         titlePanel(span(icon("envelope", lib = "font-awesome"), h4(tags$strong("Send this measure to your client via email."))))),
+
+ column(width = 2,
+  br(),
+  br(),
+  actionButton(ns("submit_holding_data"), "Send Email") %>%
+    helper( type = "inline", title = "What will happen when I email this measure to my client?", colour = "#283747",
+            content = c("Your client will receive a unique key and a link to this particular measure.",
+                        "After the measure has been completed, you will receive an email that shows your client's raw item responses.",
+                        "You will also receive a link back to this web application, where you can download a full clinical report.")))
+
+  )))
 
 }
 

@@ -147,10 +147,12 @@ analytics_posttherapy_UI<- function(id) {
 
     fluidPage(
 
-    column(width = 12, checkboxGroupInput(ns("last_assessment"), "",
-                                          choices = c("*Please tick if your client is completing their final assessment on any questionnaire." = "last"), width = "100%")),
+      fluidRow(
 
-    conditionalPanel(condition = "input.last_assessment == 'last'", ns = ns,
+    column(width = 12, checkboxInput(ns("last_assessment"), h4(tags$strong("Check here if your client is completing their final assessment on any questionnaire.", style = "color: #d35400")),
+                                                 width = "100%"))),
+
+    conditionalPanel(condition = "input.last_assessment == 1", ns = ns,
 
                      tagList(
                        sidebarLayout(

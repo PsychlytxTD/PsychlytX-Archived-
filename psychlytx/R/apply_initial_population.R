@@ -15,20 +15,18 @@ apply_initial_population_UI<- function(id) {
 
     fluidPage(
 
-    titlePanel(span(tagList(icon("edit", lib = "font-awesome", class = "far fa-edit"),
-                            h4(tags$b("Complete the questionnaire below and and click"),
-                               tags$code("Submit.", style = "color:#d35400"))))),
+      fluidRow(
 
+      column(width = 10, offset = 1,
+             checkboxInput(ns("first_time_scale_completion"), h4(tags$strong("Check here if your client is completing this questionnaire for the first time.", style = "color: #d35400")), width = "100%" #Checking the 'first' box should trigger prompt to select a population
+                                           ))),
 
-    column(width = 12, checkboxGroupInput(ns("first_time_scale_completion"), "", width = "100%", #Checking the 'first' box should trigger prompt to select a population
-                                          choices = c("*Please tick if your client is completing this questionnaire for the first time." = "first"))),
-
-    conditionalPanel(condition = "input.first_time_scale_completion == 'first'", ns = ns,
+    conditionalPanel(condition = "input.first_time_scale_completion == 1", ns = ns,
 
                      tagList(
                          fluidRow(
                            column(width = 8, offset = 2, HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),h4(tags$strong("Select A Group With Similar Characteristics To Your Client")) %>%
-                                    helper( type = "inline", title = "Why select a client group?", colour = "#d35400",
+                                    helper( type = "inline", title = "Why select a client group?", colour = "#283747",
                                             content = c("<b>Choosing a client group ensures that:</b>",
           "",
           "<b>1.</b> Appropriate research statistics (e.g. means and standard deviations) are used to estimate
@@ -64,7 +62,19 @@ apply_initial_population_UI<- function(id) {
 
              actionButton(ns("go_custom_settings"), "Customise Client Settings (Optional) ", class = "submit_data")
 
-             ))))))
+             )))),
+
+  fluidRow(
+
+    column(width = 12,
+
+          titlePanel(span(tagList(icon("edit", lib = "font-awesome", class = "far fa-edit"),
+                            h4(tags$b("Complete the questionnaire below and and click"),
+                               tags$code("Submit.", style = "color:#d35400")))))
+
+    ))
+
+    ))
 
 }
 
@@ -137,7 +147,6 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
 
 
-
   output$select_population<- renderUI({
 
     ns <- session$ns
@@ -151,6 +160,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     selectInput(ns("population"), "",
                 choices = population_list, width = "60%")
+
 
   })
 
