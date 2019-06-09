@@ -18,6 +18,8 @@ write_statistics_to_holding_UI<- function(id) {
 
     column(width = 2,
 
+     br(),
+
       h4(tags$strong("OR"))
 
     )),
@@ -31,7 +33,7 @@ write_statistics_to_holding_UI<- function(id) {
  column(width = 2,
   br(),
   br(),
-  actionButton(ns("submit_holding_data"), "Send Email") %>%
+  actionButton(ns("submit_holding_data"), "Send Email", class = "submit_data", style = "margin-top: 9px") %>%
     helper( type = "inline", title = "What will happen when I email this measure to my client?", colour = "#283747",
             content = c("Your client will receive a unique key and a link to this particular measure.",
                         "After the measure has been completed, you will receive an email that shows your client's raw item responses.",
@@ -70,6 +72,19 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
       type = "success"
     )
 
+    #Read in client's email address from client table
+
+    client_email_sql<- "SELECT email_address
+    FROM client
+    WHERE client_id = ?client_id;"
+
+    client_email_query<- sqlInterpolate(pool, client_email_sql, client_id = holding_data()$client_id)
+
+    selected_client_email<- dbGetQuery(pool, client_email_query)
+
+
+
+
     url <- c("https://api.sendgrid.com/v3/mail/send")
 
     headers = c(
@@ -79,17 +94,17 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
 
 
     body = sprintf('{"from": {"email":"psychlytx@gmail.com"},
-     "personalizations": [{"to": [{"email":"timothydeitz@gmail.com"}],
+     "personalizations": [{"to": [{"email":"%s"}],
 "dynamic_template_data":{
 "header":"A measure is ready to be completed",
 "text": "Before you begin, please copy copy the following unique key to your clipboard: %s"
 "c2a_button":"Begin",
 "c2a_link":"www.psychlytx.com.au"}}],
-"template_id":"d-c102ab1090724b6a90a269479f37e943"}', holding_data()$client_id)
+"template_id":"d-c102ab1090724b6a90a269479f37e943"}', selected_client_email, holding_data()$client_id)
 
 
 
-    result <- httr::POST(url,
+    result <- httr::POST(url,                     #Send the email
                          add_headers(headers),
                          body = body,
                          encode="json",
@@ -97,15 +112,7 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
 
 
 
-      result <- POST(url,
-                   add_headers(headers),
-                   body = body,
-                   encode="json",
-                   verbose())
-
-
-
-    #pass the client_data_to_db dataframe in and append the scale table in db
+    #Write the client's holding statistics to the holding table in the databse (so they can be used when client completes the simplified app).
 
     dbWriteTable(pool, "holding",  data.frame(holding_data()), row.names = FALSE, append = TRUE)
 

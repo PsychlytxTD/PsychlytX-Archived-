@@ -22,6 +22,7 @@ analytics_pretherapy_UI<- function(id) {
                      br(),
                      textInput(ns("first_name"), "First Name", width = '50%'), #Create the widgets for pretherapy analytics
                      textInput(ns("last_name"), "Last Name", width = '50%'),
+                     textInput(ns("email_address"), "Email Address", width = '50%'),
                      selectInput(ns("sex"), "Sex", c("", "Male", "Female", "Other"), width = '20%'),
                      dateInput(ns("birth_date"), "Date of Birth", startview = "year", format = "dd-mm-yyyy", width = '20%'),
                      numericInput(ns("postcode"), "Postcode", value = "", width = '20%'),
@@ -67,9 +68,9 @@ analytics_pretherapy<- function(input, output, session, clinician_id) {
   output$pretherapy_data_entry_message<- renderText({ #Send message to ensure that fields for first and last name are filled out by user
 
 
-    if(input$first_name == "" | input$last_name == "") {
+    if(input$first_name == "" | input$last_name == "" | input$email_address == "") {
 
-      return(paste("<span style=\"color:red\">Please provide your client's first and last names to complete registration.</span>"))
+      return(paste("<span style=\"color:red\">Please provide your client's first name, last name and email address to complete registration.</span>"))
 
     } else {
 
@@ -90,10 +91,10 @@ analytics_pretherapy<- function(input, output, session, clinician_id) {
 
     #Use req() to avoid error messages if the values are NULL
 
-    pretherapy_analytics_items<- list( req(clinician_id), req(client_id), req(input$first_name), req(input$last_name), input$sex,
+    pretherapy_analytics_items<- list( req(clinician_id), req(client_id), req(input$first_name), req(input$last_name), req(input$email_address), input$sex,
                                        input$birth_date, input$postcode, input$marital_status,
                                        input$sexuality, input$ethnicity, input$indigenous, input$children,
-                                       input$workforce_status, input$education ) %>% purrr::set_names(c("clinician_id", "client_id", "first_name", "last_name", "sex", "birth_date",
+                                       input$workforce_status, input$education ) %>% purrr::set_names(c("clinician_id", "client_id", "first_name", "last_name", "email_address", "sex", "birth_date",
                                        "postcode", "marital_status", "sexuality", "ethnicity", "indigenous", "children", "workforce_status", "education"))
 
 
@@ -108,6 +109,7 @@ analytics_pretherapy<- function(input, output, session, clinician_id) {
       client_id = purrr::map_chr(., "client_id"),
       first_name = purrr::map_chr(., "first_name"),
       last_name = purrr::map_chr(., "last_name"),
+      email_address = purrr::map_chr(., "email_address"),
       sex = purrr::map_chr(., "sex"),
       birth_date = format(lubridate::as_date(purrr::map_dbl(., "birth_date")), "%d/%m/%Y"), #Convert to date class
       postcode = purrr::map_chr(., "postcode"),
