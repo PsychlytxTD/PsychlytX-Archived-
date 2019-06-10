@@ -21,6 +21,7 @@ library(shinyWidgets)
 library(shinycssloaders)
 library(grid)
 library(httr)
+library(car)
 
 pool <- dbPool( #Set up the pool connection management
   drv = dbDriver("PostgreSQL"),

@@ -30,7 +30,7 @@ write_measure_data_to_db_UI<- function(id) {
 
 
 
-write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, manual_entry, item_table) {
+write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, manual_entry) {
 
   #We pass in the value of the submit scores button, so that when this button is clicked, the code below is triggered.
 
@@ -60,40 +60,7 @@ write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, m
       dbWriteTable(pool, "item",  as.data.frame(item_data), row.names = FALSE, append = TRUE) #Write the item-level responses to the item table.
 
 
-#Trying to send email with responses
-
-
-      url <- c("https://api.sendgrid.com/v3/mail/send")
-
-      headers = c(
-        `Authorization` = "bearer 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",
-        `Content-Type` = "application/json"
-      )
-
-      #Need to replace tim@effectivepsych.com.au with the clinician's email address: environment variable pulled from Autho
-      #Need to replace psychlytx@gmail.com with the real psychlytx email address.
-
-       item_table<- item_table()
-
-      formatted_item_table<- knitr::kable(item_table, format = "html")
-
-      body = sprintf('{"from": {"email":"psychlytx@gmail.com"},
-     "personalizations": [{"to": [{"email":"tim@effectivepsych.com.au"}],
-     "dynamic_template_data":{
-    "header":"Your client has completed a measure. Item responses appear below.",
-    "text": "%s",
-    "c2a_button":"Download Full Clinical Report",
-    "c2a_link":"www.psychlytx.com.au"}}],
-    "template_id":"d-c102ab1090724b6a90a269479f37e943"}', formatted_item_table)
-
-
-
-      result <- httr::POST(url,                     #Send the email
-                           add_headers(headers),
-                           body = body,
-                           encode="json",
-                           verbose())
-
+#Trying to send email with responses below
 
 
   })

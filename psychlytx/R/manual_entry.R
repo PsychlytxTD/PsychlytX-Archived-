@@ -53,13 +53,19 @@ manual_data_UI<- function(id) {
 #'
 #' @param scale_entry The item scores passed from the online scale (if completed).
 #'
+#' @param do_recode A logical, indicating whether or not to apply the recoding function.
+#'
+#' @param items_to_recode A numeric vector indicating the items that should be recoded, of the form c(3,5,6) etc.
+#'
+#' @param recoding_key A string indicating the recoding pattern to use, of the form '0=;1=5;2=4;3=3;4=2;5=1;6=0' etc.
+#'
 #' @export
 
 
 
 #The scale_entry_scores object refers to the item scores from the online scale (if completed)
 
-manual_data<- function(input, output, session, scale_entry) {
+manual_data<- function(input, output, session, scale_entry, do_recode = FALSE, items_to_recode = NULL, recoding_key = NULL) {
 
   observe({
 
@@ -75,7 +81,23 @@ manual_data<- function(input, output, session, scale_entry) {
 
   date<- reactive({ input$date })
 
-  item_scores<- reactive({ as.numeric(unlist(strsplit(input$item_scores, ","))) })   #Collect item scores and store in vector
+
+  #Collect item scores and store in vector. Recode items if necessary.
+
+  item_scores<- reactive({
+
+    item_scores<- as.numeric(unlist(strsplit(input$item_scores, ",")))
+
+    if(do_recode == TRUE) {
+
+      recoded_items<- car::recode(item_scores[c(items_to_recode)], paste(recoding_key))
+
+      item_scores[c(items_to_recode)]<- recoded_items
+    }
+
+    return(item_scores)
+
+    })
 
   eventReactive(input$submit_scores, { list( date = date(), item_scores = item_scores(), submit_scores_button_value = input$submit_scores ) })
   #On click of 'submit' questionnaire scores, return list of date, item scores and the value of the submit button (to use to trigger db writing.)

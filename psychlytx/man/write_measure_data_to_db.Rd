@@ -5,7 +5,7 @@
 \title{Write client's measure data to db}
 \usage{
 write_measure_data_to_db(input, ouput, session, pool, measure_data,
-  manual_entry, item_table)
+  manual_entry)
 }
 \arguments{
 \item{pool}{A pooled db connection}
