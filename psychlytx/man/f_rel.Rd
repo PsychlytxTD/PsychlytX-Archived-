@@ -4,7 +4,7 @@
 \alias{f_rel}
 \title{Test-retest reliability derived from F-statistic}
 \usage{
-f_rel(calc_sd, calc_retest_sd, calc_m, calc_retest_m, calc_f, calc_n,
+f_rel(calc_sd, calc_retest_sd, calc_mean, calc_retest_mean, calc_f, calc_n,
   digits = 2)
 }
 \arguments{
@@ -12,13 +12,13 @@ f_rel(calc_sd, calc_retest_sd, calc_m, calc_retest_m, calc_f, calc_n,
 
 \item{calc_retest_sd}{Numeric value representing retest standard deviation.}
 
-\item{calc_m}{Numeric value representing the baseline mean.}
-
-\item{calc_retest_m}{Numeric value representing the restest mean.}
-
 \item{calc_f}{Numeric value representing the F-statistic.}
 
 \item{calc_n}{Numeric value representing the sample size.}
+
+\item{calc_m}{Numeric value representing the baseline mean.}
+
+\item{calc_retest_m}{Numeric value representing the restest mean.}
 }
 \description{
 Calculates test-retest reliability from the T-statistic

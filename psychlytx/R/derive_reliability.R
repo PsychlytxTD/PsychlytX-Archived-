@@ -53,13 +53,13 @@ reliability_calc_UI <- function(id) {
 
         fluidRow(
           column(width = 3,
-                 actionButton(ns("reliability_calc_action"), "Calculate")
+                 actionButton(ns("trigger_reliability_calc"), "Calculate")
           )
         ),
 
         fluidRow(
           column(width = 8,
-                 h4(tags$strong(verbatimTextOutput("Calculated_Reliability"))),
+                 h4(tags$strong(verbatimTextOutput(ns("derived_reliability_out")))),
                  h6("*Once calculated, enter this value in the field for test-retest reliability above.")
           )
         )
@@ -81,6 +81,31 @@ reliability_calc_UI <- function(id) {
 
 reliability_calc<- function(input, output, session) {
 
-  return(input)
 
-    }
+  derived_reliability_reac<- eventReactive(input$trigger_reliability_calc, {
+
+    ns <- session$ns
+
+  if(input$reliability_stat == "T-Value") {
+
+    t_rel(calc_sd = input$calc_sd, calc_retest_sd = input$calc_retest_sd, calc_mean = input$calc_mean, calc_retest_mean = input$calc_retest_mean,
+          calc_t = input$calc_t, calc_n = input$calc_n)
+
+  } else if(input$reliability_stat == "F-Value") {
+
+    t_rel(calc_sd = input$calc_sd, calc_retest_sd = input$calc_retest_sd, calc_mean = input$calc_mean, calc_retest_mean = input$calc_retest_mean,
+          calc_f = input$calc_f, calc_n = input$calc_n)
+
+  }
+
+  })
+
+
+  output$derived_reliability_out<- renderText({
+
+    derived_reliability_reac()
+
+  })
+
+
+}

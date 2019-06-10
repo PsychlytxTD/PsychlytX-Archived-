@@ -15,9 +15,10 @@
 #'@examples trel(1.3, 1.4, 30, 31, 2.75, 80)
 #'
 #' @export
-t_rel <- function( calc_sd, calc_retest_sd, calc_m, calc_retest_m, calc_t, calc_n, digits = 2 ) {
+t_rel <- function( calc_sd, calc_retest_sd, calc_mean, calc_retest_mean, calc_t, calc_n, digits = 2 ) {
   ## TODO( you may want to simplify this calculation so it can be split across multiple lines - this will make it easier to read)
-  round( ( ( ( calc_sd * calc_sd ) + ( calc_retest_sd * calc_retest_sd ) ) - ( ( ( calc_retest_m - calc_m ) / calc_t ) * ( ( calc_retest_m - calc_m ) / calc_t ) * calc_n ) ) / ( 2 * calc_sd * calc_retest_sd ), digits )
+  reliability_value_t<- round( ( ( ( calc_sd * calc_sd ) + ( calc_retest_sd * calc_retest_sd ) ) - ( ( ( calc_retest_mean - calc_mean ) / calc_t ) * ( ( calc_retest_mean - calc_mean ) / calc_t ) * calc_n ) ) / ( 2 * calc_sd * calc_retest_sd ), digits )
+  paste("Test-retest reliability =", reliability_value_t)
 }
 
 
@@ -35,7 +36,8 @@ t_rel <- function( calc_sd, calc_retest_sd, calc_m, calc_retest_m, calc_t, calc_
 #'@examples frel(1.3, 1.4, 30, 31, 2.75, 80)
 #'
 #' @export
-f_rel <- function( calc_sd, calc_retest_sd, calc_m, calc_retest_m, calc_f, calc_n, digits = 2 ) {
-  round( ( ( ( calc_sd * calc_sd ) + ( calc_retest_sd * calc_retest_sd ) ) - ( ( ( calc_retest_m - calc_m) / ( sqrt(calc_f) ) ) * ( ( calc_retest_m - calc_m ) / ( sqrt(calc_f) ) ) * calc_n ) ) / ( 2 * calc_sd * calc_retest_sd ), digits)
+f_rel <- function( calc_sd, calc_retest_sd, calc_mean, calc_retest_mean, calc_f, calc_n, digits = 2 ) {
+  reliability_value_f<- round( ( ( ( calc_sd * calc_sd ) + ( calc_retest_sd * calc_retest_sd ) ) - ( ( ( calc_retest_mean - calc_mean) / ( sqrt(calc_f) ) ) * ( ( calc_retest_mean - calc_mean ) / ( sqrt(calc_f) ) ) * calc_n ) ) / ( 2 * calc_sd * calc_retest_sd ), digits)
+  paste("Test-retest reliability =", reliability_value_f)
 }
 
