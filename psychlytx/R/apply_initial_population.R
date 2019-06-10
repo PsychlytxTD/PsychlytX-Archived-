@@ -25,6 +25,9 @@ apply_initial_population_UI<- function(id) {
 
                      tagList(
                          fluidRow(
+
+                           #Make info icon to explain why it is important to select a population
+
                            column(width = 8, offset = 2, HTML('&nbsp;'), HTML('&nbsp;'), HTML('&nbsp;'),h4(tags$strong("Select A Group With Similar Characteristics To Your Client")) %>%
                                     helper( type = "inline", title = "Why select a client group?", colour = "#283747",
                                             content = c("<b>Choosing a client group ensures that:</b>",
@@ -159,7 +162,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
 
     selectInput(ns("population"), "",
-                choices = population_list, width = "60%")
+                choices = population_list, width = "60%") #Make the population selection widget
 
 
   })
@@ -171,13 +174,11 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
   observe({
 
 
-    updateSelectInput(session, "population", selected = existing_data()$population[1], choices =  existing_data()$population[1]) #Update the population widget based on user's existing data to reinstill their settings
-
-
+    updateSelectInput(session, "population", selected = existing_data()$population[1], choices =  existing_data()$population[1]) #Update the population widget based on user's
+                                                                                                                                 #existing data to reinstill their settings.
 
   })
 
- #Return the selected value of the population widget
 
 
   output$other_population<- renderUI({
@@ -186,7 +187,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     req(input$population)
 
-    if(input$population == "Other") {
+    if(input$population == "Other") { #Create text widget to input name of alternative popopulation, if 'Other' is chosen during intitial population selection.
 
       textInput(ns("other_population_widget"), h5("Enter the name of a new client group. Then specifiy group-appropriate statistics
                                                   and references by clicking below. The values you define will be used in
@@ -202,11 +203,17 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
   output$sample_description <- renderUI({
 
+    #Make functionality to create icon that user can click to reveal information about the research sample upon with statistics
+    #for a given population are based.
+
     ns <- session$ns
 
     req(input$population)
 
     sample_info_params<- purrr::pmap(list(
+
+      #From the subscale info list, iterate over the sublists we need (i.e. populations, journal_references & sample_overview)
+      #Create a final list with the correct elements taken from each of these three sublists, corresponding to the population selected.
 
       populations = populations,
       journal_references = journal_references,
@@ -217,7 +224,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
     function(populations, journal_references, sample_overview) {
 
 
-      #Create a list of paramaters for each unique population
+      #Create a list of paramaters for each unique population to be accessible in the modal popup, generate by icon click.
 
       list( populations = populations, journal_references = journal_references, sample_overview = sample_overview )
 
@@ -244,7 +251,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     }
 
-    h4("Learn more about this client group") %>%
+    h4("Learn more about this client group") %>% #Make the population info popup modal
       helper(
              colour = "#283747",
              size = "m",
@@ -274,7 +281,7 @@ apply_initial_population<- function(input, output, session, title, brief_title, 
 
     } else {
 
-     return(input$population)
+     return(input$population) #Return the selected population, to be accessed by modules downstream.
 
     }
 

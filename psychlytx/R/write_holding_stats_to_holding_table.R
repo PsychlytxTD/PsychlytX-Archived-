@@ -30,11 +30,11 @@ write_statistics_to_holding_UI<- function(id) {
 
          titlePanel(span(icon("envelope", lib = "font-awesome"), h4(tags$strong("Send this measure to your client via email."))))),
 
- column(width = 2,
+ column(width = 2,   #Create button to send measure to client via email, and to automatically write his or her statistics to the holding table in the db.
   br(),
   br(),
   actionButton(ns("submit_holding_data"), "Send Email", class = "submit_data", style = "margin-top: 9px") %>%
-    helper( type = "inline", title = "What will happen when I email this measure to my client?", colour = "#283747",
+    helper( type = "inline", title = "What will happen when I email this measure to my client?", colour = "#283747", #Make info icon to explain what happens when email is sent.
             content = c("Your client will receive a unique key and a link to this particular measure.",
                         "After the measure has been completed, you will receive an email that shows your client's raw item responses.",
                         "You will also receive a link back to this web application, where you can download a full clinical report.")))
@@ -65,7 +65,7 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
   observeEvent(input$submit_holding_data, {
 
 
-    sendSweetAlert(                 #Holding stats are sent to the db and an email is sent to the client for questionnaire completion.
+    sendSweetAlert(                 #Holding stats are sent to the db and an email is sent to the client for measure  completion. Make alert telling clinician measure has been sent.
       session = session,
       title = "Success !!",
       text = "The questionnaire has been sent to your client for completion.",
@@ -100,9 +100,7 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
 "text": "Before you begin, please copy copy the following unique key to your clipboard: %s"
 "c2a_button":"Begin",
 "c2a_link":"www.psychlytx.com.au"}}],
-"template_id":"d-c102ab1090724b6a90a269479f37e943"}', selected_client_email, holding_data()$client_id)
-
-
+"template_id":"d-0680c882a9904f3a9e8f72638ff1d807"}', selected_client_email, holding_data()$client_id)
 
     result <- httr::POST(url,                     #Send the email
                          add_headers(headers),

@@ -124,8 +124,6 @@ ui<- function(request) {
                                   
                                   psychlytx::combine_all_input_UI("combine_all_input"), #Combine collected inputs from all subscales
                                   
-                                  #psychlytx::wrangle_items_for_db_UI("wrangle_items"),
-                                  
                                   psychlytx::write_measure_data_to_db_UI("write_measure_data")
                          ),
                          
@@ -294,10 +292,9 @@ server <- function(input, output, session) {
   
   
   measure_data<- callModule(psychlytx::combine_all_input, "combine_all_input", input_list)  #Generate a dataframe with all necessary scale data (date, score, pts, se,
-  #ci etc.). This dataframe will be sent to the db
+                                                                                            #ci etc.). This dataframe will be sent to the db
   
-  #item_data<- psychlytx::wrangle_items_for_db("wrangle_items", manual_entry, measure_data)
-  
+
   
   callModule(psychlytx::write_measure_data_to_db, "write_measure_data", pool, measure_data, manual_entry)  #Write newly entered item responses from measure to db
   

@@ -8,8 +8,6 @@ simplified_manual_data(input, output, session, scale_entry)
 }
 \arguments{
 \item{scale_entry}{The item scores passed from the online scale (if completed).}
-
-\item{holding_data}{A dataframe containing statistics pulled from the holding table in DB.}
 }
 \description{
 Creates layout and widgets for simple application manual data entry

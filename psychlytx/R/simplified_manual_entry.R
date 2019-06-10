@@ -23,8 +23,6 @@ simplified_manual_data_UI<- function(id) {
 #'
 #' @param scale_entry The item scores passed from the online scale (if completed).
 #'
-#' @param holding_data A dataframe containing statistics pulled from the holding table in DB.
-#'
 #' @export
 
 

@@ -48,6 +48,7 @@ extract_holding_statistics_UI<-  function(id) {
 
 extract_holding_statistics<- function(input, output, session, clinician_id, client_id, measure, subscale, mean_input, sd_input, reliability_input, confidence, method, input_population, cutoff_input, subscale_number) {
 
+  #Return a list of statistics (no scores or score information), to be sent to the holding table in the db. Needed when client completes simplified application.
 
   reactive({ list( clinician_id, client_id(), measure, subscale, mean_input(), sd_input(), reliability_input(), confidence(), method(), input_population(), cutoff_input() ) })
 

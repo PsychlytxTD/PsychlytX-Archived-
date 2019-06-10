@@ -69,7 +69,7 @@ clients<- reactive({
 
 
 
-output$client_dropdown<- renderUI({
+output$client_dropdown<- renderUI({ #Make the client selection widget
 
   ns <- session$ns
 
@@ -86,6 +86,6 @@ output$client_dropdown<- renderUI({
 outputOptions(output, "client_dropdown", suspendWhenHidden = FALSE)
 
 
-reactive({ input$client_selection })
+reactive({ input$client_selection }) #Return the selected client client_id
 
 }
