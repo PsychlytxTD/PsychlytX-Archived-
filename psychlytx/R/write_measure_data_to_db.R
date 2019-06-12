@@ -30,7 +30,7 @@ write_measure_data_to_db_UI<- function(id) {
 
 
 
-write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, manual_entry) {
+write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, manual_entry, formatted_response_body_for_email) {
 
   #We pass in the value of the submit scores button, so that when this button is clicked, the code below is triggered.
 
@@ -63,9 +63,37 @@ write_measure_data_to_db<- function(input, ouput, session, pool, measure_data, m
 #Trying to send email with responses below
 
 
+
+      url <- c("https://api.sendgrid.com/v3/mail/send")
+
+      headers = c(
+        `Authorization` = "bearer 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",
+        `Content-Type` = "application/json"
+      )
+
+      #Need to replace tim@effectivepsych.com.au with the clinician’s email address: environment variable pulled from Autho
+      #Need to replace psychlytx@gmail.com with the real psychlytx email address.
+
+
+      body = formatted_response_body_for_email()
+
+
+
+result <- httr::POST(url,                     #Send the email
+                    add_headers(headers),
+                    body = body,
+                    encode="json",
+                    verbose())
+
+
+
+
+
+
   })
 
 
+observe({ print( formatted_response_body_for_email() )})
 
 
 }
