@@ -93,7 +93,7 @@ write_statistics_to_holding<- function(input, ouput, session, pool, holding_data
     )
 
 
-    body = sprintf('{"from": {"email":"psychlytx@gmail.com"},
+    body = sprintf('{"from": {"email":"measurely@psychlytx.com","name":"Measurely"},
      "personalizations": [{"to": [{"email":"%s"}],
 "dynamic_template_data":{
 "header":"A measure is ready to be completed",

@@ -22,6 +22,7 @@ library(shinycssloaders)
 library(grid)
 library(httr)
 library(car)
+library(purrrlyr)
 
 pool <- dbPool( #Set up the pool connection management
   drv = dbDriver("PostgreSQL"),
@@ -250,9 +251,6 @@ server <- function(input, output, session) {
   
   manual_entry<- callModule(psychlytx::manual_data, "manual_data", scale_entry) #Raw item responses are stored as vector manual_entry to be used downstream
   
-                                                 #Use the appropriate response formatting module (one for each measure)
-  formatted_response_body_for_email<- callModule(psychlytx::format_gad7_responses_for_email, "format_repsonses_for_email", manual_entry)
-  
   
   aggregate_scores<- callModule(psychlytx::calculate_subscale, "calculate_subscales",  manual_entry = manual_entry, item_index = list( psychlytx::GAD_7$items ), 
                                 aggregation_method = "sum")   #Make a list of aggregate scores across subscales (in this case there is only one subscale)
@@ -301,6 +299,9 @@ server <- function(input, output, session) {
                                                                                             #ci etc.). This dataframe will be sent to the db
   
 
+  #Use the appropriate response formatting module (one for each measure). Returns a string representing the body text to be sent.
+  formatted_response_body_for_email<- callModule(psychlytx::format_gad7_responses_for_email, "format_repsonses_for_email", manual_entry, measure_data)
+  
   
   callModule(psychlytx::write_measure_data_to_db, "write_measure_data", pool, measure_data, manual_entry, formatted_response_body_for_email)  #Write newly entered item responses from measure to db
   
