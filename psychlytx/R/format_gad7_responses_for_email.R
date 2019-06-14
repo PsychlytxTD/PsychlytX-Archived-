@@ -42,10 +42,31 @@ format_gad7_responses_for_email<- function(input, output, session, manual_entry,
  )
 
 
- measure_data<- measure_data()
+  #If the measure does not have established cutoffs, use the function below to create the vector of scores and severity range descriptions.
+  #Otherwise, if there are widely recognised cutoffs, just use those cutoffs for the email, using a custom function like the one just below.
+  #May be cases where we use a custom method for one subscale (e.g. PCL-5 total scale) but use the find_severity_range() function to generate
+  #the severity range descriptions for the other subscales. In that case, would need to pass subsetted measure_data into the function
+  #and would need to join that function output with the output produced by the custom method.
 
- score_severity_range<- psychlytx::find_severity_range(measure_data) #use the find_severity_range() function to make a single vector of strings
+ #measure_data<- measure_data()
+ #score_severity_range<- psychlytx::find_severity_range(measure_data) #use the find_severity_range() function to make a single vector of strings
                                                                      #containing (in order) the scores and the severity range descriptions.
+
+
+ severity_range<- dplyr::case_when(
+
+   measure_data()$score >= 5 & measure_data()$score < 10 ~ "Mild",
+
+   measure_data()$score >= 10 & measure_data()$score < 14 ~ "Moderate",
+
+   measure_data()$score >= 14 ~ "Severe",
+
+   TRUE ~ as.character(measure_data()$score)
+
+ )
+
+ score_severity_range<- c(measure_data()$score, severity_range)
+
 
  body_values<- c(score_severity_range, formatted_item_responses) #Join the previous score/severity range description strings with the item responses to make one vector.
 

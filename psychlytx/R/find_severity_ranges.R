@@ -9,6 +9,7 @@
 find_severity_range<- function(measure_data) {
 
   #Subset the data to retrieve cutoff values only (to facilitate conversion to lists row-wise)
+  #Need to add "zero" cutoff value and label to prevent error if the client's score is below the lowest cutoff.
 
   cutoff_vals_only<- measure_data %>% dplyr::select(contains("value")) %>% dplyr::mutate(cutoff_value_0 = 0)
   cutoff_vals_only<- cutoff_vals_only %>% dplyr::select(cutoff_value_0, everything())
@@ -43,7 +44,7 @@ find_severity_range<- function(measure_data) {
 
   #Index the dataframe to locate the severity ranges for each subscale
 
-  bound_df<- bound_df %>% dplyr::mutate(severity_range = purrr::map2(bound_df$cutoff_df, bound_df$found_val, ~ .x[.x$values == .y, 1]))
+  bound_df<- bound_df %>% dplyr::mutate(severity_range = purrr::map2(bound_df$cutoff_df, bound_df$found_val, ~ paste("Above or equal to", .x[.x$values == .y, 1])))
 
   bound_df$severity_range<- purrr::map(bound_df$severity_range, ~ as.vector(unlist(.x))) #Unlist the severity range column
 
