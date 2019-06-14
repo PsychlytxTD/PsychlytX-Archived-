@@ -8,9 +8,15 @@
 
 find_severity_range<- function(measure_data) {
 
-  cutoff_vals_only<- measure_data %>% dplyr::select(contains("value")) #Subset the data to retrieve cutoff values only (to facilitate conversion to lists row-wise)
+  #Subset the data to retrieve cutoff values only (to facilitate conversion to lists row-wise)
 
-  cutoff_labs_only<- measure_data %>% dplyr::select(contains("label")) #Subset the data to retrieve cutoff labels only (to facilitate conversion to lists row-wise)
+  cutoff_vals_only<- measure_data %>% dplyr::select(contains("value")) %>% dplyr::mutate(cutoff_value_0 = 0)
+  cutoff_vals_only<- cutoff_vals_only %>% dplyr::select(cutoff_value_0, everything())
+
+  #Subset the data to retrieve cutoff labels only (to facilitate conversion to lists row-wise)
+
+  cutoff_labs_only<- measure_data %>% dplyr::select(contains("label")) %>% dplyr::mutate(cutoff_label_0 = paste("Below", cutoff_label_1))
+  cutoff_labs_only<- cutoff_labs_only %>% dplyr::select(cutoff_label_0, everything())
 
 
   score<- measure_data$score #Store subscale scores in single vector
@@ -27,7 +33,7 @@ find_severity_range<- function(measure_data) {
 
   #For each score (each row of df) locate the cutoff score immediately beneath it.
 
-  bound_df<- bound_df %>% dplyr::mutate(found_val = purrr::map2(bound_df$vals_list, bound_df$score, ~.x[max(which(.x < .y))]))
+  bound_df<- bound_df %>% dplyr::mutate(found_val = purrr::map2(bound_df$vals_list, bound_df$score, ~.x[max(which(.x <= .y))]))
 
 
   #Make a dataframe with cutoff value lists in one column and cutoff value labels in the other — need this for indexing

@@ -288,7 +288,7 @@ server <- function(input, output, session) {
   #Have to store the list of sublists as a reactive object
   
   
-  input_list<- reactive({ list( input_list_1() ) })  #Store each list of input values in a larger list object (i.e. all_input). If there were more than one 
+  input_list<- reactive({ list( input_list_1() ) })  #Store each list of input values in a larger list object. If there were more than one 
   #subscale it would look like this: input_list<- reactive({ list( input_list_1(), input_list_2(), etc. ) })
   #After creating the list of lists, flatten each sublist and set the names of sublist elements so that they 
   #are the same across lists - this will ensure we can iterate over the lists using purrr. 
