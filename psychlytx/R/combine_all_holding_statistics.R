@@ -31,9 +31,10 @@ combine_all_holding_data<- function(input, output, session, holding_statistics_l
 
     all_input<- holding_statistics_list() %>% purrr::map( ~ purrr::flatten(.x) %>% purrr::set_names(c("clinician_id", "client_id", "measure", "subscale", "mean",
                                                                                          "mean_reference","sd", "sd_reference", "reliability", "reliability_reference", "confidence", "method", "population",
-                                                                                         "cutoff_label_1", "cutoff_label_2", "cutoff_label_3", "cutoff_label_4", "cutoff_label_5",
-                                                                                         "cutoff_value_1", "cutoff_value_2", "cutoff_value_3", "cutoff_value_4", "cutoff_value_5",
-                                                                                         "cutoff_reference_1", "cutoff_reference_2","cutoff_reference_3", "cutoff_reference_4", "cutoff_reference_5")))
+                                                                                         "cutoff_label_1", "cutoff_label_2", "cutoff_label_3", "cutoff_label_4", "cutoff_label_5", "cutoff_label_6",
+                                                                                         "cutoff_value_1", "cutoff_value_2", "cutoff_value_3", "cutoff_value_4", "cutoff_value_5", "cutoff_value_6",
+                                                                                         "cutoff_reference_1", "cutoff_reference_2","cutoff_reference_3", "cutoff_reference_4",
+                                                                                         "cutoff_reference_5", "cutoff_reference_6")))
 
 
     holding_statistics_data<- all_input %>% {
@@ -58,16 +59,19 @@ combine_all_holding_data<- function(input, output, session, holding_statistics_l
         cutoff_label_3 = purrr::map_chr(., "cutoff_label_3"),
         cutoff_label_4 = purrr::map_chr(., "cutoff_label_4"),
         cutoff_label_5 = purrr::map_chr(., "cutoff_label_5"),
+        cutoff_label_6 = purrr::map_chr(., "cutoff_label_6"),
         cutoff_value_1 = purrr::map_dbl(., "cutoff_value_1"),
         cutoff_value_2 = purrr::map_dbl(., "cutoff_value_2"),
         cutoff_value_3 = purrr::map_dbl(., "cutoff_value_3"),
         cutoff_value_4 = purrr::map_dbl(., "cutoff_value_4"),
         cutoff_value_5 = purrr::map_dbl(., "cutoff_value_5"),
+        cutoff_value_6 = purrr::map_dbl(., "cutoff_value_6"),
         cutoff_reference_1 = purrr::map_chr(., "cutoff_reference_1"),
         cutoff_reference_2 = purrr::map_chr(., "cutoff_reference_2"),
         cutoff_reference_3 = purrr::map_chr(., "cutoff_reference_3"),
         cutoff_reference_4 = purrr::map_chr(., "cutoff_reference_4"),
-        cutoff_reference_5 = purrr::map_chr(., "cutoff_reference_5")
+        cutoff_reference_5 = purrr::map_chr(., "cutoff_reference_5"),
+        cutoff_reference_6 = purrr::map_chr(., "cutoff_reference_6")
 
       )
 

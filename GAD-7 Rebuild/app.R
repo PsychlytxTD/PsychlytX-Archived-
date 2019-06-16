@@ -102,7 +102,7 @@ ui<- function(request) {
                                       
                                     ))),
                          
-                         tabPanel(tags$strong("Complete Questionnaire"),
+                         tabPanel(tags$strong("Complete Measure"),
                                   
                                   psychlytx::apply_initial_population_UI("apply_population"),
                                   
@@ -194,9 +194,13 @@ ui<- function(request) {
                                   
                          )
                          
-                      )),
+                      ),
+                  
+                  column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX 2019") , offset = 5, width = 12))
+                  
+                  )
                 
-                column(span(tagList(icon("copyright", lib = "font-awesome")), "PsychlytX | 2019") , offset = 4, width = 12))
+                
         
         
       )))

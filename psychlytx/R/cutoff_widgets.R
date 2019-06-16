@@ -150,18 +150,21 @@ generate_cutoff_widget <-function(input, output, session, title, brief_title, me
         updateNumericInput(session, "cutoff_value_id_3", "Value", value = existing_data()$cutoff_value_3[1])
         updateNumericInput(session, "cutoff_value_id_4", "Value", value = existing_data()$cutoff_value_4[1])
         updateNumericInput(session, "cutoff_value_id_5", "Value", value = existing_data()$cutoff_value_5[1])
+        updateNumericInput(session, "cutoff_value_id_6", "Value", value = existing_data()$cutoff_value_6[1])
 
         updateNumericInput(session, "cutoff_label_id_1", "Description", value = existing_data()$cutoff_label_1[1])
         updateNumericInput(session, "cutoff_label_id_2", "Description", value = existing_data()$cutoff_label_2[1])
         updateNumericInput(session, "cutoff_label_id_3", "Description", value = existing_data()$cutoff_label_3[1])
         updateNumericInput(session, "cutoff_label_id_4", "Description", value = existing_data()$cutoff_label_4[1])
         updateNumericInput(session, "cutoff_label_id_5", "Description", value = existing_data()$cutoff_label_5[1])
+        updateNumericInput(session, "cutoff_label_id_6", "Description", value = existing_data()$cutoff_label_6[1])
 
         updateTextInput(session, "cutoff_reference_id_1", "Reference", value = existing_data()$cutoff_reference_1[1])
         updateTextInput(session, "cutoff_reference_id_2", "Reference", value = existing_data()$cutoff_reference_2[1])
         updateTextInput(session, "cutoff_reference_id_3", "Reference", value = existing_data()$cutoff_reference_3[1])
         updateTextInput(session, "cutoff_reference_id_4", "Reference", value = existing_data()$cutoff_reference_4[1])
         updateTextInput(session, "cutoff_reference_id_5", "Reference", value = existing_data()$cutoff_reference_5[1])
+        updateTextInput(session, "cutoff_reference_id_6", "Reference", value = existing_data()$cutoff_reference_6[1])
 
       }
 
@@ -192,9 +195,9 @@ generate_cutoff_widget <-function(input, output, session, title, brief_title, me
                   #of how many there are
 
       list( req(input$cutoff_label_id_1), req(input$cutoff_label_id_2), req(input$cutoff_label_id_3), req(input$cutoff_label_id_4), req(input$cutoff_label_id_5),
-           req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4), req(input$cutoff_value_id_5),
-           req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2), req(input$cutoff_reference_id_3),
-          req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5) )
+            req(input$cutoff_label_id_6), req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4),
+            req(input$cutoff_value_id_5), req(input$cutoff_value_id_6), req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2),
+            req(input$cutoff_reference_id_3), req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5), req(input$cutoff_reference_id_6) )
 
     })
 

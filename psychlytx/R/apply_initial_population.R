@@ -59,7 +59,7 @@ apply_initial_population_UI<- function(id) {
     br(),
 
     fluidRow(
-      column(width = 3, offset = 8,
+      column(width = 3, offset = 3,
 
              uiOutput(ns("other_population")),
 

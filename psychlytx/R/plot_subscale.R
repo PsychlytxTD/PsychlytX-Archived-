@@ -26,23 +26,27 @@ plot_subscale <- function(subscale_df, subscale_info) {
 
   ymin_cutoff_1 <- subscale_df$cutoff_value_1[length( subscale_df$cutoff_value_1 )]
 
-  ymax_cutoff_1 <- subscale_df$cutoff_value_2[length( subscale_df$cutoff_value_1 )] - 0.2
+  ymax_cutoff_1 <- subscale_df$cutoff_value_2[length( subscale_df$cutoff_value_1 )] - 0.1
 
   ymin_cutoff_2 <- subscale_df$cutoff_value_2[length( subscale_df$cutoff_value_2 )]
 
-  ymax_cutoff_2 <- subscale_df$cutoff_value_3[length( subscale_df$cutoff_value_3 )] - 0.2
+  ymax_cutoff_2 <- subscale_df$cutoff_value_3[length( subscale_df$cutoff_value_3 )] - 0.1
 
   ymin_cutoff_3 <- subscale_df$cutoff_value_3[length( subscale_df$cutoff_value_3 )]
 
-  ymax_cutoff_3 <- subscale_df$cutoff_value_4[length( subscale_df$cutoff_value_4 )] - 0.2
+  ymax_cutoff_3 <- subscale_df$cutoff_value_4[length( subscale_df$cutoff_value_4 )] - 0.1
 
   ymin_cutoff_4 <- subscale_df$cutoff_value_4[length( subscale_df$cutoff_value_4 )]
 
-  ymax_cutoff_4 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )] - 0.2
+  ymax_cutoff_4 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )] - 0.1
 
   ymin_cutoff_5 <- subscale_df$cutoff_value_5[length( subscale_df$cutoff_value_5 )]
 
-  ymax_cutoff_5 <- Inf
+  ymax_cutoff_5 <- subscale_df$cutoff_value_6[length( subscale_df$cutoff_value_6 )] - 0.1
+
+  ymin_cutoff_6 <- subscale_df$cutoff_value_6[length( subscale_df$cutoff_value_6 )]
+
+  ymax_cutoff_6 <- Inf
 
 
   #Need to make sure confidence intervals don't disappear from plot - so manually increase y-axis limits
@@ -123,6 +127,15 @@ plot_subscale <- function(subscale_df, subscale_info) {
       ymax = ymax_cutoff_5,
       alpha = 0.8,
       fill = "#d95f0e"
+    ) + annotate(
+      "rect",
+      xmin = -Inf,
+      xmax = Inf,
+      #Make the cutoff shading rectangles
+      ymin = ymin_cutoff_6,
+      ymax = ymax_cutoff_6,
+      alpha = 0.8,
+      fill = "#993404"
     ) + geom_errorbar(
       aes(ymin = ci_lower, ymax = ci_upper),
       #Make error bars
@@ -230,6 +243,17 @@ plot_subscale <- function(subscale_df, subscale_info) {
         y = cutoff_value_5 + 0.2
       ),
       #Position cutoff label 5
+      hjust = 0,
+      nudge_y = 0.7,
+      family = "Linux Libertine",
+      size = 4
+    ) + geom_text(
+      aes(
+        label = paste(cutoff_label_6, ":", cutoff_value_6),
+        x = as.Date(x_axis_lower_expansion),
+        y = cutoff_value_6 + 0.2
+      ),
+      #Position cutoff label 6
       hjust = 0,
       nudge_y = 0.7,
       family = "Linux Libertine",

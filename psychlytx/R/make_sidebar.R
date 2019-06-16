@@ -38,8 +38,8 @@ make_sidebar_UI<- function(id) {
       br(),
       br(),
       br(),
-      tags$footer(tags$a(href = "http://psychlytx.com.au", target = "_blank", HTML("<br><center>"), "PsychlytX", tags$sup(icon("registered")), br(),
-                         "© PsychlytX 2019"))
+      tags$footer(tags$a(href = "http://psychlytx.com.au", target = "_blank", HTML("<br><center>"), "PsychlytX", tags$sup(icon("registered"))
+                         ))
     )
   )
 
