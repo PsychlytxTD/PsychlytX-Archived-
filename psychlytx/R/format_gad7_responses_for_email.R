@@ -91,7 +91,7 @@ format_gad7_responses_for_email<- function(input, output, session, manual_entry,
 
                    "content": "text/html",
                    "c2a_button":"Download Full Clinical Report",
-                   "c2a_link":"www.psychlytx.com.au"}}],
+                   "c2a_link":"www.psychlytx.com"}}],
                    "template_id":"d-c102ab1090724b6a90a269479f37e943"}'), body_values)) #Pass in the vector of strings to replace placeholders in order.
 
     return(body)

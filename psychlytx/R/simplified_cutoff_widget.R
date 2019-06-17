@@ -95,6 +95,18 @@ generate_simplified_cutoff_widget <-function(input, output, session, subscale_nu
 
              hr()
 
+      ),
+
+      column(width = 2,
+
+             textInput(inputId = ns("cutoff_label_id_6"), label = "Description", value = holding_data()$cutoff_label_6[subscale_number]),
+
+             numericInput(inputId = ns("cutoff_value_id_6"), label = "Value", value = holding_data()$cutoff_value_6[subscale_number]),
+
+             textInput(inputId = ns("cutoff_reference_id_6"), label = "Reference", value = holding_data()$cutoff_reference_6[subscale_number]),
+
+             hr()
+
       )
 
 
@@ -112,9 +124,9 @@ generate_simplified_cutoff_widget <-function(input, output, session, subscale_nu
   reactive({    #Return a list of the cutoff widget values
 
     list( req(input$cutoff_label_id_1), req(input$cutoff_label_id_2), req(input$cutoff_label_id_3), req(input$cutoff_label_id_4), req(input$cutoff_label_id_5),
-          req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4), req(input$cutoff_value_id_5),
-          req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2), req(input$cutoff_reference_id_3),
-          req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5) )
+          req(input$cutoff_label_id_5), req(input$cutoff_value_id_1), req(input$cutoff_value_id_2), req(input$cutoff_value_id_3), req(input$cutoff_value_id_4),
+          req(input$cutoff_value_id_5), req(input$cutoff_value_id_6), req(input$cutoff_reference_id_1), req(input$cutoff_reference_id_2), req(input$cutoff_reference_id_3),
+          req(input$cutoff_reference_id_4), req(input$cutoff_reference_id_5), req(input$cutoff_reference_id_6) )
 
   })
 
